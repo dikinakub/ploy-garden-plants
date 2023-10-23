@@ -13,7 +13,7 @@ public interface CustomerProfileRepository extends JpaRepository<CustomerProfile
     @Query("SELECT u FROM CustomerProfile u ORDER BY cusCreateDatetime DESC")
     List<CustomerProfile> findAllOrderByCusCreateDatetimeDesc();
 
-    @Query("SELECT u FROM CustomerProfile u WHERE u.cusProfileName like %:cusProfileName% ORDER BY cusCreateDatetime DESC")
+    @Query("SELECT u FROM CustomerProfile u WHERE upper(u.cusProfileName) like %:cusProfileName% ORDER BY cusCreateDatetime DESC")
     List<CustomerProfile> findByCusProfileName(@Param("cusProfileName") String cusProfileName);
 
 }

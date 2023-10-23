@@ -1,12 +1,4 @@
-table {
-    width: 1600px;
-}
 
 .example-container mat-form-field+mat-form-field {
     margin-left: 10px;
-}
-
-
-.example-button-row button {
-    margin-right: 8px;
 }

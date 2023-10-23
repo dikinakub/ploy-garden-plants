@@ -108,7 +108,7 @@ public class CustomerController {
     @GetMapping("api/customer/findByName/{name}")
     public List<SearchCustomerProfileResponse> findByName(@PathVariable String name) {
         List<SearchCustomerProfileResponse> responseList = new ArrayList<>();
-        List<CustomerProfile> findAllOrderByCusCreateDatetimeDesc = customerRepository.findByCusProfileName(name);
+        List<CustomerProfile> findAllOrderByCusCreateDatetimeDesc = customerRepository.findByCusProfileName(name.toUpperCase());
         int no = 0;
         for (CustomerProfile customerProfile : findAllOrderByCusCreateDatetimeDesc) {
             List<CustomerAddress> customerAddress = customerAddressRepository.findByAddCusIdAndAddIsActive(customerProfile.getCusId(), "Y");

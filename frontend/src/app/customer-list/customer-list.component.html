@@ -5,7 +5,7 @@
             <div class="example-container">
                 <mat-form-field>
                     <mat-label>Facebook Name</mat-label>
-                    <input matInput type="text" [(ngModel)]="getName" value="">
+                    <input matInput type="text" [(ngModel)]="getName" value="" (keyup.enter)="onSearch(getName)">
                 </mat-form-field>&nbsp;
                 <button class="example-button-row button" mat-fab extended color="primary" (click)="onSearch(getName)">
                     <mat-icon>search</mat-icon>
