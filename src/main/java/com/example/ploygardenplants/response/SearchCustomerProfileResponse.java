@@ -18,5 +18,6 @@ public class SearchCustomerProfileResponse extends AbstractDataTableResponse {
     private String profileUrl;
     private String addressName;
     private String addressDetail;
-    private String phoneNumber;
+    private String phoneNumber1;
+    private String phoneNumber2;
 }

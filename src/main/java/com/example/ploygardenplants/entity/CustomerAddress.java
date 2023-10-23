@@ -41,8 +41,10 @@ public class CustomerAddress implements Serializable {
     @Column(name = "add_address_detail")
     private String addAddressDetail;
     @Basic(optional = false)
-    @Column(name = "add_phone_number")
-    private String addPhoneNumber;
+    @Column(name = "add_phone_number1")
+    private String addPhoneNumber1;
+    @Column(name = "add_phone_number2")
+    private String addPhoneNumber2;
     @Basic(optional = false)
     @Column(name = "add_is_active")
     private String addIsActive;
