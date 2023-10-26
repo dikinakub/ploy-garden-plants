@@ -10,4 +10,6 @@ public interface CustomerAddressRepository extends JpaRepository<CustomerAddress
 
     List<CustomerAddress> findByAddCusIdAndAddIsActive(Long addCusId, String addIsActive);
 
+    List<CustomerAddress> findByAddCusId(Long addCusId);
+
 }

@@ -46,22 +46,22 @@
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>เบอร์โทร 1</mat-label>
-            <input matInput #input5 maxlength="10" placeholder="Ex.0623540001" id="phoneNumber1" type="text"
-                formControlName="phoneNumber1" required>
+            <input matInput #input5 min="0" minlength="10" maxlength="10" placeholder="Ex.0623540001" id="phoneNumber1"
+                type="text" formControlName="phoneNumber1" required>
             <mat-icon matSuffix>phone</mat-icon>
             <mat-hint align="end">{{input5.value.length}}/10</mat-hint>
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>เบอร์โทร 2</mat-label>
-            <input matInput #input6 maxlength="10" placeholder="Ex.0623540001" id="phoneNumber2" type="text"
-                formControlName="phoneNumber2">
+            <input matInput #input6 min="0" minlength="10" maxlength="10" placeholder="Ex.0623540001" id="phoneNumber2"
+                type="text" formControlName="phoneNumber2">
             <mat-icon matSuffix>phone</mat-icon>
             <mat-hint align="end">{{input6.value.length}}/10</mat-hint>
         </mat-form-field>
         <div class="example-button-row">
             <section>
-                <button mat-fab extended type="submit"
-                    [disabled]="!customerForm.valid" (click)="onSubmit()" >Save<mat-icon>save</mat-icon></button>
+                <button mat-fab extended type="submit" [disabled]="!customerForm.valid"
+                    (click)="onSubmit()">Save<mat-icon>save</mat-icon></button>
                 <button mat-fab extended color="primary" (click)="clearData()">Clear<mat-icon>close</mat-icon></button>
             </section>
         </div>

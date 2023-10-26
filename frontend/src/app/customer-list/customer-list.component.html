@@ -12,11 +12,12 @@
                     Search
                 </button>&nbsp;
                 <button class="example-button-row button" mat-fab extended (click)="clearData()">
-                    <mat-icon>delete</mat-icon>
+                    <mat-icon>close</mat-icon>
                     Clear
                 </button>
             </div>
-            <button mat-raised-button color="accent" matBadge="+" class="demo-section" matBadgePosition="before" routerLink="/customer-add">New
+            <button mat-raised-button color="accent" matBadge="+" class="demo-section" matBadgePosition="before"
+                routerLink="/customer-add">New
                 Customer</button>
         </mat-card-title-group>
     </mat-card-header>
@@ -53,11 +54,21 @@
 
     <ng-container matColumnDef="edit" stickyEnd>
         <th mat-header-cell *matHeaderCellDef>
-            Action
+            Edit
         </th>
         <td mat-cell *matCellDef="let element">
-            <button mat-icon-button matTooltip="แก้ไข" matTooltipPosition="right" #ckeckEdit>
+            <button mat-icon-button matTooltip="แก้ไข" matTooltipPosition="right">
                 <mat-icon>edit</mat-icon>
+            </button>
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="delete" stickyEnd>
+        <th mat-header-cell *matHeaderCellDef>
+            Delete
+        </th>
+        <td mat-cell *matCellDef="let element">
+            <button mat-icon-button matTooltip="ลบ" matTooltipPosition="right" (click)="onDelete(element.profileID)">
+                <mat-icon>delete</mat-icon>
             </button>
         </td>
     </ng-container>

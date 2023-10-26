@@ -14,6 +14,8 @@ public interface CustomerProfileRepository extends JpaRepository<CustomerProfile
     List<CustomerProfile> findAllOrderByCusCreateDatetimeDesc();
 
     @Query("SELECT u FROM CustomerProfile u WHERE upper(u.cusProfileName) like %:cusProfileName% ORDER BY cusCreateDatetime DESC")
-    List<CustomerProfile> findByCusProfileName(@Param("cusProfileName") String cusProfileName);
+    List<CustomerProfile> findByCusProfileNameLike(@Param("cusProfileName") String cusProfileName);
+
+    List<CustomerProfile> findByCusProfileName(String cusProfileName);
 
 }

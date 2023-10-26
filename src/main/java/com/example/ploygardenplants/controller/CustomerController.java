@@ -20,7 +20,9 @@ import com.example.ploygardenplants.repository.ThaiTambonsRepository;
 import com.example.ploygardenplants.request.CustomerRequest;
 import com.example.ploygardenplants.response.SearchCustomerProfileResponse;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Optional;
+import java.util.regex.Pattern;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,6 +34,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @Slf4j
 public class CustomerController {
+
+    public static final String NUMBER_PATTERN = "^[0-9]+$";
 
     @Autowired
     private CustomerProfileRepository customerRepository;
@@ -53,10 +57,64 @@ public class CustomerController {
 
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(value = "api/customer/add", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<HttpStatus> saveCustomer(@RequestBody CustomerRequest customerRequest) {
-        System.out.println(customerRequest.toString());
+    public ResponseEntity<String> saveCustomer(@RequestBody CustomerRequest customerRequest) {
+        List<CustomerProfile> findByCusProfileName = customerRepository.findByCusProfileName(customerRequest.getFacebookName());
+        if (!findByCusProfileName.isEmpty()) {
+            return new ResponseEntity<>("Facebook name is duplicate. (ซ้ำ)", HttpStatus.BAD_REQUEST);
+        }
 
-        return ResponseEntity.ok(HttpStatus.OK);
+        Pattern pattern = Pattern.compile(NUMBER_PATTERN);
+        if (!pattern.matcher(customerRequest.getPhoneNumber1()).matches()) {
+            return new ResponseEntity<>("เบอร์โทร 1 ไม่ใช่ตัวเลข", HttpStatus.BAD_REQUEST);
+        } else {
+            if (customerRequest.getPhoneNumber1().length() != 10) {
+                return new ResponseEntity<>("เบอร์โทร 1 ไม่ถึง 10 ตัว", HttpStatus.BAD_REQUEST);
+            }
+        }
+        if (customerRequest.getPhoneNumber2() != null && !customerRequest.getPhoneNumber2().isEmpty()) {
+            if (!pattern.matcher(customerRequest.getPhoneNumber2()).matches()) {
+                return new ResponseEntity<>("เบอร์โทร 2 ไม่ใช่ตัวเลข", HttpStatus.BAD_REQUEST);
+            } else {
+                if (customerRequest.getPhoneNumber1().length() != 10) {
+                    return new ResponseEntity<>("เบอร์โทร 2 ไม่ถึง 10 ตัว", HttpStatus.BAD_REQUEST);
+                }
+            }
+        }
+        CustomerProfile customerProfile = new CustomerProfile();
+        customerProfile.setCusProfileName(customerRequest.getFacebookName());
+        customerProfile.setCusProfileUrl(customerRequest.getFacebookUrl());
+        customerProfile.setCusCreateBy("SYSTEM");
+        customerProfile.setCusCreateDatetime(new Date());
+        CustomerProfile save = customerRepository.save(customerProfile);
+        CustomerAddress customerAddress = new CustomerAddress();
+        customerAddress.setAddCusId(save.getCusId());
+        customerAddress.setAddName(customerRequest.getName());
+        customerAddress.setAddAddressDetail(customerRequest.getAddressDetail());
+        customerAddress.setAddTambonsId(customerRequest.getAddress());
+        customerAddress.setAddPhoneNumber1(customerRequest.getPhoneNumber1());
+        customerAddress.setAddPhoneNumber2(customerRequest.getPhoneNumber2().isEmpty() ? null : customerRequest.getPhoneNumber2());
+        customerAddress.setAddIsActive("Y");
+        customerAddress.setAddCreateBy("SYSTEM");
+        customerAddress.setAddCreateDatetime(new Date());
+        customerAddressRepository.save(customerAddress);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping(value = "api/customer/delete/{id}")
+    public ResponseEntity<String> deleteCustomer(@PathVariable Long id) {
+        Optional<CustomerProfile> findById = customerRepository.findById(id);
+        if (findById.isPresent()) {
+            List<CustomerAddress> findByAddCusId = customerAddressRepository.findByAddCusId(findById.get().getCusId());
+            if (!findByAddCusId.isEmpty()) {
+                for (CustomerAddress address : findByAddCusId) {
+                    customerAddressRepository.delete(address);
+                }
+                customerRepository.delete(findById.get());
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
@@ -69,7 +127,7 @@ public class CustomerController {
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("api/customer/findByName/{name}")
     public List<SearchCustomerProfileResponse> findByName(@PathVariable String name) {
-        List<CustomerProfile> findByCusProfileName = customerRepository.findByCusProfileName(name.toUpperCase());
+        List<CustomerProfile> findByCusProfileName = customerRepository.findByCusProfileNameLike(name.toUpperCase());
         return mapData(findByCusProfileName);
     }
 

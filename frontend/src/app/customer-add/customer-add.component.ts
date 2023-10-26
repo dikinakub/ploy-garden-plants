@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 import { CrudService } from '../service/crud.service';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http'
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-customer-add',
@@ -72,10 +73,12 @@ export class CustomerAddComponent implements OnInit {
     let API_URL = `${this.REST_API}/customer/add`;
     return this.http.post(API_URL, this.customerForm.value)
       .subscribe(() => {
-        console.log("Data customer added successfully.", this.customerForm.value);
+        console.log("Add customer successfully.", this.customerForm.value);
+        Swal.fire('SUCCESS', 'Add customer successfully.', 'success');
         this.ngZone.run(() => this.router.navigateByUrl('customer-list'))
       }, (err) => {
         console.log(err)
+        Swal.fire('ERROR', err.error, 'warning');
       })
   }
 
