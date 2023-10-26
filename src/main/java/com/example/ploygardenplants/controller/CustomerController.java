@@ -17,10 +17,14 @@ import com.example.ploygardenplants.repository.CustomerProfileRepository;
 import com.example.ploygardenplants.repository.ThaiAmphuresRepository;
 import com.example.ploygardenplants.repository.ThaiProvincesRepository;
 import com.example.ploygardenplants.repository.ThaiTambonsRepository;
+import com.example.ploygardenplants.request.CustomerRequest;
 import com.example.ploygardenplants.response.SearchCustomerProfileResponse;
 import java.util.ArrayList;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,19 +51,12 @@ public class CustomerController {
     @Autowired
     private AddressDaoImpl addressDaoImpl;
 
-    @PostMapping("api/customer/save")
-    public CustomerProfile save() {
-        CustomerProfile customerEntity = new CustomerProfile();
-//        customerEntity.setCusProfileName("Diki Kawasaki");
-//        customerEntity.setCusUrlProfile("https://www.facebook.com/diki.kawasaki/");
-//        customerEntity.setCusName("Diki Kawasaki");
-//        customerEntity.setCusAddress("180 ม.5");
-//        customerEntity.setCusTambonsId(601304l);
-//        customerEntity.setCusPhoneNumber("0623540001");
-//        customerEntity.setCusIsActive("Y");
-//        customerEntity.setCusCreateBy("diki");
-//        customerEntity.setCusCreateDatetime(new Date());
-        return customerRepository.save(customerEntity);
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping(value = "api/customer/add", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<HttpStatus> saveCustomer(@RequestBody CustomerRequest customerRequest) {
+        System.out.println(customerRequest.toString());
+
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @CrossOrigin(origins = "http://localhost:4200")

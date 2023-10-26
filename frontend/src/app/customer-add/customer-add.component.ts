@@ -1,7 +1,8 @@
 import { Component, OnInit, NgZone } from '@angular/core';
-import { Router, ActivatedRoute } from "@angular/router";
+import { Router } from "@angular/router";
 import { CrudService } from '../service/crud.service';
-import { FormGroup, FormBuilder, FormControl, Form, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { HttpClient } from '@angular/common/http'
 
 @Component({
   selector: 'app-customer-add',
@@ -9,6 +10,9 @@ import { FormGroup, FormBuilder, FormControl, Form, Validators } from '@angular/
   styleUrls: ['./customer-add.component.css']
 })
 export class CustomerAddComponent implements OnInit {
+
+  // Node/Express API
+  REST_API: string = 'http://localhost:8080/api';
 
   addressList: any;
   filteredaddressList: any[] = [];
@@ -28,18 +32,18 @@ export class CustomerAddComponent implements OnInit {
     private crudService: CrudService,
     private router: Router,
     private ngZone: NgZone,
-    private activatedRoute: ActivatedRoute,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private http: HttpClient
   ) {
-    // this.customerForm = this.formBuilder.group({
-    //   facebookName: [''],
-    //   facebookUrl: [''],
-    //   name: [''],
-    //   addressDetail: [''],
-    //   address: [''],
-    //   phoneNumber1: [''],
-    //   phoneNumber2: [''],
-    // })
+    this.customerForm = this.formBuilder.group({
+      facebookName: [''],
+      facebookUrl: [''],
+      name: [''],
+      addressDetail: [''],
+      address: [''],
+      phoneNumber1: [''],
+      phoneNumber2: [''],
+    })
   }
 
   ngOnInit(): void {
@@ -65,13 +69,14 @@ export class CustomerAddComponent implements OnInit {
   }
 
   onSubmit(): any {
-    console.warn(this.customerForm.value);
-    // this.crudService.addCustomer(this.customer.value).subscribe(res => {
-    //   this.addressList = res;
-    //   this.filteredaddressList = this.addressList
-    //   console.log(this.addressList)
-    // })
-
+    let API_URL = `${this.REST_API}/customer/add`;
+    return this.http.post(API_URL, this.customerForm.value)
+      .subscribe(() => {
+        console.log("Data customer added successfully.", this.customerForm.value);
+        this.ngZone.run(() => this.router.navigateByUrl('customer-list'))
+      }, (err) => {
+        console.log(err)
+      })
   }
 
   clearData(): void {
@@ -85,4 +90,5 @@ export class CustomerAddComponent implements OnInit {
       phoneNumber2: new FormControl(''),
     })
   }
+
 }
