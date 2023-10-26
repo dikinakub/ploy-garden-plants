@@ -1,10 +1,12 @@
 package com.example.ploygardenplants.controller;
 
+import com.example.ploygardenplants.dao.AddressDaoImpl;
 import com.example.ploygardenplants.entity.CustomerAddress;
 import com.example.ploygardenplants.entity.CustomerProfile;
 import com.example.ploygardenplants.entity.ThaiAmphures;
 import com.example.ploygardenplants.entity.ThaiProvinces;
 import com.example.ploygardenplants.entity.ThaiTambons;
+import com.example.ploygardenplants.model.AddressModel;
 import com.example.ploygardenplants.repository.CustomerAddressRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,9 @@ public class CustomerController {
     @Autowired
     private ThaiProvincesRepository thaiProvincesRepository;
 
+    @Autowired
+    private AddressDaoImpl addressDaoImpl;
+
     @PostMapping("api/customer/save")
     public CustomerProfile save() {
         CustomerProfile customerEntity = new CustomerProfile();
@@ -60,10 +65,21 @@ public class CustomerController {
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("api/customer/findAll")
     public List<SearchCustomerProfileResponse> findAll() {
-        List<SearchCustomerProfileResponse> responseList = new ArrayList<>();
         List<CustomerProfile> findAllOrderByCusCreateDatetimeDesc = customerRepository.findAllOrderByCusCreateDatetimeDesc();
+        return mapData(findAllOrderByCusCreateDatetimeDesc);
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("api/customer/findByName/{name}")
+    public List<SearchCustomerProfileResponse> findByName(@PathVariable String name) {
+        List<CustomerProfile> findByCusProfileName = customerRepository.findByCusProfileName(name.toUpperCase());
+        return mapData(findByCusProfileName);
+    }
+
+    private List<SearchCustomerProfileResponse> mapData(List<CustomerProfile> customerProfileList) {
+        List<SearchCustomerProfileResponse> responseList = new ArrayList<>();
         int no = 0;
-        for (CustomerProfile customerProfile : findAllOrderByCusCreateDatetimeDesc) {
+        for (CustomerProfile customerProfile : customerProfileList) {
             List<CustomerAddress> customerAddress = customerAddressRepository.findByAddCusIdAndAddIsActive(customerProfile.getCusId(), "Y");
             ThaiTambons thaiTambons = thaiTambonsRepository.findByTambonId(customerAddress.get(0).getAddTambonsId());
             Optional<ThaiAmphures> thaiAmphures = thaiAmphuresRepository.findById(thaiTambons.getAmphureId());
@@ -99,55 +115,21 @@ public class CustomerController {
                 String ph3 = customerAddress.get(0).getAddPhoneNumber2().substring(6, 10);
                 response.setPhoneNumber2(ph1 + "-" + ph2 + "-" + ph3);
             }
+            response.setProfileID(customerProfile.getCusId());
             responseList.add(response);
         }
         return responseList;
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
-    @GetMapping("api/customer/findByName/{name}")
-    public List<SearchCustomerProfileResponse> findByName(@PathVariable String name) {
-        List<SearchCustomerProfileResponse> responseList = new ArrayList<>();
-        List<CustomerProfile> findAllOrderByCusCreateDatetimeDesc = customerRepository.findByCusProfileName(name.toUpperCase());
-        int no = 0;
-        for (CustomerProfile customerProfile : findAllOrderByCusCreateDatetimeDesc) {
-            List<CustomerAddress> customerAddress = customerAddressRepository.findByAddCusIdAndAddIsActive(customerProfile.getCusId(), "Y");
-            ThaiTambons thaiTambons = thaiTambonsRepository.findByTambonId(customerAddress.get(0).getAddTambonsId());
-            Optional<ThaiAmphures> thaiAmphures = thaiAmphuresRepository.findById(thaiTambons.getAmphureId());
-            Optional<ThaiProvinces> thaiProvinces = thaiProvincesRepository.findById(thaiAmphures.get().getProvinceId());
-            String address = "";
-            if (thaiProvinces.get().getId().equals(1L)) {
-                address = customerAddress.get(0).getAddAddressDetail().trim()
-                        + " แขวง" + thaiTambons.getNameTh()
-                        + " " + thaiAmphures.get().getNameTh()
-                        + " จังหวัด" + thaiProvinces.get().getNameTh()
-                        + " " + thaiTambons.getZipCode();
-            } else {
-                address = customerAddress.get(0).getAddAddressDetail().trim()
-                        + " ตำบล" + thaiTambons.getNameTh()
-                        + " อำเภอ" + thaiAmphures.get().getNameTh()
-                        + " จังหวัด" + thaiProvinces.get().getNameTh()
-                        + " " + thaiTambons.getZipCode();
-            }
+    @GetMapping("api/customer/findAddressAll")
+    public List<AddressModel> findAddressAll() {
+        return addressDaoImpl.findAddressAll();
+    }
 
-            SearchCustomerProfileResponse response = new SearchCustomerProfileResponse();
-            response.setNo(++no);
-            response.setProfileName(customerProfile.getCusProfileName());
-            response.setProfileUrl(customerProfile.getCusProfileUrl());
-            response.setAddressName(customerAddress.get(0).getAddName());
-            response.setAddressDetail(address);
-            String p1 = customerAddress.get(0).getAddPhoneNumber1().substring(0, 2);
-            String p2 = customerAddress.get(0).getAddPhoneNumber1().substring(2, 6);
-            String p3 = customerAddress.get(0).getAddPhoneNumber1().substring(6, 10);
-            response.setPhoneNumber1(p1 + "-" + p2 + "-" + p3);
-            if (customerAddress.get(0).getAddPhoneNumber2() != null && !customerAddress.get(0).getAddPhoneNumber1().isEmpty()) {
-                String ph1 = customerAddress.get(0).getAddPhoneNumber2().substring(0, 2);
-                String ph2 = customerAddress.get(0).getAddPhoneNumber2().substring(2, 6);
-                String ph3 = customerAddress.get(0).getAddPhoneNumber2().substring(6, 10);
-                response.setPhoneNumber2(ph1 + "-" + ph2 + "-" + ph3);
-            }
-            responseList.add(response);
-        }
-        return responseList;
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("api/customer/findAddress/{key}")
+    public List<AddressModel> findAddress(@PathVariable String key) {
+        return addressDaoImpl.findAddressByKey(key);
     }
 }

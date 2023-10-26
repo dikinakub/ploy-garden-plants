@@ -1,13 +1,6 @@
-import { Component, OnInit, NgZone } from '@angular/core';
-import { Router, ActivatedRoute } from "@angular/router";
+import { Component, OnInit } from '@angular/core';
 import { CrudService } from '../service/crud.service';
-import { FormGroup, FormBuilder } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
-
-export interface Apps {
-  empCodeIDxx: number;
-  employeeMasterCustomerCode: String;
-}
 
 @Component({
   selector: 'app-customer-list',
@@ -18,26 +11,9 @@ export class CustomerListComponent implements OnInit {
 
   displayedColumns: string[] = ['no', 'profileName', 'addressName', 'addressDetail', 'phoneNumber1', 'phoneNumber2', 'edit'];
   getName: String = "";
-  forms: FormGroup;
   dataSource: any;
-  constructor(
-    private crudService: CrudService,
-    private router: Router,
-    private ngZone: NgZone,
-    private activatedRoute: ActivatedRoute,
-    private formBuilder: FormBuilder
-  ) {
 
-    this.forms = this.formBuilder.group({
-      no: [''],
-      profileName: [''],
-      profileUrl: [''],
-      addressName: [''],
-      addressDetail: [''],
-      phoneNumber1: [''],
-      phoneNumber2: ['']
-    })
-  }
+  constructor(private crudService: CrudService) { }
 
   ngOnInit(): void {
     this.crudService.getCustomers().subscribe(res => {
@@ -51,7 +27,7 @@ export class CustomerListComponent implements OnInit {
     this.crudService.getCustomerByName(name).subscribe(res => {
       this.dataSource = new MatTableDataSource(res);
       console.log(this.dataSource.data)
-      this.ngZone.run(() => this.router.navigateByUrl('customer-list'))
+      // this.ngZone.run(() => this.router.navigateByUrl('customer-list'))
     })
   }
 

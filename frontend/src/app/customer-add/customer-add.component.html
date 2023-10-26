@@ -1,0 +1,70 @@
+<form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+    <mat-card class="example-card">
+        <h1><b><mat-icon>add_circle_outline</mat-icon>New Customer</b></h1>
+        <mat-form-field appearance="outline">
+            <mat-label>Facebook Name</mat-label>
+            <input matInput #input1 maxlength="255" placeholder="Ex.Diki Kawasaki" id="facebookName" type="text"
+                formControlName="facebookName" required>
+            <mat-icon matSuffix>facebook</mat-icon>
+            <mat-hint align="end">{{input1.value.length}}/255</mat-hint>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Facebook URL</mat-label>
+            <input matInput #input2 maxlength="255" placeholder="Ex.https://www.facebook.com/diki.kawasaki/"
+                id="facebookUrl" type="text" formControlName="facebookUrl" required>
+            <mat-icon matSuffix>facebook</mat-icon>
+            <mat-hint align="end">{{input2.value.length}}/255</mat-hint>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>ชื่อผู้รับ</mat-label>
+            <input matInput #input3 maxlength="255" placeholder="Ex.ดิกิ คาวาซากิ" id="name" type="text"
+                formControlName="name" required>
+            <mat-icon matSuffix>person_pin</mat-icon>
+            <mat-hint align="end">{{input3.value.length}}/255</mat-hint>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>รายระเอียดที่อยู่</mat-label>
+            <input matInput #input4 maxlength="255" placeholder="Ex.บ้านเลขที่ 180 ม.5" id="addressDetail" type="text"
+                formControlName="addressDetail" required>
+            <mat-icon matSuffix>home</mat-icon>
+            <mat-hint align="end">{{input4.value.length}}/255</mat-hint>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>ที่อยู่</mat-label>
+            <mat-select id="address" formControlName="address" required>
+                <mat-form-field>
+                    <input matInput [(ngModel)]="searchBoxTxt" [ngModelOptions]="{standalone: true}"
+                        (keyup)="searchAddress(searchBoxTxt)">
+                    <button mat-icon-button matSuffix (click)="selectClear()">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+                <mat-option *ngFor="let a of filteredaddressList" [value]="a.id">
+                    {{a.address}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>เบอร์โทร 1</mat-label>
+            <input matInput #input5 maxlength="10" placeholder="Ex.0623540001" id="phoneNumber1" type="text"
+                formControlName="phoneNumber1" required>
+            <mat-icon matSuffix>phone</mat-icon>
+            <mat-hint align="end">{{input5.value.length}}/10</mat-hint>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>เบอร์โทร 2</mat-label>
+            <input matInput #input6 maxlength="10" placeholder="Ex.0623540001" id="phoneNumber2" type="text"
+                formControlName="phoneNumber2">
+            <mat-icon matSuffix>phone</mat-icon>
+            <mat-hint align="end">{{input6.value.length}}/10</mat-hint>
+        </mat-form-field>
+        <div class="example-button-row">
+            <section>
+                <button mat-fab extended type="submit"
+                    [disabled]="!customerForm.valid">Save<mat-icon>save</mat-icon></button>
+                <button mat-fab extended color="primary" (click)="clearData()">Clear<mat-icon>close</mat-icon></button>
+            </section>
+        </div>
+        &nbsp;&nbsp;
+    </mat-card>
+</form>

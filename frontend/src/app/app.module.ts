@@ -15,13 +15,15 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatSortModule } from '@angular/material/sort';
-import { FormsModule } from '@angular/forms';
+import { FormsModule , ReactiveFormsModule} from '@angular/forms';
+import { CustomerAddComponent } from './customer-add/customer-add.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CustomerListComponent,
-    OrderListComponent
+    OrderListComponent,
+    CustomerAddComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +38,8 @@ import { FormsModule } from '@angular/forms';
     MatSelectModule,
     MatCardModule,
     MatSortModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule     
   ],
   exports: [
     MatTableModule,

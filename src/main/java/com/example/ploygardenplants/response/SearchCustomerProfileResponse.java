@@ -14,6 +14,7 @@ import lombok.ToString;
 @ToString
 public class SearchCustomerProfileResponse extends AbstractDataTableResponse {
 
+    private Long profileID;
     private String profileName;
     private String profileUrl;
     private String addressName;
