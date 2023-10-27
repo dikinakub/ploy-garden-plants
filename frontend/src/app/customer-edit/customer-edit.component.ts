@@ -41,7 +41,7 @@ export class CustomerEditComponent implements OnInit {
         phoneNumber1: res['phoneNumber1'],
         phoneNumber2: res['phoneNumber2'],
       })
-      console.log(this.updateForm.value)
+      // console.log(this.updateForm.value)
     })
 
     this.updateForm = this.formBuilder.group({
@@ -60,7 +60,7 @@ export class CustomerEditComponent implements OnInit {
     this.crudService.getAddressAll().subscribe(res => {
       this.addressList = res;
       this.filteredaddressList = this.addressList
-      console.log(this.addressList)
+      // console.log(this.addressList)
     })
   }
 

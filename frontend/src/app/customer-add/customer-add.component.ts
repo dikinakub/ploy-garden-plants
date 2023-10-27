@@ -51,7 +51,7 @@ export class CustomerAddComponent implements OnInit {
     this.crudService.getAddressAll().subscribe(res => {
       this.addressList = res;
       this.filteredaddressList = this.addressList
-      console.log(this.addressList)
+      // console.log(this.addressList)
     })
   }
 
