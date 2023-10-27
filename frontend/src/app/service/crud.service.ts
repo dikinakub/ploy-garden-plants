@@ -26,6 +26,15 @@ export class CrudService {
         catchError(this.handleError))
   }
 
+  getCustomer(id: any): Observable<any> {
+    let API_URL = `${this.REST_API}/customer/findById/${id}`;
+    return this.http.get(API_URL, { headers: this.httpHeaders })
+      .pipe(map((res: any) => {
+        return res || {}
+      }),
+        catchError(this.handleError))
+  }
+
   getCustomerByName(name: any): Observable<any> {
     let API_URL = `${this.REST_API}/customer/findByName/${name}`;
     return this.http.get(API_URL, { headers: this.httpHeaders })

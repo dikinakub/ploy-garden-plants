@@ -17,13 +17,15 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSortModule } from '@angular/material/sort';
 import { FormsModule , ReactiveFormsModule} from '@angular/forms';
 import { CustomerAddComponent } from './customer-add/customer-add.component';
+import { CustomerEditComponent } from './customer-edit/customer-edit.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CustomerListComponent,
     OrderListComponent,
-    CustomerAddComponent
+    CustomerAddComponent,
+    CustomerEditComponent
   ],
   imports: [
     BrowserModule,

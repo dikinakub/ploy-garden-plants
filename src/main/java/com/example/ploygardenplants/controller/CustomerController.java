@@ -18,7 +18,9 @@ import com.example.ploygardenplants.repository.ThaiAmphuresRepository;
 import com.example.ploygardenplants.repository.ThaiProvincesRepository;
 import com.example.ploygardenplants.repository.ThaiTambonsRepository;
 import com.example.ploygardenplants.request.CustomerRequest;
+import com.example.ploygardenplants.request.UpdateCustomerRequest;
 import com.example.ploygardenplants.response.SearchCustomerProfileResponse;
+import com.example.ploygardenplants.response.SearchEditCustomerProfileResponse;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
@@ -80,6 +82,7 @@ public class CustomerController {
                 }
             }
         }
+
         CustomerProfile customerProfile = new CustomerProfile();
         customerProfile.setCusProfileName(customerRequest.getFacebookName());
         customerProfile.setCusProfileUrl(customerRequest.getFacebookUrl());
@@ -98,6 +101,45 @@ public class CustomerController {
         customerAddress.setAddCreateDatetime(new Date());
         customerAddressRepository.save(customerAddress);
 
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping(value = "api/customer/update", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> updateCustomer(@RequestBody UpdateCustomerRequest updateCustomerRequest) {
+        Pattern pattern = Pattern.compile(NUMBER_PATTERN);
+        if (!pattern.matcher(updateCustomerRequest.getPhoneNumber1()).matches()) {
+            return new ResponseEntity<>("เบอร์โทร 1 ไม่ใช่ตัวเลข", HttpStatus.BAD_REQUEST);
+        } else {
+            if (updateCustomerRequest.getPhoneNumber1().length() != 10) {
+                return new ResponseEntity<>("เบอร์โทร 1 ไม่ถึง 10 ตัว", HttpStatus.BAD_REQUEST);
+            }
+        }
+        if (updateCustomerRequest.getPhoneNumber2() != null && !updateCustomerRequest.getPhoneNumber2().isEmpty()) {
+            if (!pattern.matcher(updateCustomerRequest.getPhoneNumber2()).matches()) {
+                return new ResponseEntity<>("เบอร์โทร 2 ไม่ใช่ตัวเลข", HttpStatus.BAD_REQUEST);
+            } else {
+                if (updateCustomerRequest.getPhoneNumber1().length() != 10) {
+                    return new ResponseEntity<>("เบอร์โทร 2 ไม่ถึง 10 ตัว", HttpStatus.BAD_REQUEST);
+                }
+            }
+        }
+
+        Optional<CustomerProfile> findById = customerRepository.findById(updateCustomerRequest.getProfileID());
+        if (findById.isPresent()) {
+            List<CustomerAddress> customerAddress = customerAddressRepository.findByAddCusIdAndAddIsActive(findById.get().getCusId(), "Y");
+            if (!customerAddress.isEmpty()) {
+                CustomerAddress address = customerAddress.get(0);
+                address.setAddName(updateCustomerRequest.getAddressName());
+                address.setAddAddressDetail(updateCustomerRequest.getAddressDetail());
+                address.setAddTambonsId(updateCustomerRequest.getAddress());
+                address.setAddPhoneNumber1(updateCustomerRequest.getPhoneNumber1());
+                address.setAddPhoneNumber2(updateCustomerRequest.getPhoneNumber2() == null || updateCustomerRequest.getPhoneNumber2().isEmpty() ? null : updateCustomerRequest.getPhoneNumber2());
+                address.setAddUpdateBy("SYSTEM");
+                address.setAddUpdateDatetime(new Date());
+                customerAddressRepository.save(address);
+            }
+        }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -129,6 +171,29 @@ public class CustomerController {
     public List<SearchCustomerProfileResponse> findByName(@PathVariable String name) {
         List<CustomerProfile> findByCusProfileName = customerRepository.findByCusProfileNameLike(name.toUpperCase());
         return mapData(findByCusProfileName);
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("api/customer/findById/{id}")
+    public SearchEditCustomerProfileResponse findByCustomerId(@PathVariable Long id) {
+        SearchEditCustomerProfileResponse searchRes = new SearchEditCustomerProfileResponse();
+        Optional<CustomerProfile> findById = customerRepository.findById(id);
+        if (findById.isPresent()) {
+            CustomerProfile cus = findById.get();
+            List<CustomerAddress> customerAddress = customerAddressRepository.findByAddCusIdAndAddIsActive(cus.getCusId(), "Y");
+            if (customerAddress != null && !customerAddress.isEmpty()) {
+                searchRes.setProfileID(cus.getCusId());
+                searchRes.setProfileName(cus.getCusProfileName());
+                searchRes.setProfileUrl(cus.getCusProfileUrl());
+                searchRes.setAddressName(customerAddress.get(0).getAddName());
+                searchRes.setAddressDetail(customerAddress.get(0).getAddAddressDetail());
+                searchRes.setAddress(customerAddress.get(0).getAddTambonsId());
+                searchRes.setPhoneNumber1(customerAddress.get(0).getAddPhoneNumber1());
+                searchRes.setPhoneNumber2(customerAddress.get(0).getAddPhoneNumber2());
+                return searchRes;
+            }
+        }
+        return null;
     }
 
     private List<SearchCustomerProfileResponse> mapData(List<CustomerProfile> customerProfileList) {

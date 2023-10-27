@@ -18,4 +18,6 @@ public interface CustomerProfileRepository extends JpaRepository<CustomerProfile
 
     List<CustomerProfile> findByCusProfileName(String cusProfileName);
 
+    List<CustomerProfile> findByCusId(Long cusId);
+
 }

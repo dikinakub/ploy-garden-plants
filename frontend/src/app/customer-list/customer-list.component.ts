@@ -21,7 +21,7 @@ export class CustomerListComponent implements OnInit {
     this.crudService.getCustomers().subscribe(res => {
       // console.log(res)
       this.dataSource = new MatTableDataSource(res);
-      console.log(this.dataSource.data)
+      // console.log(this.dataSource.data)
     })
   }
 
@@ -40,6 +40,10 @@ export class CustomerListComponent implements OnInit {
       this.dataSource = new MatTableDataSource(res);
       console.log(this.dataSource.data)
     })
+  }
+
+  onEdit(id: any) {
+    this.ngZone.run(() => this.router.navigateByUrl('customer-edit'))
   }
 
   onDelete(id: any) {

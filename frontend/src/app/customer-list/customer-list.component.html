@@ -54,10 +54,10 @@
 
     <ng-container matColumnDef="edit" stickyEnd>
         <th mat-header-cell *matHeaderCellDef>
-            Edit
+            Update
         </th>
         <td mat-cell *matCellDef="let element">
-            <button mat-icon-button matTooltip="แก้ไข" matTooltipPosition="right">
+            <button mat-icon-button matTooltip="แก้ไข" matTooltipPosition="right" routerLink="/customer-edit/{{element.profileID}}">
                 <mat-icon>edit</mat-icon>
             </button>
         </td>
