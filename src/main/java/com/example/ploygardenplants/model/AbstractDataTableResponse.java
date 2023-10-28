@@ -1,6 +1,5 @@
 package com.example.ploygardenplants.model;
 
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
@@ -14,9 +13,11 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 public abstract class AbstractDataTableResponse {
-	@JsonInclude(JsonInclude.Include.NON_NULL)
-	@JsonProperty(access = Access.READ_ONLY)
-	private Integer no;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonProperty(access = Access.READ_ONLY)
+    private Integer no;
 }

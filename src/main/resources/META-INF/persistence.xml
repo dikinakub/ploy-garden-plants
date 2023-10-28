@@ -3,6 +3,7 @@
   <persistence-unit name="com.example_ploy-garden-plants_jar_0.0.1-SNAPSHOTPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>com.example.ploygardenplants.entity.CustomerEntity</class>
+    <class>com.example.ploygardenplants.entity.Stock</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/postgres"/>
       <property name="javax.persistence.jdbc.user" value="postgres"/>

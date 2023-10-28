@@ -17,6 +17,7 @@ export class CrudService {
 
   constructor(private http: HttpClient) { }
 
+  // ********* Customer *********
   getCustomers(): Observable<any> {
     let API_URL = `${this.REST_API}/customer/findAll`;
     return this.http.get(API_URL, { headers: this.httpHeaders })
@@ -25,7 +26,6 @@ export class CrudService {
       }),
         catchError(this.handleError))
   }
-
   getCustomer(id: any): Observable<any> {
     let API_URL = `${this.REST_API}/customer/findById/${id}`;
     return this.http.get(API_URL, { headers: this.httpHeaders })
@@ -34,7 +34,6 @@ export class CrudService {
       }),
         catchError(this.handleError))
   }
-
   getCustomerByName(name: any): Observable<any> {
     let API_URL = `${this.REST_API}/customer/findByName/${name}`;
     return this.http.get(API_URL, { headers: this.httpHeaders })
@@ -43,7 +42,6 @@ export class CrudService {
       }),
         catchError(this.handleError))
   }
-
   getAddressAll(): Observable<any> {
     let API_URL = `${this.REST_API}/customer/findAddressAll`;
     return this.http.get(API_URL, { headers: this.httpHeaders })
@@ -52,7 +50,6 @@ export class CrudService {
       }),
         catchError(this.handleError))
   }
-
   getAddressByKey(key: any): Observable<any> {
     let API_URL = `${this.REST_API}/customer/findAddress/${key}`;
     return this.http.get(API_URL, { headers: this.httpHeaders })
@@ -61,7 +58,6 @@ export class CrudService {
       }),
         catchError(this.handleError))
   }
-
   deleteCustomer(id: any): any {
     let API_URL = `${this.REST_API}/customer/delete/${id}`;
     return this.http.post(API_URL, { headers: this.httpHeaders })
@@ -69,6 +65,41 @@ export class CrudService {
         catchError(this.handleError)
       )
   }
+
+  // ********* Stock *********
+  getStockByType(type: any): Observable<any> {
+    let API_URL = `${this.REST_API}/stock/findByType/${type}`;
+    return this.http.get(API_URL, { headers: this.httpHeaders })
+      .pipe(map((res: any) => {
+        return res || {}
+      }),
+        catchError(this.handleError))
+  }
+  getStock(id: any): Observable<any> {
+    let API_URL = `${this.REST_API}/stock/findById/${id}`;
+    return this.http.get(API_URL, { headers: this.httpHeaders })
+      .pipe(map((res: any) => {
+        return res || {}
+      }),
+        catchError(this.handleError))
+  }
+  getStockByName(name: any): Observable<any> {
+    let API_URL = `${this.REST_API}/stock/findByName/${name}`;
+    return this.http.get(API_URL, { headers: this.httpHeaders })
+      .pipe(map((res: any) => {
+        return res || {}
+      }),
+        catchError(this.handleError))
+  }
+  deleteStock(id: any): any {
+    let API_URL = `${this.REST_API}/stock/delete/${id}`;
+    return this.http.post(API_URL, { headers: this.httpHeaders })
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
+
+
 
   // Error
   handleError(error: HttpErrorResponse) {

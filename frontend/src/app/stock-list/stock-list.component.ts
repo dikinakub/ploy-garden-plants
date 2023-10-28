@@ -5,27 +5,33 @@ import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-customer-list',
-  templateUrl: './customer-list.component.html',
-  styleUrls: ['./customer-list.component.css']
+  selector: 'app-stock-list',
+  templateUrl: './stock-list.component.html',
+  styleUrls: ['./stock-list.component.css']
 })
-export class CustomerListComponent implements OnInit {
+export class StockListComponent implements OnInit {
 
-  displayedColumns: string[] = ['no', 'profileName', 'addressName', 'addressDetail', 'phoneNumber1', 'phoneNumber2', 'edit', 'delete'];
+  displayedColumns: string[] = ['no', 'stockName', 'stockPurchasePrice', 'stockSellingPrice', 'stockRemaining', 'edit', 'delete'];
   getName: String = "";
   dataSource: any;
+  dataSourceBox: any;
 
   constructor(private crudService: CrudService, private ngZone: NgZone, private router: Router) { }
 
   ngOnInit(): void {
-    this.crudService.getCustomers().subscribe(res => {
+    this.crudService.getStockByType("TREE").subscribe(res => {
       this.dataSource = new MatTableDataSource(res);
+      // console.log(this.dataSource.data)
+    })
+
+    this.crudService.getStockByType("BOX").subscribe(res => {
+      this.dataSourceBox = new MatTableDataSource(res);
       // console.log(this.dataSource.data)
     })
   }
 
   onSearch(name: String): any {
-    this.crudService.getCustomerByName(name).subscribe(res => {
+    this.crudService.getStockByName(name).subscribe(res => {
       this.dataSource = new MatTableDataSource(res);
       // console.log(this.dataSource.data)
     })
@@ -33,14 +39,15 @@ export class CustomerListComponent implements OnInit {
 
   clearData(): void {
     this.getName = "";
-    this.crudService.getCustomers().subscribe(res => {
+    this.crudService.getStockByType("TREE").subscribe(res => {
+      // console.log(res)
       this.dataSource = new MatTableDataSource(res);
       // console.log(this.dataSource.data)
     })
   }
 
   onEdit(id: any) {
-    this.ngZone.run(() => this.router.navigateByUrl('customer-edit'))
+    this.ngZone.run(() => this.router.navigateByUrl('stock-edit'))
   }
 
   onDelete(id: any) {
@@ -53,13 +60,13 @@ export class CustomerListComponent implements OnInit {
       cancelButtonText: 'No, let me think',
     }).then((result) => {
       if (result.value) {
-        this.crudService.deleteCustomer(id).subscribe(() => {
-          console.log("Customer removed successfully.");
-          Swal.fire('Removed!', 'Customer removed successfully.', 'success');
+        this.crudService.deleteStock(id).subscribe(() => {
+          console.log("Stock removed successfully.");
+          Swal.fire('Removed!', 'Stock removed successfully.', 'success');
           window.location.reload();
         })
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        this.ngZone.run(() => this.router.navigateByUrl('customer-list'))
+        this.ngZone.run(() => this.router.navigateByUrl('stock-list'))
       }
     });
   }

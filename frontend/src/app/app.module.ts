@@ -18,6 +18,9 @@ import { MatSortModule } from '@angular/material/sort';
 import { FormsModule , ReactiveFormsModule} from '@angular/forms';
 import { CustomerAddComponent } from './customer-add/customer-add.component';
 import { CustomerEditComponent } from './customer-edit/customer-edit.component';
+import { StockListComponent } from './stock-list/stock-list.component';
+import { StockAddComponent } from './stock-add/stock-add.component';
+import { StockEditComponent } from './stock-edit/stock-edit.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,10 @@ import { CustomerEditComponent } from './customer-edit/customer-edit.component';
     CustomerListComponent,
     OrderListComponent,
     CustomerAddComponent,
-    CustomerEditComponent
+    CustomerEditComponent,
+    StockListComponent,
+    StockAddComponent,
+    StockEditComponent
   ],
   imports: [
     BrowserModule,

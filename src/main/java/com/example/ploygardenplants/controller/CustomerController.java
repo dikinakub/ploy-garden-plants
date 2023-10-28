@@ -130,8 +130,6 @@ public class CustomerController {
             List<CustomerAddress> customerAddress = customerAddressRepository.findByAddCusIdAndAddIsActive(findById.get().getCusId(), "Y");
             if (!customerAddress.isEmpty()) {
                 CustomerAddress address = customerAddress.get(0);
-                address.setAddName(updateCustomerRequest.getAddressName());
-                address.setAddAddressDetail(updateCustomerRequest.getAddressDetail());
                 address.setAddTambonsId(updateCustomerRequest.getAddress());
                 address.setAddPhoneNumber1(updateCustomerRequest.getPhoneNumber1());
                 address.setAddPhoneNumber2(updateCustomerRequest.getPhoneNumber2() == null || updateCustomerRequest.getPhoneNumber2().isEmpty() ? null : updateCustomerRequest.getPhoneNumber2());

@@ -1,0 +1,43 @@
+<form [formGroup]="updateForm">
+    <mat-card class="example-card">
+        <h1><b><mat-icon>add_circle_outline</mat-icon>New Stock</b></h1>
+        <mat-form-field appearance="outline">
+            <mat-label>Stock Type</mat-label>
+            <mat-select id="type" formControlName="type">
+                <mat-option value="TREE" disabled>ต้นไม้</mat-option>
+                <mat-option value="BOX" disabled>กล่องพัสดุ</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput maxlength="255" id="name" type="text" formControlName="name" readonly>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>ราคาซื้อ</mat-label>
+            <input matInput min="0" maxlength="16" type="number" id="purchasePrice" formControlName="purchasePrice"
+                required>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>ราคาขาย</mat-label>
+            <input matInput min="0" maxlength="16" type="number" id="sellingPrice" formControlName="sellingPrice"
+                required>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>จำนวน</mat-label>
+            <input matInput min="0" maxlength="16" type="number" id="remaining" formControlName="remaining" required>
+        </mat-form-field>
+        &nbsp;&nbsp;
+        <div class="example-button-row">
+            <section>
+                <button mat-fab extended type="submit" [disabled]="!updateForm.valid"
+                    (click)="onUpdate()">Update<mat-icon>save</mat-icon></button>
+                <button mat-fab extended color="primary" (click)="clearData()">Clear<mat-icon>close</mat-icon></button>
+            </section>
+        </div>
+        &nbsp;&nbsp;
+        <div class="example-button-row">
+            <button mat-fab extended color="warn" routerLink="/stock-list">Back</button>
+        </div>
+        &nbsp;&nbsp;
+    </mat-card>
+</form>

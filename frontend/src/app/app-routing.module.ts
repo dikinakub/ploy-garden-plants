@@ -4,13 +4,19 @@ import { CustomerListComponent } from './customer-list/customer-list.component';
 import { CustomerAddComponent } from './customer-add/customer-add.component';
 import { OrderListComponent } from './order-list/order-list.component';
 import { CustomerEditComponent } from './customer-edit/customer-edit.component';
+import { StockListComponent } from './stock-list/stock-list.component';
+import { StockAddComponent } from './stock-add/stock-add.component';
+import { StockEditComponent } from './stock-edit/stock-edit.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'customer-list' },
   { path: 'order-list', component: OrderListComponent },
   { path: 'customer-list', component: CustomerListComponent },
   { path: 'customer-add', component: CustomerAddComponent },
-  { path: 'customer-edit/:profileID', component: CustomerEditComponent }
+  { path: 'customer-edit/:profileID', component: CustomerEditComponent },
+  { path: 'stock-list', component: StockListComponent },
+  { path: 'stock-add', component: StockAddComponent },
+  { path: 'stock-edit/:stockId', component: StockEditComponent },
 ];
 
 @NgModule({

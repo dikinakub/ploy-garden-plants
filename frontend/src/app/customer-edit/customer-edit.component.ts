@@ -46,8 +46,8 @@ export class CustomerEditComponent implements OnInit {
 
     this.updateForm = this.formBuilder.group({
       profileID: [''],
-      profileName: [''],
-      profileUrl: [''],
+      profileName: [{value: '', disabled: true}],
+      profileUrl: [{value: '', disabled: true}],
       addressName: [''],
       addressDetail: [''],
       address: [''],
@@ -78,8 +78,8 @@ export class CustomerEditComponent implements OnInit {
     let API_URL = `${this.REST_API}/customer/update`;
     return this.http.post(API_URL, this.updateForm.value)
       .subscribe(() => {
-        console.log("Add customer successfully.", this.updateForm.value);
-        Swal.fire('SUCCESS', 'Add customer successfully.', 'success');
+        console.log("Update customer successfully.", this.updateForm.value);
+        Swal.fire('SUCCESS', 'Update customer successfully.', 'success');
         this.ngZone.run(() => this.router.navigateByUrl('customer-list'))
       }, (err) => {
         console.log(err)
