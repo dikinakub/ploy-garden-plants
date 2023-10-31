@@ -25,56 +25,44 @@ import lombok.ToString;
 @Data
 @ToString
 @Entity
-@Table(name = "customer_address")
-public class CustomerAddress implements Serializable {
+@Table(name = "order_detail")
+public class OrderDetail implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "add_id")
-    private Long addId;
+    @Column(name = "od_id")
+    private Long odId;
 
-    @Column(name = "add_cus_id")
-    private Long addCusId;
+    @Column(name = "od_order_list_id")
+    private Long odOrderListId;
 
-    @Basic(optional = false)
-    @Column(name = "add_name")
-    private String addName;
-
-    @Basic(optional = false)
-    @Column(name = "add_address_detail")
-    private String addAddressDetail;
-
-    @Column(name = "add_tambons_id")
-    private Long addTambonsId;
+    @Column(name = "od_stock_id")
+    private Long odStockId;
 
     @Basic(optional = false)
-    @Column(name = "add_phone_number1")
-    private String addPhoneNumber1;
+    @Column(name = "od_shipping_price")
+    private Double odShippingPrice;
 
-    @Column(name = "add_phone_number2")
-    private String addPhoneNumber2;
-
-    @Basic(optional = false)
-    @Column(name = "add_is_active")
-    private String addIsActive;
+    @Column(name = "od_discount_price")
+    private Double odDiscountPrice;
 
     @Basic(optional = false)
-    @Column(name = "add_create_by")
-    private String addCreateBy;
+    @Column(name = "od_create_by")
+    private String odCreateBy;
 
     @Basic(optional = false)
-    @Column(name = "add_create_datetime")
+    @Column(name = "od_create_datetime")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date addCreateDatetime;
+    private Date odCreateDatetime;
 
-    @Column(name = "add_update_by")
-    private String addUpdateBy;
+    @Column(name = "od_update_by")
+    private String odUpdateBy;
 
-    @Column(name = "add_update_datetime")
+    @Column(name = "od_update_datetime")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date addUpdateDatetime;
+    private Date odUpdateDatetime;
 
 }

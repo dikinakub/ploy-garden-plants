@@ -4,6 +4,10 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>com.example.ploygardenplants.entity.CustomerEntity</class>
     <class>com.example.ploygardenplants.entity.Stock</class>
+    <class>com.example.ploygardenplants.entity.OrderList</class>
+    <class>com.example.ploygardenplants.entity.OrderDetail</class>
+    <class>com.example.ploygardenplants.entity.OrderPackaging</class>
+    <class>com.example.ploygardenplants.entity.OrderHistory</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/postgres"/>
       <property name="javax.persistence.jdbc.user" value="postgres"/>

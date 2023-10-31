@@ -24,10 +24,12 @@ import lombok.ToString;
 public class ThaiGeographies implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Id
     @Basic(optional = false)
     @Column(name = "id")
     private Long id;
+
     @Basic(optional = false)
     @Column(name = "name")
     private String name;

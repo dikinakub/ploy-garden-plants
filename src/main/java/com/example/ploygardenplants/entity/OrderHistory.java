@@ -9,6 +9,8 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -23,37 +25,34 @@ import lombok.ToString;
 @Data
 @ToString
 @Entity
-@Table(name = "thai_tambons")
-public class ThaiTambons implements Serializable {
+@Table(name = "order_history")
+public class OrderHistory implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id")
-    private Long tambonId;
+    @Column(name = "oh_id")
+    private Long ohId;
+
+    @Column(name = "oh_order_list_id")
+    private Long ohOrderListId;
 
     @Basic(optional = false)
-    @Column(name = "zip_code")
-    private String zipCode;
+    @Column(name = "oh_create_by")
+    private String ohCreateBy;
 
     @Basic(optional = false)
-    @Column(name = "name_th")
-    private String nameTh;
-
-    @Basic(optional = false)
-    @Column(name = "name_en")
-    private String nameEn;
-
-    @Column(name = "created_at")
+    @Column(name = "oh_create_datetime")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
+    private Date ohCreateDatetime;
 
-    @Column(name = "updated_at")
+    @Column(name = "oh_update_by")
+    private String ohUpdateBy;
+
+    @Column(name = "oh_update_datetime")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
-
-    @Column(name = "amphure_id")
-    private Long amphureId;
+    private Date ohUpdateDatetime;
 
 }

@@ -27,22 +27,28 @@ import lombok.ToString;
 public class ThaiProvinces implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Id
     @Basic(optional = false)
     @Column(name = "id")
     private Long id;
+
     @Basic(optional = false)
     @Column(name = "name_th")
     private String nameTh;
+
     @Basic(optional = false)
     @Column(name = "name_en")
     private String nameEn;
+
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
+
     @Column(name = "updated_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
+
     @Column(name = "geography_id")
     private Long geographyId;
 

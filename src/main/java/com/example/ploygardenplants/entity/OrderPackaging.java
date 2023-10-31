@@ -25,38 +25,46 @@ import lombok.ToString;
 @Data
 @ToString
 @Entity
-@Table(name = "customer_profile")
-public class CustomerProfile implements Serializable {
+@Table(name = "order_packaging")
+public class OrderPackaging implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "cus_id")
-    private Long cusId;
+    @Column(name = "op_id")
+    private Long opId;
+
+    @Column(name = "op_order_list_id")
+    private Long opOrderListId;
+
+    @Column(name = "op_stock_id")
+    private Long opStockId;
+
+    @Column(name = "op_shipping_company")
+    private String opShippingCompany;
+
+    @Column(name = "op_tracking_number")
+    private String opTrackingNumber;
+
+    @Column(name = "op_actual_shipping_price")
+    private Double opActualShippingPrice;
 
     @Basic(optional = false)
-    @Column(name = "cus_profile_name")
-    private String cusProfileName;
-
-    @Column(name = "cus_profile_url")
-    private String cusProfileUrl;
+    @Column(name = "op_create_by")
+    private String opCreateBy;
 
     @Basic(optional = false)
-    @Column(name = "cus_create_by")
-    private String cusCreateBy;
-
-    @Basic(optional = false)
-    @Column(name = "cus_create_datetime")
+    @Column(name = "op_create_datetime")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date cusCreateDatetime;
+    private Date opCreateDatetime;
 
-    @Column(name = "cus_update_by")
-    private String cusUpdateBy;
+    @Column(name = "op_update_by")
+    private String opUpdateBy;
 
-    @Column(name = "cus_update_datetime")
+    @Column(name = "op_update_datetime")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date cusUpdateDatetime;
+    private Date opUpdateDatetime;
 
 }
