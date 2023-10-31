@@ -7,10 +7,12 @@ import { CustomerEditComponent } from './customer-edit/customer-edit.component';
 import { StockListComponent } from './stock-list/stock-list.component';
 import { StockAddComponent } from './stock-add/stock-add.component';
 import { StockEditComponent } from './stock-edit/stock-edit.component';
+import { OrderAddComponent } from './order-add/order-add.component';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'customer-list' },
+  { path: '', pathMatch: 'full', redirectTo: 'order-list' },
   { path: 'order-list', component: OrderListComponent },
+  { path: 'order-add', component: OrderAddComponent },
   { path: 'customer-list', component: CustomerListComponent },
   { path: 'customer-add', component: CustomerAddComponent },
   { path: 'customer-edit/:profileID', component: CustomerEditComponent },

@@ -40,8 +40,8 @@ public class OrderList implements Serializable {
     private Long olCustomerId;
 
     @Basic(optional = false)
-    @Column(name = "ol_reference")
-    private String olReference;
+    @Column(name = "ol_reference_no")
+    private String olReferenceNo;
 
     @Basic(optional = false)
     @Column(name = "ol_total_purchase_price")

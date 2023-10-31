@@ -21,6 +21,7 @@ import { CustomerEditComponent } from './customer-edit/customer-edit.component';
 import { StockListComponent } from './stock-list/stock-list.component';
 import { StockAddComponent } from './stock-add/stock-add.component';
 import { StockEditComponent } from './stock-edit/stock-edit.component';
+import { OrderAddComponent } from './order-add/order-add.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { StockEditComponent } from './stock-edit/stock-edit.component';
     CustomerEditComponent,
     StockListComponent,
     StockAddComponent,
-    StockEditComponent
+    StockEditComponent,
+    OrderAddComponent
   ],
   imports: [
     BrowserModule,

@@ -14,8 +14,6 @@ export class StockAddComponent implements OnInit {
   // Node/Express API
   REST_API: string = 'http://localhost:8080/api';
 
-  stockList: any;
-
   stockForm = new FormGroup({
     stockId: new FormControl(''),
     name: new FormControl(''),
