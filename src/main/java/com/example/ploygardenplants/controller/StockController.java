@@ -44,6 +44,7 @@ public class StockController {
         stock.setStockSellingPrice(request.getSellingPrice());
         stock.setStockRemaining(request.getRemaining());
         stock.setStockType(request.getType());
+        stock.setStockDescription(request.getDescription() == null || request.getDescription().isEmpty() ? null : request.getDescription());
         stock.setStockIsActive("Y");
         stock.setStockCreateBy("SYSTEM");
         stock.setStockCreateDatetime(new Date());
@@ -70,6 +71,7 @@ public class StockController {
         stock.setStockSellingPrice(request.getSellingPrice());
         stock.setStockRemaining(request.getRemaining());
         stock.setStockType(request.getType());
+        stock.setStockDescription(request.getDescription() == null || request.getDescription().isEmpty() ? null : request.getDescription());
         stock.setStockIsActive("Y");
         stock.setStockCreateBy("SYSTEM");
         stock.setStockCreateDatetime(new Date());
@@ -84,7 +86,10 @@ public class StockController {
         Optional<Stock> findById = stockRepository.findById(id);
         if (findById.isPresent()) {
             Stock stock = findById.get();
-            stockRepository.delete(stock);
+            stock.setStockIsActive("N");
+            stock.setStockUpdateBy("SYSTEM");
+            stock.setStockUpdateDatetime(new Date());
+            stockRepository.save(stock);
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -123,6 +128,7 @@ public class StockController {
             res.setStockSellingPrice(NumberUtils.formatCurrency(new BigDecimal(stock.getStockSellingPrice())));
             res.setStockRemaining(NumberUtils.formatInteger(stock.getStockRemaining()));
             res.setStockType(stock.getStockType());
+            res.setStockDescription(stock.getStockDescription());
             responseList.add(res);
         }
         return responseList;

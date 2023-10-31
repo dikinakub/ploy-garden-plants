@@ -41,6 +41,8 @@ public class Stock implements Serializable {
     @Basic(optional = false)
     @Column(name = "stock_type")
     private String stockType;
+    @Column(name = "stock_description")
+    private String stockDescription;
     @Basic(optional = false)
     @Column(name = "stock_is_active")
     private String stockIsActive;

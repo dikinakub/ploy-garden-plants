@@ -17,4 +17,5 @@ public class StockRequest {
     private Double sellingPrice;
     private Long remaining;
     private String type;
+    private String description;
 }

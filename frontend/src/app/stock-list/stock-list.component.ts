@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
 })
 export class StockListComponent implements OnInit {
 
-  displayedColumns: string[] = ['no', 'stockName', 'stockPurchasePrice', 'stockSellingPrice', 'stockRemaining', 'edit', 'delete'];
+  displayedColumns: string[] = ['no', 'stockName', 'stockPurchasePrice', 'stockSellingPrice', 'stockRemaining', 'stockDescription', 'edit', 'delete'];
   getName: String = "";
   dataSource: any;
   dataSourceBox: any;

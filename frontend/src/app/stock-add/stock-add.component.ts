@@ -23,6 +23,7 @@ export class StockAddComponent implements OnInit {
     sellingPrice: new FormControl(''),
     remaining: new FormControl(''),
     type: new FormControl(''),
+    description: new FormControl(''),
   })
 
   constructor(
@@ -39,6 +40,7 @@ export class StockAddComponent implements OnInit {
       sellingPrice: [''],
       remaining: [''],
       type: [''],
+      description: [''],
     })
   }
 
@@ -65,6 +67,7 @@ export class StockAddComponent implements OnInit {
       sellingPrice: new FormControl(''),
       remaining: new FormControl(''),
       type: new FormControl(''),
+      description: new FormControl(''),
     })
   }
 }

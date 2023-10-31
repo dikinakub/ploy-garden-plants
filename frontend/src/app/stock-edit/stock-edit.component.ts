@@ -27,6 +27,7 @@ export class StockEditComponent implements OnInit {
   ) {
     this.getId = this.activeatedRoute.snapshot.paramMap.get('stockId');
     this.crudService.getStock(this.getId).subscribe(res => {
+      // console.log(res);
       this.updateForm.setValue({
         stockId: res[0]['stockId'],
         name: res[0]['stockName'],
@@ -34,16 +35,18 @@ export class StockEditComponent implements OnInit {
         sellingPrice: res[0]['stockSellingPrice'],
         remaining: res[0]['stockRemaining'],
         type: res[0]['stockType'],
+        description: res[0]['stockDescription'],
       })
     })
 
     this.updateForm = new FormGroup({
       stockId: new FormControl(''),
-      name: new FormControl(),
+      name: new FormControl(''),
       purchasePrice: new FormControl(''),
       sellingPrice: new FormControl(''),
       remaining: new FormControl(''),
-      type: new FormControl(),
+      type: new FormControl(''),
+      description: new FormControl(''),
     })
   }
 
@@ -67,6 +70,7 @@ export class StockEditComponent implements OnInit {
       purchasePrice: new FormControl(''),
       sellingPrice: new FormControl(''),
       remaining: new FormControl(''),
+      description: new FormControl(''),
     })
   }
 

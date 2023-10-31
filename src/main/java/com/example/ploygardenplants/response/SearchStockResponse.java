@@ -20,4 +20,6 @@ public class SearchStockResponse extends AbstractDataTableResponse {
     private String stockSellingPrice;
     private String stockRemaining;
     private String stockType;
+    private String stockDescription;
+    
 }
