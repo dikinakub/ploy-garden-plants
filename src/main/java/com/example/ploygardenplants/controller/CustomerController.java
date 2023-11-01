@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @Slf4j
+@CrossOrigin(origins = "*")
 public class CustomerController {
 
     public static final String NUMBER_PATTERN = "^[0-9]+$";
@@ -57,7 +58,6 @@ public class CustomerController {
     @Autowired
     private AddressDaoImpl addressDaoImpl;
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(value = "api/customer/add", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> saveCustomer(@RequestBody CustomerRequest customerRequest) {
         List<CustomerProfile> findByCusProfileName = customerRepository.findByCusProfileName(customerRequest.getFacebookName());
@@ -104,7 +104,6 @@ public class CustomerController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(value = "api/customer/update", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> updateCustomer(@RequestBody UpdateCustomerRequest updateCustomerRequest) {
         Pattern pattern = Pattern.compile(NUMBER_PATTERN);
@@ -141,7 +140,6 @@ public class CustomerController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(value = "api/customer/delete/{id}")
     public ResponseEntity<String> deleteCustomer(@PathVariable Long id) {
         Optional<CustomerProfile> findById = customerRepository.findById(id);
@@ -157,21 +155,18 @@ public class CustomerController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("api/customer/findAll")
     public List<SearchCustomerProfileResponse> findAll() {
         List<CustomerProfile> findAllOrderByCusCreateDatetimeDesc = customerRepository.findAllOrderByCusCreateDatetimeDesc();
         return mapData(findAllOrderByCusCreateDatetimeDesc);
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("api/customer/findByName/{name}")
     public List<SearchCustomerProfileResponse> findByName(@PathVariable String name) {
         List<CustomerProfile> findByCusProfileName = customerRepository.findByCusProfileNameLike(name.toUpperCase());
         return mapData(findByCusProfileName);
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("api/customer/findById/{id}")
     public SearchEditCustomerProfileResponse findByCustomerId(@PathVariable Long id) {
         SearchEditCustomerProfileResponse searchRes = new SearchEditCustomerProfileResponse();
@@ -239,13 +234,11 @@ public class CustomerController {
         return responseList;
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("api/customer/findAddressAll")
     public List<AddressModel> findAddressAll() {
         return addressDaoImpl.findAddressAll();
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("api/customer/findAddress/{key}")
     public List<AddressModel> findAddress(@PathVariable String key) {
         return addressDaoImpl.findAddressByKey(key);

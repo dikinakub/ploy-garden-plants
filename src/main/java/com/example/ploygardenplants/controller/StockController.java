@@ -25,12 +25,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
+@CrossOrigin(origins = "*")
 public class StockController {
 
     @Autowired
     private StockRepository stockRepository;
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(value = "api/stock/add", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> saveStock(@RequestBody StockRequest request) {
         List<Stock> findByStockName = stockRepository.findByStockNameAndStockIsActive(request.getName(), "Y");
@@ -53,7 +53,6 @@ public class StockController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(value = "api/stock/update", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> updateStock(@RequestBody StockRequest request) {
         Optional<Stock> findById = stockRepository.findById(request.getStockId());
@@ -80,7 +79,6 @@ public class StockController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(value = "api/stock/delete/{id}")
     public ResponseEntity<String> deleteStock(@PathVariable Long id) {
         Optional<Stock> findById = stockRepository.findById(id);
@@ -94,21 +92,18 @@ public class StockController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping(value = "api/stock/findByType/{type}")
     public List<SearchStockResponse> findByType(@PathVariable String type) {
         List<Stock> findAll = stockRepository.findByStockTypeAndStockIsActiveOrderByStockName(type, "Y");
         return mapData(findAll);
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping(value = "api/stock/findByName/{name}")
     public List<SearchStockResponse> findByName(@PathVariable String name) {
         List<Stock> findByStockNameLike = stockRepository.findByStockNameLike(name);
         return mapData(findByStockNameLike);
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping(value = "api/stock/findById/{id}")
     public List<SearchStockResponse> findById(@PathVariable Long id) {
         Optional<Stock> findById = stockRepository.findById(id);

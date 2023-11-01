@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
+@CrossOrigin(origins = "*")
 public class OrderController {
 
     @Autowired
     private OrderListService orderListService;
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(value = "api/order/add", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> saveOrder(@RequestBody StockRequest request) {
 
