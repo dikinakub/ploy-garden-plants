@@ -10,12 +10,12 @@ import { OrderListComponent } from './order-list/order-list.component';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableModule, MatTable } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatSortModule } from '@angular/material/sort';
-import { FormsModule , ReactiveFormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomerAddComponent } from './customer-add/customer-add.component';
 import { CustomerEditComponent } from './customer-edit/customer-edit.component';
 import { StockListComponent } from './stock-list/stock-list.component';
@@ -49,7 +49,7 @@ import { OrderAddComponent } from './order-add/order-add.component';
     MatCardModule,
     MatSortModule,
     FormsModule,
-    ReactiveFormsModule     
+    ReactiveFormsModule
   ],
   exports: [
     MatTableModule,

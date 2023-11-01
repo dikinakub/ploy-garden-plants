@@ -15,16 +15,18 @@
         <mat-form-field appearance="outline">
             <mat-label>ราคาซื้อ</mat-label>
             <input matInput min="0" maxlength="16" type="number" id="purchasePrice" formControlName="purchasePrice"
-                required>
+                placeholder="0.00" required>
+            <span matTextPrefix>฿&nbsp;</span>
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>ราคาขาย</mat-label>
             <input matInput min="0" maxlength="16" type="number" id="sellingPrice" formControlName="sellingPrice"
-                required>
+                placeholder="0.00" required>
+            <span matTextPrefix>฿&nbsp;</span>
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>จำนวน</mat-label>
-            <input matInput min="0" maxlength="16" type="number" id="remaining" formControlName="remaining" required>
+            <input matInput min="0" maxlength="16" type="number" id="remaining" formControlName="remaining" placeholder="0" required>
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>หมายเหตุ</mat-label>
