@@ -1,4 +1,25 @@
+.example-card {
+    display: auto;
+    margin: 0;
+    flex-direction: column;
+}
 
-.example-container mat-form-field+mat-form-field {
-    margin-left: 10px;
+.example-card-detail {
+    display: auto;
+    margin: 10px 60px;
+    flex-direction: column;
+}
+
+.spacer {
+    float: right;
+}
+
+.example-header-image {
+    background-image: url('https://sv1.picz.in.th/images/2020/03/27/QA9ed1.png');
+    background-size: cover;
+}
+
+.example-facebook-image {
+    background-image: url('https://sv1.picz.in.th/images/2023/11/02/ddVTPiP.png');
+    background-size: cover;
 }

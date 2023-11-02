@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { CrudService } from '../service/crud.service';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http'
-import Swal from 'sweetalert2';
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-customer-edit',
@@ -79,11 +79,11 @@ export class CustomerEditComponent implements OnInit {
     return this.http.post(API_URL, this.updateForm.value)
       .subscribe(() => {
         console.log("Update customer successfully.", this.updateForm.value);
-        Swal.fire('SUCCESS', 'Update customer successfully.', 'success');
+        swal.fire('SUCCESS', 'Update customer successfully.', 'success');
         this.ngZone.run(() => this.router.navigateByUrl('customer-list'))
       }, (err) => {
         console.log(err)
-        Swal.fire('ERROR', err.error, 'warning');
+        swal.fire('ERROR', err.error, 'warning');
       })
   }
 

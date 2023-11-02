@@ -1,36 +1,58 @@
+<br>
 <mat-card class="example-card">
-    <h1><b><mat-icon>portrait</mat-icon>Customers List</b></h1>
-    <mat-card-header>
-        <mat-card-title-group>
-            <div class="example-container">
-                <mat-form-field>
-                    <mat-label>Facebook Name</mat-label>
-                    <input matInput type="text" [(ngModel)]="getName" value="" (keyup.enter)="onSearch(getName)">
-                </mat-form-field>&nbsp;
-                <button class="example-button-row button" mat-fab extended color="primary" (click)="onSearch(getName)">
-                    <mat-icon>search</mat-icon>
-                    Search
-                </button>&nbsp;
-                <button class="example-button-row button" mat-fab extended (click)="clearData()">
-                    <mat-icon>close</mat-icon>
-                    Clear
+    <h1><b><mat-icon>portrait</mat-icon>Customers List</b>
+        <span class="spacer">
+            <div class="example-button-container">
+                <button mat-fab extended color="accent" routerLink="/customer-add">
+                    <mat-icon>person_add</mat-icon>
+                    เพิ่มข้อมูลลูกค้า
                 </button>
             </div>
-            <button mat-raised-button color="accent" matBadge="+" class="demo-section" matBadgePosition="before"
-                routerLink="/customer-add">New
-                Customer</button>
-        </mat-card-title-group>
-    </mat-card-header>
+        </span>
+    </h1>
+    <mat-form-field>
+        <mat-label>Facebook Name</mat-label>
+        <input matInput #search type="text" [(ngModel)]="getName" (keyup.enter)="onSearch(getName)">
+        <button *ngIf=!search.value mat-icon-button matSuffix
+            (click)="onSearch(getName)"><mat-icon>search</mat-icon></button>
+        <button *ngIf=search.value mat-icon-button matSuffix (click)="clearData()"><mat-icon>close</mat-icon></button>
+    </mat-form-field>
 </mat-card>
 
-<mat-progress-bar value="100"></mat-progress-bar>
+<!-- <mat-progress-bar value="100"></mat-progress-bar> -->
 
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+<mat-card *ngFor="let items of customerList">
+    <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title>{{items.addressName}} ({{items.phoneNumber1}})</mat-card-title>
+        <mat-card-subtitle>
+            <mat-icon>facebook</mat-icon>
+            <a href={{items.profileUrl}} target="_blank">{{items.profileUrl}}</a>
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="example-card-detail">
+            <p>
+                {{items.addressName}} {{items.addressDetail}} {{items.phoneNumber2}}
+            </p>
+            <button mat-icon-button matTooltip="แก้ไข" matTooltipPosition="above"
+                routerLink="/customer-edit/{{items.profileID}}">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button matTooltip="ลบ" matTooltipPosition="above" (click)="onDelete(items.profileID)">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </div>
+    </mat-card-content>
+    <mat-divider></mat-divider>
+</mat-card>
+
+<!-- <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
     <ng-container matColumnDef="no">
         <th mat-header-cell *matHeaderCellDef> No. </th>
         <td mat-cell *matCellDef="let element"> {{element.no}} </td>
     </ng-container>
-    <ng-container matColumnDef="profileName">
+    <ng-container matColumnDef="profileName" sticky>
         <th mat-header-cell *matHeaderCellDef> Facebook Name </th>
         <td mat-cell *matCellDef="let element"> <a href={{element.profileUrl}} target="_blank">{{element.profileName}}
             </a></td>
@@ -50,19 +72,21 @@
     <ng-container matColumnDef="phoneNumber2">
         <th mat-header-cell *matHeaderCellDef> เบอร์โทร 2 </th>
         <td mat-cell *matCellDef="let element"> {{element.phoneNumber2}} </td>
-    </ng-container>
+    </ng-container> -->
 
-    <ng-container matColumnDef="edit" stickyEnd>
+<!-- <ng-container matColumnDef="edit" stickyEnd> -->
+<!-- <ng-container matColumnDef="edit">
         <th mat-header-cell *matHeaderCellDef>
             Update
         </th>
         <td mat-cell *matCellDef="let element">
-            <button mat-icon-button matTooltip="แก้ไข" matTooltipPosition="right" routerLink="/customer-edit/{{element.profileID}}">
+            <button mat-icon-button matTooltip="แก้ไข" matTooltipPosition="right"
+                routerLink="/customer-edit/{{element.profileID}}">
                 <mat-icon>edit</mat-icon>
             </button>
         </td>
     </ng-container>
-    <ng-container matColumnDef="delete" stickyEnd>
+    <ng-container matColumnDef="delete">
         <th mat-header-cell *matHeaderCellDef>
             Delete
         </th>
@@ -74,5 +98,5 @@
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
+</table> -->
 <!-- <mat-paginator [pageSizeOptions]="[1, 2, 20, 50, 100]" showFirstLastButtons ></mat-paginator> -->

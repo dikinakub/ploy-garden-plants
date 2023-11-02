@@ -49,7 +49,7 @@ import { OrderAddComponent } from './order-add/order-add.component';
     MatCardModule,
     MatSortModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   exports: [
     MatTableModule,

@@ -2,7 +2,7 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import { Router } from "@angular/router";
 import { CrudService } from '../service/crud.service';
 import { MatTableDataSource } from '@angular/material/table';
-import Swal from 'sweetalert2';
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-customer-list',
@@ -11,22 +11,27 @@ import Swal from 'sweetalert2';
 })
 export class CustomerListComponent implements OnInit {
 
-  displayedColumns: string[] = ['no', 'profileName', 'addressName', 'addressDetail', 'phoneNumber1', 'phoneNumber2', 'edit', 'delete'];
+  // displayedColumns: string[] = ['no', 'profileName', 'addressName', 'addressDetail', 'phoneNumber1', 'phoneNumber2', 'edit', 'delete'];
   getName: String = "";
-  dataSource: any;
+  // dataSource: any;
+  customerList: any;
+
+  // search = true;
 
   constructor(private crudService: CrudService, private ngZone: NgZone, private router: Router) { }
 
   ngOnInit(): void {
     this.crudService.getCustomers().subscribe(res => {
-      this.dataSource = new MatTableDataSource(res);
+      // this.dataSource = new MatTableDataSource(res);
+      this.customerList = res;
       // console.log(this.dataSource.data)
     })
   }
 
   onSearch(name: String): any {
     this.crudService.getCustomerByName(name).subscribe(res => {
-      this.dataSource = new MatTableDataSource(res);
+      // this.dataSource = new MatTableDataSource(res);
+      this.customerList = res;
       // console.log(this.dataSource.data)
     })
   }
@@ -34,7 +39,8 @@ export class CustomerListComponent implements OnInit {
   clearData(): void {
     this.getName = "";
     this.crudService.getCustomers().subscribe(res => {
-      this.dataSource = new MatTableDataSource(res);
+      // this.dataSource = new MatTableDataSource(res);
+      this.customerList = res;
       // console.log(this.dataSource.data)
     })
   }
@@ -44,7 +50,7 @@ export class CustomerListComponent implements OnInit {
   }
 
   onDelete(id: any) {
-    Swal.fire({
+    swal.fire({
       title: 'Are you sure?',
       text: 'This process is irreversible.',
       icon: 'warning',
@@ -55,10 +61,10 @@ export class CustomerListComponent implements OnInit {
       if (result.value) {
         this.crudService.deleteCustomer(id).subscribe(() => {
           console.log("Customer removed successfully.");
-          Swal.fire('Removed!', 'Customer removed successfully.', 'success');
+          swal.fire('Removed!', 'Customer removed successfully.', 'success');
           window.location.reload();
         })
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
+      } else if (result.dismiss === swal.DismissReason.cancel) {
         this.ngZone.run(() => this.router.navigateByUrl('customer-list'))
       }
     });
