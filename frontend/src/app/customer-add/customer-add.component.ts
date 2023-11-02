@@ -4,6 +4,12 @@ import { CrudService } from '../service/crud.service';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http'
 import swal from 'sweetalert2';
+import { ReplaySubject } from 'rxjs';
+
+export interface IAddressList {
+  id: string;
+  address: string;
+}
 
 @Component({
   selector: 'app-customer-add',
@@ -12,9 +18,11 @@ import swal from 'sweetalert2';
 })
 export class CustomerAddComponent implements OnInit {
 
-  addressList: any;
-  filteredaddressList: any[] = [];
-  searchBoxTxt: any = "";
+  addressList: any[] = [];
+
+  public addressCtrl: FormControl = new FormControl();
+  public addressFilterCtrl: FormControl = new FormControl();
+  public filteredAddress: ReplaySubject<IAddressList[]> = new ReplaySubject<IAddressList[]>(1);
 
   customerForm = new FormGroup({
     facebookName: new FormControl(''),
@@ -31,7 +39,7 @@ export class CustomerAddComponent implements OnInit {
     private router: Router,
     private ngZone: NgZone,
     private formBuilder: FormBuilder,
-    private http: HttpClient
+    private http: HttpClient,
   ) {
     this.customerForm = this.formBuilder.group({
       facebookName: [''],
@@ -47,23 +55,23 @@ export class CustomerAddComponent implements OnInit {
   ngOnInit(): void {
     this.crudService.getAddressAll().subscribe(res => {
       this.addressList = res;
-      this.filteredaddressList = this.addressList
       // console.log(this.addressList)
+      this.filteredAddress.next(res.slice());
+      this.addressFilterCtrl.valueChanges
+        .subscribe(() => {
+          this.searchAddress(this.addressFilterCtrl.value);
+        });
     })
   }
 
   searchAddress(key: String): any {
     if (key == null || key == "") {
-      this.filteredaddressList = this.addressList
+      this.filteredAddress.next(this.addressList.slice());
     } else {
       this.crudService.getAddressByKey(key).subscribe(res => {
-        this.filteredaddressList = res;
+        this.filteredAddress.next(res.slice());
       })
     }
-  }
-
-  selectClear(): void {
-    this.searchBoxTxt = "";
   }
 
   onSubmit(): any {

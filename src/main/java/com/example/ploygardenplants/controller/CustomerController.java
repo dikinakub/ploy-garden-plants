@@ -236,6 +236,7 @@ public class CustomerController {
 
     @GetMapping("api/customer/findAddressAll")
     public List<AddressModel> findAddressAll() {
+        log.info("findAddressAll");
         return addressDaoImpl.findAddressAll();
     }
 
