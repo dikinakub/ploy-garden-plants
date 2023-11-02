@@ -12,9 +12,6 @@ import swal from 'sweetalert2';
 })
 export class CustomerAddComponent implements OnInit {
 
-  // Node/Express API
-  REST_API: string = 'http://localhost:8080/api';
-
   addressList: any;
   filteredaddressList: any[] = [];
   searchBoxTxt: any = "";
@@ -70,7 +67,7 @@ export class CustomerAddComponent implements OnInit {
   }
 
   onSubmit(): any {
-    let API_URL = `${this.REST_API}/customer/add`;
+    let API_URL = `${this.crudService.REST_API}/customer/add`;
     return this.http.post(API_URL, this.customerForm.value)
       .subscribe(() => {
         console.log("Add customer successfully.", this.customerForm.value);

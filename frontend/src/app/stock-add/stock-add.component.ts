@@ -11,8 +11,6 @@ import Swal from 'sweetalert2';
   styleUrls: ['./stock-add.component.css']
 })
 export class StockAddComponent implements OnInit {
-  // Node/Express API
-  REST_API: string = 'http://localhost:8080/api';
 
   stockForm = new FormGroup({
     stockId: new FormControl(''),
@@ -45,7 +43,7 @@ export class StockAddComponent implements OnInit {
   ngOnInit(): void { }
 
   onSubmit(): any {
-    let API_URL = `${this.REST_API}/stock/add`;
+    let API_URL = `${this.crudService.REST_API}/stock/add`;
     return this.http.post(API_URL, this.stockForm.value)
       .subscribe(() => {
         console.log("Add stock successfully.", this.stockForm.value);

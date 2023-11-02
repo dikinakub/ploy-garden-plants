@@ -11,8 +11,6 @@ import Swal from 'sweetalert2';
   styleUrls: ['./stock-edit.component.css']
 })
 export class StockEditComponent implements OnInit {
-  // Node/Express API
-  REST_API: string = 'http://localhost:8080/api';
 
   getId: any;
   updateForm: FormGroup;
@@ -53,7 +51,7 @@ export class StockEditComponent implements OnInit {
   ngOnInit(): void { }
 
   onUpdate(): any {
-    let API_URL = `${this.REST_API}/stock/update`;
+    let API_URL = `${this.crudService.REST_API}/stock/update`;
     return this.http.post(API_URL, this.updateForm.value)
       .subscribe(() => {
         console.log("Update stock successfully.", this.updateForm.value);

@@ -11,8 +11,6 @@ import Swal from 'sweetalert2';
   styleUrls: ['./order-add.component.css']
 })
 export class OrderAddComponent implements OnInit {
-  // Node/Express API
-  REST_API: string = 'http://localhost:8080/api';
 
   orderForm = new FormGroup({
     customerName: new FormControl(''),

@@ -12,9 +12,6 @@ import swal from 'sweetalert2';
 })
 export class CustomerEditComponent implements OnInit {
 
-  // Node/Express API
-  REST_API: string = 'http://localhost:8080/api';
-
   getId: any;
   updateForm: FormGroup;
   addressList: any;
@@ -75,7 +72,7 @@ export class CustomerEditComponent implements OnInit {
   }
 
   onUpdate(): any {
-    let API_URL = `${this.REST_API}/customer/update`;
+    let API_URL = `${this.crudService.REST_API}/customer/update`;
     return this.http.post(API_URL, this.updateForm.value)
       .subscribe(() => {
         console.log("Update customer successfully.", this.updateForm.value);
