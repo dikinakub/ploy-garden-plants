@@ -3,7 +3,7 @@
     <h1><b><mat-icon>portrait</mat-icon>Customers List</b>
         <span class="spacer">
             <div class="example-button-container">
-                <button mat-fab extended color="accent" routerLink="/customer-add">
+                <button mat-fab extended color="primary" routerLink="/customer-add">
                     <mat-icon>person_add</mat-icon>
                     เพิ่มข้อมูลลูกค้า
                 </button>
@@ -13,8 +13,7 @@
     <mat-form-field>
         <mat-label>Facebook Name</mat-label>
         <input matInput #search type="text" [(ngModel)]="getName" (keyup.enter)="onSearch(getName)">
-        <button mat-icon-button matSuffix
-            (click)="onSearch(getName)"><mat-icon>search</mat-icon></button>
+        <button mat-icon-button matSuffix (click)="onSearch(getName)"><mat-icon>search</mat-icon></button>
         <button mat-icon-button matSuffix (click)="clearData()"><mat-icon>close</mat-icon></button>
     </mat-form-field>
 </mat-card>
@@ -24,24 +23,30 @@
 <mat-card *ngFor="let items of customerList">
     <mat-card-header>
         <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>{{items.addressName}} ({{items.phoneNumber1}})</mat-card-title>
+        <mat-card-title>{{items.profileName}}</mat-card-title>
+        <button mat-button color="warn"
+            (click)="onDelete(items.profileID)"><mat-icon>delete</mat-icon>ลบข้อมูลลูกค้า</button>
         <mat-card-subtitle>
             <mat-icon>facebook</mat-icon>
             <a href={{items.profileUrl}} target="_blank">{{items.profileUrl}}</a>
         </mat-card-subtitle>
+        {{selectedOption}}
     </mat-card-header>
+
     <mat-card-content>
         <div class="example-card-detail">
-            <p>
-                {{items.addressName}} {{items.addressDetail}} {{items.phoneNumber2}}
-            </p>
-            <button mat-icon-button matTooltip="แก้ไข" matTooltipPosition="above"
-                routerLink="/customer-edit/{{items.profileID}}">
-                <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button matTooltip="ลบ" matTooltipPosition="above" (click)="onDelete(items.profileID)">
-                <mat-icon>delete</mat-icon>
-            </button>
+            <mat-radio-group aria-labelledby="example-radio-group-label">
+                <mat-radio-button *ngFor="let add of items.addressDetailList" [value]="add.addressId"
+                    [checked]="add.defaultFlag" (change)="updateCustomerDefaultFlag($event)">
+                    <mat-divider></mat-divider>
+                    <a routerLink="/customer-edit/{{add.addressId}}" matTooltip="แก้ไขที่อยู่"
+                        matTooltipPosition="right">{{add.addressName}}</a> <br>
+                    {{add.addressDetail}} <br>
+                    {{add.phoneNumber1}}
+                    {{add.phoneNumber2}}
+                    <mat-divider></mat-divider>
+                </mat-radio-button>
+            </mat-radio-group>
         </div>
     </mat-card-content>
     <mat-divider></mat-divider>

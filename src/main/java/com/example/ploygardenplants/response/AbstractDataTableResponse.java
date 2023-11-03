@@ -1,4 +1,4 @@
-package com.example.ploygardenplants.model;
+package com.example.ploygardenplants.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -15,8 +15,7 @@ export class CustomerListComponent implements OnInit {
   getName: String = "";
   // dataSource: any;
   customerList: any;
-
-  // search = true;
+  selectedOption: number;
 
   constructor(private crudService: CrudService, private ngZone: NgZone, private router: Router) { }
 
@@ -24,7 +23,7 @@ export class CustomerListComponent implements OnInit {
     this.crudService.getCustomers().subscribe(res => {
       // this.dataSource = new MatTableDataSource(res);
       this.customerList = res;
-      // console.log(this.dataSource.data)
+      console.log(this.customerList)
     })
   }
 
@@ -68,5 +67,12 @@ export class CustomerListComponent implements OnInit {
         this.ngZone.run(() => this.router.navigateByUrl('customer-list'))
       }
     });
+  }
+
+  updateCustomerDefaultFlag(addressId: any): void {
+    this.crudService.updateCustomerDefaultFlag(addressId.value)
+      .subscribe(() => {
+        console.log("Update customer default flag successfully.", addressId.value);
+      })
   }
 }

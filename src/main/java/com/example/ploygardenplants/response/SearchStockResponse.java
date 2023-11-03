@@ -1,6 +1,5 @@
 package com.example.ploygardenplants.response;
 
-import com.example.ploygardenplants.model.AbstractDataTableResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

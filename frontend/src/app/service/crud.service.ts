@@ -66,6 +66,13 @@ export class CrudService {
         catchError(this.handleError)
       )
   }
+  updateCustomerDefaultFlag(id: any): any {
+    let API_URL = `${this.REST_API}/customer/updateCustomerDefaultFlag/${id}`;
+    return this.http.post(API_URL, { headers: this.httpHeaders })
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
 
   // ********* Stock *********
   getStockByType(type: any): Observable<any> {

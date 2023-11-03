@@ -11,7 +11,7 @@
         <mat-form-field appearance="outline">
             <mat-label>Facebook URL</mat-label>
             <input matInput #input2 maxlength="255" placeholder="Ex.https://www.facebook.com/diki.kawasaki/"
-                id="profileUrl" type="text" formControlName="profileUrl" readonly>
+                id="profileUrl" type="text" formControlName="profileUrl">
             <mat-icon matSuffix>facebook</mat-icon>
             <mat-hint align="end">{{input2.value.length}}/255</mat-hint>
         </mat-form-field>
@@ -59,12 +59,13 @@
             <mat-hint align="end">{{input6.value.length}}/10</mat-hint>
         </mat-form-field>
         <button mat-fab extended type="submit" [disabled]="!updateForm.valid"
-            (click)="onUpdate()">Save<mat-icon>save</mat-icon></button> <br>
-        <button mat-fab extended color="primary" (click)="clearData()">Clear<mat-icon>close</mat-icon></button>
+            (click)="onUpdate()">Save<mat-icon>save</mat-icon></button>
+        <!-- <br>
+        <button mat-fab extended color="primary" (click)="clearData()">Clear<mat-icon>close</mat-icon></button> -->
         <br>
         <mat-divider></mat-divider>
         <br>
-        <button mat-fab extended color="warn" routerLink="/customer-list">Back</button>
+        <button mat-fab extended color="primary" routerLink="/customer-list">Back</button>
         <br>
     </mat-card>
 </form>

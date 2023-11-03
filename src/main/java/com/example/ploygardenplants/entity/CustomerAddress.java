@@ -76,5 +76,8 @@ public class CustomerAddress implements Serializable {
     @Column(name = "add_update_datetime")
     @Temporal(TemporalType.TIMESTAMP)
     private Date addUpdateDatetime;
+    
+    @Column(name = "default_flag")
+    private Boolean defaultFlag;
 
 }

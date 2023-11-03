@@ -44,7 +44,7 @@ export class CustomerEditComponent implements OnInit {
     this.updateForm = this.formBuilder.group({
       profileID: [''],
       profileName: [{value: '', disabled: true}],
-      profileUrl: [{value: '', disabled: true}],
+      profileUrl: [''],
       addressName: [''],
       addressDetail: [''],
       address: [''],
@@ -90,8 +90,9 @@ export class CustomerEditComponent implements OnInit {
 
   clearData(): void {
     this.updateForm = this.formBuilder.group({
-      addressName: [''],
+      profileUrl: [''],
       addressDetail: [''],
+      addressName: [''],
       address: [''],
       phoneNumber1: [''],
       phoneNumber2: [''],

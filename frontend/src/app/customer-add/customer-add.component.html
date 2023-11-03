@@ -12,7 +12,7 @@
         <mat-form-field appearance="outline">
             <mat-label>Facebook URL</mat-label>
             <input matInput #input2 maxlength="255" placeholder="Ex.https://www.facebook.com/diki.kawasaki/"
-                id="facebookUrl" type="text" formControlName="facebookUrl" required>
+                id="facebookUrl" type="text" formControlName="facebookUrl">
             <mat-icon matSuffix>facebook</mat-icon>
             <mat-hint align="end">{{input2.value.length}}/255</mat-hint>
         </mat-form-field>
@@ -32,7 +32,6 @@
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>ที่อยู่</mat-label>
-            <!-- <mat-select [formControl]="address" #singleSelect> -->
             <mat-select id="address" formControlName="address" required>
                 <mat-option>
                     <ngx-mat-select-search [formControl]="addressFilterCtrl"></ngx-mat-select-search>
@@ -41,19 +40,8 @@
                     {{add.address}}
                 </mat-option>
             </mat-select>
-            <!-- <mat-select id="address" formControlName="address" required>
-                <mat-form-field>
-                    <input matInput [(ngModel)]="searchBoxTxt" [ngModelOptions]="{standalone: true}"
-                        (keyup)="searchAddress(searchBoxTxt)">
-                    <button mat-icon-button matSuffix (click)="selectClear()">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-form-field>
-                <mat-option *ngFor="let a of filteredaddressList" [value]="a.id">
-                    {{a.address}}
-                </mat-option>
-            </mat-select> -->
         </mat-form-field>
+
         <mat-form-field appearance="outline">
             <mat-label>เบอร์โทร 1</mat-label>
             <input matInput #input5 min="0" minlength="10" maxlength="10" placeholder="Ex.0623540001" id="phoneNumber1"
@@ -74,7 +62,7 @@
         <br>
         <mat-divider></mat-divider>
         <br>
-        <button mat-fab extended color="warn" routerLink="/customer-list">Back</button>
+        <button mat-fab extended color="primary" routerLink="/customer-list">Back</button>
         <br>
     </mat-card>
 </form>
