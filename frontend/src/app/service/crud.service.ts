@@ -43,6 +43,62 @@ export class CrudService {
       }),
         catchError(this.handleError))
   }
+  getProvincesAll(): Observable<any> {
+    let API_URL = `${this.REST_API}/customer/findProvincesAll`;
+    return this.http.get(API_URL, { headers: this.httpHeaders })
+      .pipe(map((res: any) => {
+        return res || {}
+      }),
+        catchError(this.handleError))
+  }
+  getProvincesByKey(key: any): Observable<any> {
+    let API_URL = `${this.REST_API}/customer/findProvinces/${key}`;
+    return this.http.get(API_URL, { headers: this.httpHeaders })
+      .pipe(map((res: any) => {
+        return res || {}
+      }),
+        catchError(this.handleError))
+  }
+  getAmphuresByProvincesId(provincesId: any): Observable<any> {
+    let API_URL = `${this.REST_API}/customer/findAmphuresByProvincesId/${provincesId}`;
+    return this.http.get(API_URL, { headers: this.httpHeaders })
+      .pipe(map((res: any) => {
+        return res || {}
+      }),
+        catchError(this.handleError))
+  }
+  getAmphuresByProvincesIdAndNameTh(provincesId: any, key: any): Observable<any> {
+    let API_URL = `${this.REST_API}/customer/findAmphures/${provincesId}/${key}`;
+    return this.http.get(API_URL, { headers: this.httpHeaders })
+      .pipe(map((res: any) => {
+        return res || {}
+      }),
+        catchError(this.handleError))
+  }
+  getTambonsByAmphureId(amphureId: any): Observable<any> {
+    let API_URL = `${this.REST_API}/customer/findTambonsByAmphureId/${amphureId}`;
+    return this.http.get(API_URL, { headers: this.httpHeaders })
+      .pipe(map((res: any) => {
+        return res || {}
+      }),
+        catchError(this.handleError))
+  }
+  getTambonsByAmphureIdAndNameTh(amphureId: any, key: any): Observable<any> {
+    let API_URL = `${this.REST_API}/customer/findTambons/${amphureId}/${key}`;
+    return this.http.get(API_URL, { headers: this.httpHeaders })
+      .pipe(map((res: any) => {
+        return res || {}
+      }),
+        catchError(this.handleError))
+  }
+  getTambonsById(id: any): Observable<any> {
+    let API_URL = `${this.REST_API}/customer/findTambonsById/${id}`;
+    return this.http.get(API_URL, { headers: this.httpHeaders })
+      .pipe(map((res: any) => {
+        return res || {}
+      }),
+        catchError(this.handleError))
+  }
   getAddressAll(): Observable<any> {
     let API_URL = `${this.REST_API}/customer/findAddressAll`;
     return this.http.get(API_URL, { headers: this.httpHeaders })

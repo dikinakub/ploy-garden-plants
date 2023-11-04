@@ -94,9 +94,10 @@ public class CustomerController {
         customerAddress.setAddCusId(save.getCusId());
         customerAddress.setAddName(customerRequest.getName());
         customerAddress.setAddAddressDetail(customerRequest.getAddressDetail());
-        customerAddress.setAddTambonsId(customerRequest.getAddress());
+        customerAddress.setAddTambonsId(customerRequest.getTambonsId());
         customerAddress.setAddPhoneNumber1(customerRequest.getPhoneNumber1());
         customerAddress.setAddPhoneNumber2(customerRequest.getPhoneNumber2().isEmpty() ? null : customerRequest.getPhoneNumber2());
+        customerAddress.setDefaultFlag(Boolean.TRUE);
         customerAddress.setAddIsActive("Y");
         customerAddress.setAddCreateBy("SYSTEM");
         customerAddress.setAddCreateDatetime(new Date());
@@ -240,6 +241,42 @@ public class CustomerController {
             responseList.add(response);
         }
         return responseList;
+    }
+
+    @GetMapping("api/customer/findProvincesAll")
+    public List<ThaiProvinces> findProvincesAll() {
+        return thaiProvincesRepository.findAllByOrderByNameThAsc();
+    }
+
+    @GetMapping("api/customer/findProvinces/{key}")
+    public List<ThaiProvinces> findProvinces(@PathVariable String key) {
+        return thaiProvincesRepository.findByNameThStartsWith(key);
+    }
+
+    @GetMapping("api/customer/findAmphuresByProvincesId/{provincesId}")
+    public List<ThaiAmphures> findAmphuresByProvincesId(@PathVariable Long provincesId) {
+        return thaiAmphuresRepository.findByProvinceIdOrderByNameThAsc(provincesId);
+    }
+
+    @GetMapping("api/customer/findAmphures/{provincesId}/{key}")
+    public List<ThaiAmphures> findAmphures(@PathVariable Long provincesId, @PathVariable String key) {
+        return thaiAmphuresRepository.findByNameThContainingAndProvinceId(key, provincesId);
+    }
+
+    @GetMapping("api/customer/findTambonsByAmphureId/{amphureId}")
+    public List<ThaiTambons> findTambonsByAmphureId(@PathVariable Long amphureId) {
+        return thaiTambonsRepository.findByAmphureIdOrderByNameThAsc(amphureId);
+    }
+
+    @GetMapping("api/customer/findTambons/{amphureId}/{key}")
+    public List<ThaiTambons> findTambons(@PathVariable Long amphureId, @PathVariable String key) {
+        return thaiTambonsRepository.findByNameThStartsWithAndAmphureId(key, amphureId);
+    }
+
+    @GetMapping("api/customer/findTambonsById/{id}")
+    public ThaiTambons findTambonsById(@PathVariable Long id) {
+        Optional<ThaiTambons> findById = thaiTambonsRepository.findById(id);
+        return findById.get();
     }
 
     @GetMapping("api/customer/findAddressAll")

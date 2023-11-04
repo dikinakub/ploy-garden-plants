@@ -8,7 +8,11 @@ import { ReplaySubject } from 'rxjs';
 
 export interface IAddressList {
   id: string;
-  address: string;
+  nameTh: string;
+}
+export interface ITambonsList {
+  tambonId: string;
+  nameTh: string;
 }
 
 @Component({
@@ -19,17 +23,33 @@ export interface IAddressList {
 export class CustomerAddComponent implements OnInit {
 
   addressList: any[] = [];
-
-  public addressCtrl: FormControl = new FormControl();
   public addressFilterCtrl: FormControl = new FormControl();
-  public filteredAddress: ReplaySubject<IAddressList[]> = new ReplaySubject<IAddressList[]>(1);
+  public filteredAddress: ReplaySubject<IAddressList[]> = new ReplaySubject<IAddressList[]>();
+
+  provincesList: any[] = [];
+  public provincesFilterCtrl: FormControl = new FormControl();
+  public filteredprovinces: ReplaySubject<IAddressList[]> = new ReplaySubject<IAddressList[]>();
+  provincesSelected: any;
+
+  amphuresList: any[] = [];
+  public amphuresFilterCtrl: FormControl = new FormControl();
+  public filteredamphures: ReplaySubject<IAddressList[]> = new ReplaySubject<IAddressList[]>();
+  amphuresSelected: any;
+
+  tambonsList: any[] = [];
+  public tambonsFilterCtrl: FormControl = new FormControl();
+  public filteredtambons: ReplaySubject<ITambonsList[]> = new ReplaySubject<ITambonsList[]>();
+  tambonsSelected: any;
 
   customerForm = new FormGroup({
     facebookName: new FormControl(''),
     facebookUrl: new FormControl(''),
     name: new FormControl(''),
     addressDetail: new FormControl(''),
-    address: new FormControl(''),
+    provincesId: new FormControl(''),
+    amphuresId: new FormControl(''),
+    tambonsId: new FormControl(''),
+    zipCode: new FormControl(''),
     phoneNumber1: new FormControl(''),
     phoneNumber2: new FormControl(''),
   })
@@ -46,7 +66,10 @@ export class CustomerAddComponent implements OnInit {
       facebookUrl: [''],
       name: [''],
       addressDetail: [''],
-      address: [''],
+      provincesId: [''],
+      amphuresId: [''],
+      tambonsId: [''],
+      zipCode: [''],
       phoneNumber1: [''],
       phoneNumber2: [''],
     })
@@ -62,6 +85,61 @@ export class CustomerAddComponent implements OnInit {
           this.searchAddress(this.addressFilterCtrl.value);
         });
     })
+
+    // จังหวัด
+    this.crudService.getProvincesAll().subscribe(res => {
+      this.provincesList = res;
+      // console.log(this.provincesList)
+      this.filteredprovinces.next(res.slice());
+      this.provincesFilterCtrl.valueChanges
+        .subscribe(() => {
+          this.searchProvinces(this.provincesFilterCtrl.value);
+        });
+    })
+
+    this.customerForm.valueChanges.subscribe(() => {
+      // เขต/อำเภอ
+      if (this.customerForm.value.provincesId) {
+        if (this.provincesSelected != this.customerForm.value.provincesId) {
+          this.crudService.getAmphuresByProvincesId(this.customerForm.value.provincesId).subscribe(res => {
+            // console.log(res)
+            this.amphuresList = res;
+            this.filteredamphures.next(res.slice());
+          });
+        }
+        this.provincesSelected = this.customerForm.value.provincesId;
+        this.amphuresFilterCtrl.valueChanges
+          .subscribe(() => {
+            this.searchAmphures(this.provincesSelected, this.amphuresFilterCtrl.value);
+          });
+      }
+
+      // แขวง/ตำบล
+      if (this.customerForm.value.amphuresId) {
+        if (this.amphuresSelected != this.customerForm.value.amphuresId) {
+          this.crudService.getTambonsByAmphureId(this.customerForm.value.amphuresId).subscribe(res => {
+            // console.log(res)
+            this.tambonsList = res;
+            this.filteredtambons.next(res.slice());
+          });
+        }
+        this.amphuresSelected = this.customerForm.value.amphuresId;
+
+        // รหัสไปรษณีย์
+        if (this.customerForm.value.tambonsId && this.tambonsSelected != this.customerForm.value.tambonsId) {
+          this.crudService.getTambonsById(this.customerForm.value.tambonsId).subscribe(res => {
+            // console.log(res)
+            this.customerForm.controls['zipCode'].setValue(res['zipCode']);
+          });
+        }
+        this.tambonsSelected = this.customerForm.value.tambonsId;
+
+        this.tambonsFilterCtrl.valueChanges
+          .subscribe(() => {
+            this.searchTambons(this.amphuresSelected, this.tambonsFilterCtrl.value);
+          });
+      }
+    });
   }
 
   searchAddress(key: String): any {
@@ -70,6 +148,33 @@ export class CustomerAddComponent implements OnInit {
     } else {
       this.crudService.getAddressByKey(key).subscribe(res => {
         this.filteredAddress.next(res.slice());
+      })
+    }
+  }
+  searchProvinces(key: String): any {
+    if (key == null || key == "") {
+      this.filteredprovinces.next(this.provincesList.slice());
+    } else {
+      this.crudService.getProvincesByKey(key).subscribe(res => {
+        this.filteredprovinces.next(res.slice());
+      })
+    }
+  }
+  searchAmphures(provincesId: number, key: String): any {
+    if (key == null || key == "") {
+      this.filteredamphures.next(this.amphuresList.slice());
+    } else {
+      this.crudService.getAmphuresByProvincesIdAndNameTh(provincesId, key).subscribe(res => {
+        this.filteredamphures.next(res.slice());
+      })
+    }
+  }
+  searchTambons(amphureId: number, key: String): any {
+    if (key == null || key == "") {
+      this.filteredtambons.next(this.tambonsList.slice());
+    } else {
+      this.crudService.getTambonsByAmphureIdAndNameTh(amphureId, key).subscribe(res => {
+        this.filteredtambons.next(res.slice());
       })
     }
   }
@@ -93,7 +198,10 @@ export class CustomerAddComponent implements OnInit {
       facebookUrl: new FormControl(''),
       name: new FormControl(''),
       addressDetail: new FormControl(''),
-      address: new FormControl(''),
+      provincesId: new FormControl(''),
+      amphuresId: new FormControl(''),
+      tambonsId: new FormControl(''),
+      zipCode: new FormControl(''),
       phoneNumber1: new FormControl(''),
       phoneNumber2: new FormControl(''),
     })
