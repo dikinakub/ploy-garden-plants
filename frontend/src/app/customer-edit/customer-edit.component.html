@@ -30,19 +30,44 @@
             <mat-hint align="end">{{input4.value.length}}/255</mat-hint>
         </mat-form-field>
         <mat-form-field appearance="outline">
-            <mat-label>ที่อยู่</mat-label>
-            <mat-select id="address" formControlName="address" required>
-                <mat-form-field>
-                    <input matInput [(ngModel)]="searchBoxTxt" [ngModelOptions]="{standalone: true}"
-                        (keyup)="searchAddress(searchBoxTxt)">
-                    <button mat-icon-button matSuffix (click)="selectClear()">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-form-field>
-                <mat-option *ngFor="let a of filteredaddressList" [value]="a.id">
-                    {{a.address}}
+            <mat-label>จังหวัด</mat-label>
+            <mat-select id="provincesId" formControlName="provincesId" required>
+                <mat-option>
+                    <ngx-mat-select-search [formControl]="provincesFilterCtrl"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let province of filteredprovinces | async" [value]="province.id">
+                    {{province.nameTh}}
                 </mat-option>
             </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>เขต/อำเภอ</mat-label>
+            <mat-select id="amphuresId" formControlName="amphuresId" required>
+                <mat-option>
+                    <ngx-mat-select-search [formControl]="amphuresFilterCtrl"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let amphures of filteredamphures | async" [value]="amphures.id">
+                    {{amphures.nameTh}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>แขวง/ตำบล</mat-label>
+            <mat-select id="tambonsId" formControlName="tambonsId" required>
+                <mat-option>
+                    <ngx-mat-select-search [formControl]="tambonsFilterCtrl"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let tambons of filteredtambons | async" [value]="tambons.tambonId">
+                    {{tambons.nameTh}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>รหัสไปรษณีย์</mat-label>
+            <input matInput #zipcode min="0" minlength="5" maxlength="5" id="zipCode" type="text"
+                formControlName="zipCode" required readonly>
+            <mat-icon matSuffix>location_on</mat-icon>
+            <mat-hint align="end">{{zipcode.value.length}}/5</mat-hint>
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>เบอร์โทร 1</mat-label>

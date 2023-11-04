@@ -4,6 +4,16 @@ import { CrudService } from '../service/crud.service';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http'
 import swal from 'sweetalert2';
+import { ReplaySubject } from 'rxjs';
+
+export interface IAddressList {
+  id: string;
+  nameTh: string;
+}
+export interface ITambonsList {
+  tambonId: string;
+  nameTh: string;
+}
 
 @Component({
   selector: 'app-customer-edit',
@@ -17,6 +27,21 @@ export class CustomerEditComponent implements OnInit {
   addressList: any;
   filteredaddressList: any[] = [];
   searchBoxTxt: any = "";
+
+  provincesList: any[] = [];
+  public provincesFilterCtrl: FormControl = new FormControl();
+  public filteredprovinces: ReplaySubject<IAddressList[]> = new ReplaySubject<IAddressList[]>();
+  provincesSelected: any;
+
+  amphuresList: any[] = [];
+  public amphuresFilterCtrl: FormControl = new FormControl();
+  public filteredamphures: ReplaySubject<IAddressList[]> = new ReplaySubject<IAddressList[]>();
+  amphuresSelected: any;
+
+  tambonsList: any[] = [];
+  public tambonsFilterCtrl: FormControl = new FormControl();
+  public filteredtambons: ReplaySubject<ITambonsList[]> = new ReplaySubject<ITambonsList[]>();
+  tambonsSelected: any;
 
   constructor(
     private crudService: CrudService,
@@ -34,7 +59,10 @@ export class CustomerEditComponent implements OnInit {
         profileUrl: res['profileUrl'],
         addressName: res['addressName'],
         addressDetail: res['addressDetail'],
-        address: res['address'],
+        provincesId: res['provincesId'],
+        amphuresId: res['amphuresId'],
+        tambonsId: res['tambonsId'],
+        zipCode: res['zipCode'],
         phoneNumber1: res['phoneNumber1'],
         phoneNumber2: res['phoneNumber2'],
       })
@@ -43,30 +71,98 @@ export class CustomerEditComponent implements OnInit {
 
     this.updateForm = this.formBuilder.group({
       profileID: [''],
-      profileName: [{value: '', disabled: true}],
+      profileName: [{ value: '', disabled: true }],
       profileUrl: [''],
       addressName: [''],
       addressDetail: [''],
-      address: [''],
+      provincesId: [''],
+      amphuresId: [''],
+      tambonsId: [''],
+      zipCode: [''],
       phoneNumber1: [''],
       phoneNumber2: [''],
     })
   }
 
   ngOnInit(): void {
-    this.crudService.getAddressAll().subscribe(res => {
-      this.addressList = res;
-      this.filteredaddressList = this.addressList
-      // console.log(this.addressList)
+    // จังหวัด
+    this.crudService.getProvincesAll().subscribe(res => {
+      this.provincesList = res;
+      // console.log(this.provincesList)
+      this.filteredprovinces.next(res.slice());
+      this.provincesFilterCtrl.valueChanges
+        .subscribe(() => {
+          this.searchProvinces(this.provincesFilterCtrl.value);
+        });
     })
+
+    this.updateForm.valueChanges.subscribe(() => {
+      // เขต/อำเภอ
+      if (this.updateForm.value.provincesId) {
+        if (this.provincesSelected != this.updateForm.value.provincesId) {
+          this.crudService.getAmphuresByProvincesId(this.updateForm.value.provincesId).subscribe(res => {
+            // console.log(res)
+            this.amphuresList = res;
+            this.filteredamphures.next(res.slice());
+          });
+        }
+        this.provincesSelected = this.updateForm.value.provincesId;
+        this.amphuresFilterCtrl.valueChanges
+          .subscribe(() => {
+            this.searchAmphures(this.provincesSelected, this.amphuresFilterCtrl.value);
+          });
+      }
+      // แขวง/ตำบล
+      if (this.updateForm.value.amphuresId) {
+        if (this.amphuresSelected != this.updateForm.value.amphuresId) {
+          this.crudService.getTambonsByAmphureId(this.updateForm.value.amphuresId).subscribe(res => {
+            // console.log(res)
+            this.tambonsList = res;
+            this.filteredtambons.next(res.slice());
+          });
+        }
+        this.amphuresSelected = this.updateForm.value.amphuresId;
+        // รหัสไปรษณีย์
+        if (this.updateForm.value.tambonsId && this.tambonsSelected != this.updateForm.value.tambonsId) {
+          this.crudService.getTambonsById(this.updateForm.value.tambonsId).subscribe(res => {
+            // console.log(res)
+            this.updateForm.controls['zipCode'].setValue(res['zipCode']);
+          });
+        }
+        this.tambonsSelected = this.updateForm.value.tambonsId;
+
+        this.tambonsFilterCtrl.valueChanges
+          .subscribe(() => {
+            this.searchTambons(this.amphuresSelected, this.tambonsFilterCtrl.value);
+          });
+      }
+    });
   }
 
-  searchAddress(key: String): any {
+  searchProvinces(key: String): any {
     if (key == null || key == "") {
-      this.filteredaddressList = this.addressList
+      this.filteredprovinces.next(this.provincesList.slice());
     } else {
-      this.crudService.getAddressByKey(key).subscribe(res => {
-        this.filteredaddressList = res;
+      this.crudService.getProvincesByKey(key).subscribe(res => {
+        this.filteredprovinces.next(res.slice());
+      })
+    }
+  }
+  searchAmphures(provincesId: number, key: String): any {
+    if (key == null || key == "") {
+      this.filteredamphures.next(this.amphuresList.slice());
+    } else {
+      this.crudService.getAmphuresByProvincesIdAndNameTh(provincesId, key).subscribe(res => {
+        this.filteredamphures.next(res.slice());
+      })
+    }
+  }
+  searchTambons(amphureId: number, key: String): any {
+    if (key == null || key == "") {
+      this.filteredtambons.next(this.tambonsList.slice());
+    } else {
+      this.crudService.getTambonsByAmphureIdAndNameTh(amphureId, key).subscribe(res => {
+        this.filteredtambons.next(res.slice());
       })
     }
   }

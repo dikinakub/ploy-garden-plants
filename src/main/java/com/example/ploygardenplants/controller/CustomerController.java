@@ -1,13 +1,11 @@
 package com.example.ploygardenplants.controller;
 
-import com.example.ploygardenplants.dao.AddressDaoImpl;
 import com.example.ploygardenplants.entity.CustomerAddress;
 import com.example.ploygardenplants.entity.CustomerProfile;
 import com.example.ploygardenplants.entity.ThaiAmphures;
 import com.example.ploygardenplants.entity.ThaiProvinces;
 import com.example.ploygardenplants.entity.ThaiTambons;
 import com.example.ploygardenplants.model.AddressDetailModel;
-import com.example.ploygardenplants.model.AddressModel;
 import com.example.ploygardenplants.repository.CustomerAddressRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,9 +53,6 @@ public class CustomerController {
 
     @Autowired
     private ThaiProvincesRepository thaiProvincesRepository;
-
-    @Autowired
-    private AddressDaoImpl addressDaoImpl;
 
     @PostMapping(value = "api/customer/add", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> saveCustomer(@RequestBody CustomerRequest customerRequest) {
@@ -131,7 +126,7 @@ public class CustomerController {
             CustomerAddress address = customerAddress.get();
             address.setAddName(updateCustomerRequest.getAddressName());
             address.setAddAddressDetail(updateCustomerRequest.getAddressDetail());
-            address.setAddTambonsId(updateCustomerRequest.getAddress());
+            address.setAddTambonsId(updateCustomerRequest.getTambonsId());
             address.setAddPhoneNumber1(updateCustomerRequest.getPhoneNumber1());
             address.setAddPhoneNumber2(updateCustomerRequest.getPhoneNumber2() == null || updateCustomerRequest.getPhoneNumber2().isEmpty() ? null : updateCustomerRequest.getPhoneNumber2());
             address.setAddUpdateBy("SYSTEM");
@@ -175,12 +170,18 @@ public class CustomerController {
         if (!findById.isEmpty()) {
             CustomerAddress customerAddress = findById.get(0);
             Optional<CustomerProfile> customerProfile = customerRepository.findById(customerAddress.getAddCusId());
+            ThaiTambons thaiTambons = thaiTambonsRepository.findByTambonId(customerAddress.getAddTambonsId());
+            Optional<ThaiAmphures> thaiAmphures = thaiAmphuresRepository.findById(thaiTambons.getAmphureId());
+
             searchRes.setProfileID(customerAddress.getAddId());
             searchRes.setProfileName(customerProfile.get().getCusProfileName());
             searchRes.setProfileUrl(customerProfile.get().getCusProfileUrl());
             searchRes.setAddressName(customerAddress.getAddName());
             searchRes.setAddressDetail(customerAddress.getAddAddressDetail());
-            searchRes.setAddress(customerAddress.getAddTambonsId());
+            searchRes.setProvincesId(thaiAmphures.get().getProvinceId());
+            searchRes.setAmphuresId(thaiAmphures.get().getId());
+            searchRes.setTambonsId(thaiTambons.getTambonId());
+            searchRes.setZipCode(thaiTambons.getZipCode());
             searchRes.setPhoneNumber1(customerAddress.getAddPhoneNumber1());
             searchRes.setPhoneNumber2(customerAddress.getAddPhoneNumber2());
             return searchRes;
@@ -277,16 +278,6 @@ public class CustomerController {
     public ThaiTambons findTambonsById(@PathVariable Long id) {
         Optional<ThaiTambons> findById = thaiTambonsRepository.findById(id);
         return findById.get();
-    }
-
-    @GetMapping("api/customer/findAddressAll")
-    public List<AddressModel> findAddressAll() {
-        return addressDaoImpl.findAddressAll();
-    }
-
-    @GetMapping("api/customer/findAddress/{key}")
-    public List<AddressModel> findAddress(@PathVariable String key) {
-        return addressDaoImpl.findAddressByKey(key);
     }
 
     @PostMapping(value = "api/customer/updateCustomerDefaultFlag/{id}")

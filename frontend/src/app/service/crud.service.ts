@@ -99,22 +99,6 @@ export class CrudService {
       }),
         catchError(this.handleError))
   }
-  getAddressAll(): Observable<any> {
-    let API_URL = `${this.REST_API}/customer/findAddressAll`;
-    return this.http.get(API_URL, { headers: this.httpHeaders })
-      .pipe(map((res: any) => {
-        return res || {}
-      }),
-        catchError(this.handleError))
-  }
-  getAddressByKey(key: any): Observable<any> {
-    let API_URL = `${this.REST_API}/customer/findAddress/${key}`;
-    return this.http.get(API_URL, { headers: this.httpHeaders })
-      .pipe(map((res: any) => {
-        return res || {}
-      }),
-        catchError(this.handleError))
-  }
   deleteCustomer(id: any): any {
     let API_URL = `${this.REST_API}/customer/delete/${id}`;
     return this.http.post(API_URL, { headers: this.httpHeaders })

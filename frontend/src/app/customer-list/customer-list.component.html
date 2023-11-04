@@ -23,17 +23,32 @@
 <mat-card *ngFor="let items of customerList">
     <mat-card-header>
         <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>{{items.profileName}}</mat-card-title>
-        <button mat-button color="warn"
-            (click)="onDelete(items.profileID)"><mat-icon>delete</mat-icon>ลบข้อมูลลูกค้า</button>
+        <mat-card-title>
+            <a href={{items.profileUrl}} target="_blank"><mat-icon>facebook</mat-icon></a>
+            {{items.profileName}}
+            <button mat-button (click)="onDelete(items.profileID)" matTooltip="ลบข้อมูลลูกค้า"
+                matTooltipPosition="above"><mat-icon>delete</mat-icon></button>
+        </mat-card-title>
         <mat-card-subtitle>
-            <mat-icon>facebook</mat-icon>
-            <a href={{items.profileUrl}} target="_blank">{{items.profileUrl}}</a>
+            <!-- <a href={{items.profileUrl}} target="_blank"><mat-icon>facebook</mat-icon></a> -->
+            <div class="example-card-detail">
+                <mat-radio-group aria-labelledby="example-radio-group-label">
+                    <mat-radio-button *ngFor="let add of items.addressDetailList" [value]="add.addressId"
+                        [checked]="add.defaultFlag" (change)="updateCustomerDefaultFlag($event)">
+                        <mat-divider></mat-divider>
+                        <a routerLink="/customer-edit/{{add.addressId}}" matTooltip="แก้ไขที่อยู่"
+                            matTooltipPosition="right">{{add.addressName}}</a> <br>
+                        {{add.addressDetail}} <br>
+                        {{add.phoneNumber1}}
+                        {{add.phoneNumber2}}
+                        <mat-divider></mat-divider>
+                    </mat-radio-button>
+                </mat-radio-group>
+            </div>
         </mat-card-subtitle>
-        {{selectedOption}}
     </mat-card-header>
 
-    <mat-card-content>
+    <!-- <mat-card-content>
         <div class="example-card-detail">
             <mat-radio-group aria-labelledby="example-radio-group-label">
                 <mat-radio-button *ngFor="let add of items.addressDetailList" [value]="add.addressId"
@@ -48,7 +63,7 @@
                 </mat-radio-button>
             </mat-radio-group>
         </div>
-    </mat-card-content>
+    </mat-card-content> -->
     <mat-divider></mat-divider>
 </mat-card>
 

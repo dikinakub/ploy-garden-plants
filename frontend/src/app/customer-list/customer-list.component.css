@@ -6,12 +6,17 @@
 
 .example-card-detail {
     display: auto;
-    margin: 10px 60px;
-    flex-direction: column;
+    /* margin: 0px 0px; */
+    /* flex-direction: column; */
 }
 
 .spacer {
     float: right;
+}
+
+.spacer-header {
+    float: right;
+    flex: 1;
 }
 
 .example-header-image {

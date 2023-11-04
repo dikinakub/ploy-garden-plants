@@ -22,10 +22,6 @@ export interface ITambonsList {
 })
 export class CustomerAddComponent implements OnInit {
 
-  addressList: any[] = [];
-  public addressFilterCtrl: FormControl = new FormControl();
-  public filteredAddress: ReplaySubject<IAddressList[]> = new ReplaySubject<IAddressList[]>();
-
   provincesList: any[] = [];
   public provincesFilterCtrl: FormControl = new FormControl();
   public filteredprovinces: ReplaySubject<IAddressList[]> = new ReplaySubject<IAddressList[]>();
@@ -76,16 +72,6 @@ export class CustomerAddComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.crudService.getAddressAll().subscribe(res => {
-      this.addressList = res;
-      // console.log(this.addressList)
-      this.filteredAddress.next(res.slice());
-      this.addressFilterCtrl.valueChanges
-        .subscribe(() => {
-          this.searchAddress(this.addressFilterCtrl.value);
-        });
-    })
-
     // จังหวัด
     this.crudService.getProvincesAll().subscribe(res => {
       this.provincesList = res;
@@ -113,7 +99,6 @@ export class CustomerAddComponent implements OnInit {
             this.searchAmphures(this.provincesSelected, this.amphuresFilterCtrl.value);
           });
       }
-
       // แขวง/ตำบล
       if (this.customerForm.value.amphuresId) {
         if (this.amphuresSelected != this.customerForm.value.amphuresId) {
@@ -124,7 +109,6 @@ export class CustomerAddComponent implements OnInit {
           });
         }
         this.amphuresSelected = this.customerForm.value.amphuresId;
-
         // รหัสไปรษณีย์
         if (this.customerForm.value.tambonsId && this.tambonsSelected != this.customerForm.value.tambonsId) {
           this.crudService.getTambonsById(this.customerForm.value.tambonsId).subscribe(res => {
@@ -142,15 +126,6 @@ export class CustomerAddComponent implements OnInit {
     });
   }
 
-  searchAddress(key: String): any {
-    if (key == null || key == "") {
-      this.filteredAddress.next(this.addressList.slice());
-    } else {
-      this.crudService.getAddressByKey(key).subscribe(res => {
-        this.filteredAddress.next(res.slice());
-      })
-    }
-  }
   searchProvinces(key: String): any {
     if (key == null || key == "") {
       this.filteredprovinces.next(this.provincesList.slice());

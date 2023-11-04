@@ -18,7 +18,10 @@ public class SearchEditCustomerProfileResponse {
     private String profileUrl;
     private String addressName;
     private String addressDetail;
-    private Long address;
+    private Long provincesId;
+    private Long amphuresId;
+    private Long tambonsId;
+    private String zipCode;
     private String phoneNumber1;
     private String phoneNumber2;
 }
