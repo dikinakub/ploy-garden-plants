@@ -1,7 +1,7 @@
 .example-card {
     display: auto;
     margin: auto;
-    max-width: 40%;
+    /* max-width: 40%; */
     flex-direction: column;
     text-align: center;
 }

@@ -23,7 +23,7 @@ export class CustomerListComponent implements OnInit {
     this.crudService.getCustomers().subscribe(res => {
       // this.dataSource = new MatTableDataSource(res);
       this.customerList = res;
-      console.log(this.customerList)
+      // console.log(this.customerList)
     })
   }
 

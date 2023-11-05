@@ -1,99 +1,92 @@
+<br>
 <mat-card class="example-card">
-    <h1><b><mat-icon>store_mall_directory</mat-icon>Tree List</b></h1>
-    <mat-card-header>
-        <mat-card-title-group>
-            <div class="example-container">
-                <mat-form-field>
-                    <mat-label>Stock Name</mat-label>
-                    <input matInput type="text" [(ngModel)]="getName" value="" (keyup.enter)="onSearch(getName)">
-                </mat-form-field>&nbsp;
-                <button class="example-button-row button" mat-fab extended color="primary" (click)="onSearch(getName)">
-                    <mat-icon>search</mat-icon>
-                    Search
-                </button>&nbsp;
-                <button class="example-button-row button" mat-fab extended (click)="clearData()">
-                    <mat-icon>close</mat-icon>
-                    Clear
+    <h1><b><mat-icon>store_mall_directory</mat-icon>Tree List</b>
+        <span class="spacer">
+            <div class="example-button-container">
+                <button mat-fab extended color="primary" routerLink="/stock-add">
+                    <mat-icon>library_add</mat-icon>
+                    เพิ่มข้อมูลสินค้า
                 </button>
             </div>
-            <button mat-raised-button color="accent" matBadge="+" class="demo-section" matBadgePosition="before"
-                routerLink="/stock-add">New
-                Stock</button>
-        </mat-card-title-group>
-    </mat-card-header>
+        </span>
+    </h1>
+    <mat-form-field>
+        <mat-label>Stock Name</mat-label>
+        <input matInput #search type="text" [(ngModel)]="getName" (keyup.enter)="onSearch(getName)">
+        <button mat-icon-button matSuffix (click)="onSearch(getName)"><mat-icon>search</mat-icon></button>
+        <button mat-icon-button matSuffix (click)="clearData()"><mat-icon>close</mat-icon></button>
+    </mat-form-field>
+
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <ng-container matColumnDef="no">
+            <th mat-header-cell *matHeaderCellDef>#</th>
+            <td mat-cell *matCellDef="let element"> {{element.no}} </td>
+        </ng-container>
+        <ng-container matColumnDef="stockName">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let element"> {{element.stockName}}</td>
+        </ng-container>
+        <ng-container matColumnDef="stockPurchasePrice">
+            <th mat-header-cell *matHeaderCellDef>ราคาซื้อ</th>
+            <td mat-cell *matCellDef="let element"> {{element.stockPurchasePrice}} </td>
+        </ng-container>
+        <ng-container matColumnDef="stockSellingPrice">
+            <th mat-header-cell *matHeaderCellDef>ราคาขาย</th>
+            <td mat-cell *matCellDef="let element"> {{element.stockSellingPrice}} </td>
+        </ng-container>
+        <ng-container matColumnDef="stockRemaining">
+            <th mat-header-cell *matHeaderCellDef>คงเหลือ</th>
+            <td mat-cell *matCellDef="let element"> {{element.stockRemaining}} </td>
+        </ng-container>
+        <ng-container matColumnDef="stockDescription">
+            <th mat-header-cell *matHeaderCellDef>หมายเหตุ</th>
+            <td mat-cell *matCellDef="let element"> {{element.stockDescription}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="edit">
+            <th mat-header-cell *matHeaderCellDef>
+                Update
+            </th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-icon-button matTooltip="แก้ไข" matTooltipPosition="right"
+                    routerLink="/stock-edit/{{element.stockId}}">
+                    <mat-icon>edit</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="delete">
+            <th mat-header-cell *matHeaderCellDef>
+                Delete
+            </th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-icon-button matTooltip="ลบ" matTooltipPosition="right" (click)="onDelete(element.stockId)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
 </mat-card>
-
-<mat-progress-bar value="100"></mat-progress-bar>
-
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-    <ng-container matColumnDef="no">
-        <th mat-header-cell *matHeaderCellDef> No. </th>
-        <td mat-cell *matCellDef="let element"> {{element.no}} </td>
-    </ng-container>
-    <ng-container matColumnDef="stockName">
-        <th mat-header-cell *matHeaderCellDef> Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.stockName}}</td>
-    </ng-container>
-    <ng-container matColumnDef="stockPurchasePrice">
-        <th mat-header-cell *matHeaderCellDef> ราคาซื้อ </th>
-        <td mat-cell *matCellDef="let element"> {{element.stockPurchasePrice}} </td>
-    </ng-container>
-    <ng-container matColumnDef="stockSellingPrice">
-        <th mat-header-cell *matHeaderCellDef> ราคาขาย </th>
-        <td mat-cell *matCellDef="let element"> {{element.stockSellingPrice}} </td>
-    </ng-container>
-    <ng-container matColumnDef="stockRemaining">
-        <th mat-header-cell *matHeaderCellDef>คงเหลือ</th>
-        <td mat-cell *matCellDef="let element"> {{element.stockRemaining}} </td>
-    </ng-container>
-    <ng-container matColumnDef="stockDescription">
-        <th mat-header-cell *matHeaderCellDef>หมายเหตุ</th>
-        <td mat-cell *matCellDef="let element"> {{element.stockDescription}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="edit" stickyEnd>
-        <th mat-header-cell *matHeaderCellDef>
-            Update
-        </th>
-        <td mat-cell *matCellDef="let element">
-            <button mat-icon-button matTooltip="แก้ไข" matTooltipPosition="right"
-                routerLink="/stock-edit/{{element.stockId}}">
-                <mat-icon>edit</mat-icon>
-            </button>
-        </td>
-    </ng-container>
-    <ng-container matColumnDef="delete" stickyEnd>
-        <th mat-header-cell *matHeaderCellDef>
-            Delete
-        </th>
-        <td mat-cell *matCellDef="let element">
-            <button mat-icon-button matTooltip="ลบ" matTooltipPosition="right" (click)="onDelete(element.stockId)">
-                <mat-icon>delete</mat-icon>
-            </button>
-        </td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
 <!-- <mat-paginator [pageSizeOptions]="[1, 2, 20, 50, 100]" showFirstLastButtons ></mat-paginator> -->
 <br /><br />
 <mat-card class="example-card">
     <h1><b><mat-icon>store_mall_directory</mat-icon>Box List</b></h1>
     <table mat-table [dataSource]="dataSourceBox" class="mat-elevation-z8">
         <ng-container matColumnDef="no">
-            <th mat-header-cell *matHeaderCellDef> No. </th>
+            <th mat-header-cell *matHeaderCellDef>#</th>
             <td mat-cell *matCellDef="let element"> {{element.no}} </td>
         </ng-container>
         <ng-container matColumnDef="stockName">
-            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <th mat-header-cell *matHeaderCellDef>Name</th>
             <td mat-cell *matCellDef="let element"> {{element.stockName}}</td>
         </ng-container>
         <ng-container matColumnDef="stockPurchasePrice">
-            <th mat-header-cell *matHeaderCellDef> ราคาซื้อ </th>
+            <th mat-header-cell *matHeaderCellDef>ราคาซื้อ</th>
             <td mat-cell *matCellDef="let element"> {{element.stockPurchasePrice}} </td>
         </ng-container>
         <ng-container matColumnDef="stockSellingPrice">
-            <th mat-header-cell *matHeaderCellDef> ราคาขาย </th>
+            <th mat-header-cell *matHeaderCellDef>ราคาขาย</th>
             <td mat-cell *matCellDef="let element"> {{element.stockSellingPrice}} </td>
         </ng-container>
         <ng-container matColumnDef="stockRemaining">

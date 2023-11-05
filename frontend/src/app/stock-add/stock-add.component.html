@@ -32,18 +32,14 @@
             <mat-label>หมายเหตุ</mat-label>
             <input matInput id="description" type="text" formControlName="description">
         </mat-form-field>
-        &nbsp;&nbsp;
-        <div class="example-button-row">
-            <section>
-                <button mat-fab extended type="submit" [disabled]="!stockForm.valid"
-                    (click)="onSubmit()">Save<mat-icon>save</mat-icon></button>
-                <button mat-fab extended color="primary" (click)="clearData()">Clear<mat-icon>close</mat-icon></button>
-            </section>
-        </div>
-        &nbsp;&nbsp;
-        <div class="example-button-row">
-            <button mat-fab extended color="warn" routerLink="/stock-list">Back</button>
-        </div>
-        &nbsp;&nbsp;
+
+        <button mat-fab extended type="submit" [disabled]="!stockForm.valid"
+            (click)="onSubmit()">Save<mat-icon>save</mat-icon></button> <br>
+        <button mat-fab extended color="primary" (click)="clearData()">Clear<mat-icon>close</mat-icon></button>
+        <br>
+        <mat-divider></mat-divider>
+        <br>
+        <button mat-fab extended color="primary" routerLink="/stock-list">Back</button>
+        <br>
     </mat-card>
 </form>
