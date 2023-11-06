@@ -1,55 +1,17 @@
 <form [formGroup]="orderForm">
     <mat-card class="example-card">
         <h1><b><mat-icon>add_circle_outline</mat-icon>New Order</b></h1>
-        <section>
-            <mat-form-field appearance="outline">
-                <mat-label>Facebook Name</mat-label>
-                <input matInput #input1 maxlength="255" placeholder="Ex.Diki Kawasaki" id="customerName" type="text"
-                    formControlName="customerName" required>
-                <mat-icon matSuffix>facebook</mat-icon>
-            </mat-form-field>&nbsp;&nbsp;
-            <mat-form-field appearance="outline">
-                <mat-label>ที่อยุ่</mat-label>
-                <input matInput #input2 maxlength="255" id="address" type="text"
-                    formControlName="address" required>
-                <mat-icon matSuffix>home</mat-icon>
-            </mat-form-field>&nbsp;&nbsp;
-            <button mat-fab extended color="primary">เพิ่ม/แก้ไข ที่อยู่</button>
-        </section>
-        <!-- <mat-form-field appearance="outline">
-            <mat-label>Name</mat-label>
-            <input matInput #input2 maxlength="255" id="name" type="text" formControlName="name" required>
+        <mat-form-field appearance="outline">
+            <mat-label>Facebook Name</mat-label>
+            <input matInput #input1 maxlength="255" placeholder="Ex.Diki Kawasaki" id="customerName" type="text"
+                formControlName="customerName" required>
+            <mat-icon matSuffix>facebook</mat-icon>
         </mat-form-field>
         <mat-form-field appearance="outline">
-            <mat-label>ราคาซื้อ</mat-label>
-            <input matInput min="0" maxlength="16" type="number" id="purchasePrice" formControlName="purchasePrice"
-                required>
+            <mat-label>ที่อยุ่</mat-label>
+            <input matInput #input2 maxlength="255" id="address" type="text" formControlName="address" required>
+            <mat-icon matSuffix>home</mat-icon>
         </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>ราคาขาย</mat-label>
-            <input matInput min="0" maxlength="16" type="number" id="sellingPrice" formControlName="sellingPrice"
-                required>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>จำนวน</mat-label>
-            <input matInput min="0" maxlength="16" type="number" id="remaining" formControlName="remaining" required>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>หมายเหตุ</mat-label>
-            <input matInput id="description" type="text" formControlName="description">
-        </mat-form-field> -->
-        <!-- &nbsp;&nbsp;
-        <div class="example-button-row">
-            <section>
-                <button mat-fab extended type="submit" [disabled]="!stockForm.valid"
-                    (click)="onSubmit()">Save<mat-icon>save</mat-icon></button>
-                <button mat-fab extended color="primary" (click)="clearData()">Clear<mat-icon>close</mat-icon></button>
-            </section>
-        </div>
-        &nbsp;&nbsp;
-        <div class="example-button-row">
-            <button mat-fab extended color="warn" routerLink="/stock-list">Back</button>
-        </div> -->
-        &nbsp;&nbsp;
+        <button mat-fab extended color="primary">เพิ่ม/แก้ไข ที่อยู่</button>
     </mat-card>
 </form>

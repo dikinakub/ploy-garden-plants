@@ -32,7 +32,7 @@ public class OrderListService {
                 .append(runningNoString).toString();
     }
 
-    public Long getNextRunningNoOrder() {
+    private Long getNextRunningNoOrder() {
         LocalDateTime currentLocalDateTime = LocalDateTime.now();
         String currentDateISO8601 = dateUtil.parseDateFormat(currentLocalDateTime, ISO_8601_DATE);
         String currentDateYYYYMMDD = dateUtil.parseDateFormat(currentLocalDateTime, YYYYMMDD_DATE_PATTERN);
