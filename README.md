@@ -1,6 +1,6 @@
 # ploy-garden-plants
 
-ng build --base-href=/garden-plants-store
+ng build
 
 mvn clean install package
 
