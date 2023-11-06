@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { CustomerListComponent } from './customer-list/customer-list.component';
 import { CustomerAddComponent } from './customer-add/customer-add.component';
@@ -10,7 +11,7 @@ import { StockEditComponent } from './stock-edit/stock-edit.component';
 import { OrderAddComponent } from './order-add/order-add.component';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'order-list' },
+  { path: '/', pathMatch: 'full', redirectTo: 'customer-list' },
   { path: 'order-list', component: OrderListComponent },
   { path: 'order-add', component: OrderAddComponent },
   { path: 'customer-list', component: CustomerListComponent },
@@ -23,6 +24,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
 })
 export class AppRoutingModule { }
