@@ -42,6 +42,9 @@ public class OrderDetail implements Serializable {
     @Column(name = "od_stock_id")
     private Long odStockId;
 
+    @Column(name = "od_count")
+    private Long odCount;
+
     @Basic(optional = false)
     @Column(name = "od_shipping_price")
     private Double odShippingPrice;

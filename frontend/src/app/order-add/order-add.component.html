@@ -1,17 +1,80 @@
-<form [formGroup]="orderForm">
-    <mat-card class="example-card">
-        <h1><b><mat-icon>add_circle_outline</mat-icon>New Order</b></h1>
-        <mat-form-field appearance="outline">
-            <mat-label>Facebook Name</mat-label>
-            <input matInput #input1 maxlength="255" placeholder="Ex.Diki Kawasaki" id="customerName" type="text"
-                formControlName="customerName" required>
-            <mat-icon matSuffix>facebook</mat-icon>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>ที่อยุ่</mat-label>
-            <input matInput #input2 maxlength="255" id="address" type="text" formControlName="address" required>
-            <mat-icon matSuffix>home</mat-icon>
-        </mat-form-field>
-        <button mat-fab extended color="primary">เพิ่ม/แก้ไข ที่อยู่</button>
-    </mat-card>
-</form>
+<mat-stepper>
+    <mat-step [stepControl]="orderForm">
+        <form [formGroup]="orderForm">
+            <ng-template matStepLabel>เพิ่มข้อมูลรายการซื้อสินค้า</ng-template>
+            <mat-card class="example-card">
+                <!-- <h1><b><mat-icon>add_circle_outline</mat-icon>New Order</b></h1> -->
+                <br>
+                <mat-form-field appearance="outline">
+                    <mat-label>Facebook Name</mat-label>
+                    <input matInput #input1 maxlength="255" placeholder="Ex.Diki Kawasaki" type="text"
+                        formControlName="customerName" required>
+                    <mat-icon matSuffix>facebook</mat-icon>
+                    <mat-hint align="end">{{input1.value.length}}/255</mat-hint>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Facebook URL</mat-label>
+                    <input matInput #input2 maxlength="255" placeholder="Ex.https://www.facebook.com/diki.kawasaki/"
+                        type="text" formControlName="facebookUrl">
+                    <mat-icon matSuffix>facebook</mat-icon>
+                    <mat-hint align="end">{{input2.value.length}}/255</mat-hint>
+                </mat-form-field>
+                <mat-card class="example-card">
+                    <div *ngFor="let orderForm of orderDetail.controls; let i = index" formArrayName="orderDetail">
+                        <div [formGroupName]="i">
+                            <mat-divider></mat-divider>
+                            <h2>รายการที่ {{i+1}}</h2>
+                            <mat-form-field appearance="outline">
+                                <mat-label>รายการสินค้า</mat-label>
+                                <mat-select formControlName="orderId">
+                                    <mat-option [value]="order.stockId"
+                                        *ngFor="let order of orderSelect; let i = index">
+                                        {{order.stockName}} ({{order.stockSellingPrice}})
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>&nbsp;
+                            <mat-form-field appearance="outline">
+                                <mat-label>จำนวน</mat-label>
+                                <input matInput min="1" type="number" formControlName="count">
+                            </mat-form-field>&nbsp;
+                            <mat-form-field appearance="outline">
+                                <mat-label>ค่าส่ง</mat-label>
+                                <input matInput min="0" type="number" formControlName="shipping">
+                                <span matTextPrefix>฿&nbsp;</span>
+                            </mat-form-field>&nbsp;
+                            <mat-form-field appearance="outline">
+                                <mat-label>ส่วนลด</mat-label>
+                                <input matInput min="0" type="number" formControlName="discount">
+                                <span matTextPrefix>฿&nbsp;</span>
+                            </mat-form-field>
+                            <br>
+                            <button mat-stroked-button color="warn" (click)="deleteLesson(i)">ลบรายการที่
+                                {{i+1}}<mat-icon>delete_forever</mat-icon></button>
+                            <br><br>
+                            <mat-divider></mat-divider>
+                        </div>
+                    </div>
+                    <button mat-flat-button color="primary"
+                        (click)="addLesson()">เพิ่มรายการ<mat-icon>add</mat-icon></button>
+                    <br>
+                    <mat-divider></mat-divider>
+                    <br>
+                    <button mat-flat-button color="accent" (click)="checkOrderData()" matStepperNext
+                        [disabled]="!orderForm.valid">ตรวจสอบข้อมูล</button>
+                </mat-card>
+            </mat-card>
+        </form>
+    </mat-step>
+    <mat-step label="ตรวจสอบข้อมูล">
+        <!-- <br>
+        <p>
+            without Use keyvalue pipe</p>
+        <ul *ngFor="let stdObj of checkOrderDetail">
+            <li>ID : {{stdObj.id}} Name : {{stdObj.name}}
+                <ng-container *ngFor="let key of Object.keys(stdObj?.value)">
+                    {{key}} : {{stdObj?.value[key]}}
+                </ng-container>
+            </li>
+        </ul> -->
+    </mat-step>
+</mat-stepper>
