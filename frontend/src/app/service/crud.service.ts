@@ -43,6 +43,14 @@ export class CrudService {
       }),
         catchError(this.handleError))
   }
+  checkCustomerByName(name: any): Observable<any> {
+    let API_URL = `${this.REST_API}/customer/checkCustomer/${name}`;
+    return this.http.get(API_URL, { headers: this.httpHeaders })
+      .pipe(map((res: any) => {
+        return res || {}
+      }),
+        catchError(this.handleError))
+  }
   getProvincesAll(): Observable<any> {
     let API_URL = `${this.REST_API}/customer/findProvincesAll`;
     return this.http.get(API_URL, { headers: this.httpHeaders })

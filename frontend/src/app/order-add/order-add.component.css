@@ -11,3 +11,26 @@
     top: 0;
     z-index: 999;
 }
+
+.text-left {
+    text-align: left;
+}
+
+.table-style {
+    border: 1px solid grey;
+    border-collapse: collapse;
+    padding: 5px;
+    text-align: center;
+}
+
+th {
+    background-color: #f1f1f1;
+}
+
+/* table tr:nth-child(odd) {
+    background-color: #f1f1f1;
+}
+
+table tr:nth-child(even) {
+    background-color: #ffffff;
+} */

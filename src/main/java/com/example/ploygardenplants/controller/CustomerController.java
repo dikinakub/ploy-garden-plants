@@ -247,6 +247,69 @@ public class CustomerController {
         return responseList;
     }
 
+    @GetMapping("api/customer/checkCustomer/{name}")
+    public List<SearchCustomerProfileResponse> checkCustomer(@PathVariable String name) {
+        List<CustomerProfile> findByCusProfileName = customerRepository.findByCusProfileNameLike(name.toUpperCase());
+        if (findByCusProfileName == null || findByCusProfileName.isEmpty()) {
+            return null;
+        }
+        List<SearchCustomerProfileResponse> responseList = new ArrayList<>();
+        int no = 0;
+        for (CustomerProfile customerProfile : findByCusProfileName) {
+            SearchCustomerProfileResponse response = new SearchCustomerProfileResponse();
+            List<AddressDetailModel> addDetailList = new ArrayList<>();
+            response.setNo(++no);
+            response.setProfileID(customerProfile.getCusId());
+            response.setProfileName(customerProfile.getCusProfileName());
+            response.setProfileUrl(customerProfile.getCusProfileUrl());
+
+            List<CustomerAddress> customerAddressList = customerAddressRepository.findByAddCusIdAndAddIsActive(customerProfile.getCusId(), "Y");
+            if (customerAddressList != null) {
+                for (CustomerAddress customerAddress : customerAddressList) {
+                    if (customerAddress.getDefaultFlag()) {
+                        ThaiTambons thaiTambons = thaiTambonsRepository.findByTambonId(customerAddress.getAddTambonsId());
+                        Optional<ThaiAmphures> thaiAmphures = thaiAmphuresRepository.findById(thaiTambons.getAmphureId());
+                        Optional<ThaiProvinces> thaiProvinces = thaiProvincesRepository.findById(thaiAmphures.get().getProvinceId());
+                        String address = "";
+                        if (thaiProvinces.get().getId().equals(1L)) {
+                            address = customerAddress.getAddAddressDetail().trim()
+                                    + " แขวง" + thaiTambons.getNameTh()
+                                    + " " + thaiAmphures.get().getNameTh()
+                                    + " จังหวัด" + thaiProvinces.get().getNameTh()
+                                    + " " + thaiTambons.getZipCode();
+                        } else {
+                            address = customerAddress.getAddAddressDetail().trim()
+                                    + " ตำบล" + thaiTambons.getNameTh()
+                                    + " อำเภอ" + thaiAmphures.get().getNameTh()
+                                    + " จังหวัด" + thaiProvinces.get().getNameTh()
+                                    + " " + thaiTambons.getZipCode();
+                        }
+
+                        AddressDetailModel addressDetail = new AddressDetailModel();
+                        addressDetail.setAddressId(customerAddress.getAddId());
+                        addressDetail.setAddressName(customerAddress.getAddName());
+                        addressDetail.setAddressDetail(address);
+                        String p1 = customerAddress.getAddPhoneNumber1().substring(0, 2);
+                        String p2 = customerAddress.getAddPhoneNumber1().substring(2, 6);
+                        String p3 = customerAddress.getAddPhoneNumber1().substring(6, 10);
+                        addressDetail.setPhoneNumber1(p1 + "-" + p2 + "-" + p3);
+                        if (customerAddress.getAddPhoneNumber2() != null && !customerAddress.getAddPhoneNumber1().isEmpty()) {
+                            String ph1 = customerAddress.getAddPhoneNumber2().substring(0, 2);
+                            String ph2 = customerAddress.getAddPhoneNumber2().substring(2, 6);
+                            String ph3 = customerAddress.getAddPhoneNumber2().substring(6, 10);
+                            addressDetail.setPhoneNumber2(ph1 + "-" + ph2 + "-" + ph3);
+                        }
+                        addressDetail.setDefaultFlag(customerAddress.getDefaultFlag());
+                        addDetailList.add(addressDetail);
+                    }
+                }
+            }
+            response.setAddressDetailList(addDetailList);
+            responseList.add(response);
+        }
+        return responseList;
+    }
+
     @GetMapping("api/customer/findProvincesAll")
     public List<ThaiProvinces> findProvincesAll() {
         return thaiProvincesRepository.findAllByOrderByNameThAsc();
