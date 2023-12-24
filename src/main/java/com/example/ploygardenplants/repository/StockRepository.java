@@ -16,4 +16,6 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
     List<Stock> findByStockNameLike(@Param("name") String name);
 
     List<Stock> findByStockNameAndStockIsActive(String stockName, String stockIsActive);
+    
+    List<Stock> findByStockIdIn(List<Long> stockIds);
 }

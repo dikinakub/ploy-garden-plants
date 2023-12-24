@@ -2,12 +2,13 @@ package com.example.ploygardenplants.enums;
 
 public enum StatusCode {
 
-    PURCHASE_ORDER("PO", "", "Purchse Order"),
-    GOODS_RECEIPT("GR", "", "Goods Receipt"),
-    INVOICE("INV", "380", "Invoice"),
-    DEBIT_NOTE("DN", "80", "Debit Note"),
-    CREDIT_NOTE("CN", "81", "Credit Note"),
-    E_TAX_INVOICE("TIV", "388", "TAX Invoice"),
+    STATUS01("STATUS01", "New Order", "ออเดอร์ใหม่"),
+    STATUS02("STATUS02", "Packing", "แพ็คสินค้า"),
+    STATUS03("STATUS03", "Deposit", "มัดจำ"),
+    STATUS04("STATUS04", "Paid", "จ่ายแล้ว"),
+    STATUS05("STATUS05", "Not paying", "ไม่จ่าย"),
+    STATUS06("STATUS06", "Cancel", "ยกเลิก"),
+    STATUS07("STATUS07", "Complete", "สมบูรณ์"),
     NULL(null, "", "");
 
     private final String statusCode;

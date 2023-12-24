@@ -1,6 +1,5 @@
 package com.example.ploygardenplants.request;
 
-import com.example.ploygardenplants.model.CheckDataOrderDetailRequestModel;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,10 +10,12 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class CheckDataOrderRequest {
+public class OrderRequest {
 
+    private Long customerId;
     private String customerName;
     private String facebookUrl;
-
-    private List<CheckDataOrderDetailRequestModel> orderDetail;
+    private String address;
+    private Double deposit;
+    private List<OrderDetailRequest> orderDetail;
 }

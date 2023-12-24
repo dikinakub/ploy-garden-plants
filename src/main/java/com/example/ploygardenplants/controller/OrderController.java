@@ -1,8 +1,6 @@
 package com.example.ploygardenplants.controller;
 
-import com.example.ploygardenplants.request.CheckDataOrderRequest;
-import com.example.ploygardenplants.request.StockRequest;
-import com.example.ploygardenplants.response.CheckDataOrderResponse;
+import com.example.ploygardenplants.request.OrderRequest;
 import com.example.ploygardenplants.service.OrderListService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +21,9 @@ public class OrderController {
     private OrderListService orderListService;
 
     @PostMapping(value = "api/order/add", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> saveOrder(@RequestBody StockRequest request) {
-
+    public ResponseEntity<String> insertOrder(@RequestBody OrderRequest orderRequest) {
+        orderListService.insertOrder(orderRequest);
         return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PostMapping(value = "api/order/checkOrderData", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public CheckDataOrderResponse checkOrderData(@RequestBody CheckDataOrderRequest request) {
-
-        return orderListService.checkOrderData(request);
     }
 
 }

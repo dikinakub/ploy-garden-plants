@@ -58,15 +58,21 @@ public class OrderList implements Serializable {
     @Column(name = "ol_total_discount_price")
     private Double olTotalDiscountPrice;
 
+    @Column(name = "ol_total_amount")
+    private Double olTotalAmount;
+
     @Column(name = "ol_total_actual_shipping_price")
     private Double olTotalActualShippingPrice;
 
     @Column(name = "ol_total_packaging_price")
     private Double olTotalPackagingPrice;
 
+    @Column(name = "ol_deposit")
+    private Double olDeposit;
+
     @Basic(optional = false)
-    @Column(name = "ol_ststus_code")
-    private String olStstusCode;
+    @Column(name = "ol_status_code")
+    private String olStatusCode;
 
     @Column(name = "ol_status_desc")
     private String olStatusDesc;

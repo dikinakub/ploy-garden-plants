@@ -39,6 +39,12 @@ public class OrderHistory implements Serializable {
     @Column(name = "oh_order_list_id")
     private Long ohOrderListId;
 
+    @Column(name = "oh_action")
+    private String ohAction;
+
+    @Column(name = "oh_status_desc")
+    private String ohStatusDesc;
+
     @Basic(optional = false)
     @Column(name = "oh_create_by")
     private String ohCreateBy;

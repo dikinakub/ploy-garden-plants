@@ -3,7 +3,7 @@ import { Router } from "@angular/router";
 import { CrudService } from '../service/crud.service';
 import { FormGroup, FormBuilder, FormControl, FormArray, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http'
-import Swal from 'sweetalert2';
+import swal from 'sweetalert2';
 import { MatTableDataSource } from '@angular/material/table';
 
 export interface Stocks {
@@ -29,41 +29,54 @@ export class OrderAddComponent implements OnInit {
   dataSourceStock: any;
   dataSourceShowStock: any;
 
+  facebookName: any;
   orderSelect: any[];
   checkOrderDetail: any;
+  searchStockKey: any;
+  depositInput: any;
+  totalAmount: any;
+  totalAmountDeposit: any;
+  curDate = new Date();
 
   orderForm = new FormGroup({
     customerName: new FormControl(''),
+    customerId: new FormControl(''),
     facebookUrl: new FormControl(''),
     address: new FormControl(''),
+    deposit: new FormControl(''),
     orderDetail: this.formBuilder.array([]),
   })
-
-  totalAmount: any;
 
   constructor(
     private crudService: CrudService,
     private router: Router,
     private ngZone: NgZone,
     private formBuilder: FormBuilder,
-    private http: HttpClient
+    private http: HttpClient,
   ) {
     this.orderForm = this.formBuilder.group({
       customerName: [''],
+      customerId: [''],
       facebookUrl: [''],
       address: [''],
+      deposit: ['0'],
       orderDetail: this.formBuilder.array([]),
     })
   }
 
   ngOnInit(): void {
     this.crudService.getStockByType("TREE").subscribe(res => {
-      this.orderSelect = res;
-      this.dataSourceShowStock = new MatTableDataSource(res);
       this.dataSourceStock = new MatTableDataSource(res);
       this.dataSourceStock.filterPredicate = (data: Stocks, filter: string) => {
         return data.stockId == filter;
       };
+
+      this.dataSourceShowStock = new MatTableDataSource(res);
+      this.dataSourceShowStock.filterPredicate = (data: Stocks, filter: string) => {
+        return data.stockName.includes(filter);
+      };
+      this.orderSelect = this.dataSourceShowStock.data;
+
       // console.log(res)
     })
     this.addLesson();
@@ -71,6 +84,21 @@ export class OrderAddComponent implements OnInit {
 
   applyFilter(filterValue: string) {
     this.dataSourceStock.filter = filterValue;
+  }
+
+  stockFilter(filterValue: string) {
+    this.dataSourceShowStock.filter = filterValue;
+  }
+
+  onSearchStock() {
+    this.stockFilter(this.searchStockKey)
+    this.orderSelect = this.dataSourceShowStock.filteredData;
+  }
+
+  clearDataSearchStock(): void {
+    this.searchStockKey = "";
+    this.stockFilter(this.searchStockKey)
+    this.orderSelect = this.dataSourceShowStock.filteredData;
   }
 
   get orderDetail() {
@@ -114,23 +142,58 @@ export class OrderAddComponent implements OnInit {
         amount: amount,
       })
       // console.log(order.value)
+      // console.log(this.orderForm.value);
     }
     this.totalAmount = sumAmount;
+    this.curDate = new Date();
   }
 
   checkCustomer(): any {
     this.crudService.checkCustomerByName(this.orderForm.value.customerName).subscribe(res => {
       if (res[0]) {
+        // console.log(res[0]);
         const add = res[0]['addressDetailList'][0];
         this.orderForm = this.formBuilder.group({
           customerName: [res[0]['profileName']],
+          customerId: [res[0]['profileID']],
           facebookUrl: [res[0]['profileUrl']],
           address: [add['addressName'] + " " + add['addressDetail'] + " " + add['phoneNumber1']],
+          deposit: ['0'],
           orderDetail: this.formBuilder.array([]),
         })
-        this.addLesson();
+      } else {
+        this.orderForm = this.formBuilder.group({
+          customerName: [this.facebookName],
+          customerId: [''],
+          facebookUrl: [''],
+          address: [''],
+          deposit: ['0'],
+          orderDetail: this.formBuilder.array([]),
+        })
       }
+      this.addLesson();
+      // console.log(this.orderForm.value);
     })
+  }
+
+  sumDeposit(): any {
+    this.totalAmountDeposit = this.totalAmount - this.depositInput;
+  }
+
+  onSubmit(): any {
+    let API_URL = `${this.crudService.REST_API}/order/add`;
+    this.orderForm.patchValue({
+      deposit: this.depositInput
+    })
+    return this.http.post(API_URL, this.orderForm.value)
+      .subscribe(() => {
+        console.log("Add order successfully.", this.orderForm.value);
+        swal.fire('SUCCESS', 'Add order successfully.', 'success');
+        this.ngZone.run(() => this.router.navigateByUrl('order-list'))
+      }, (err) => {
+        console.log(err)
+        swal.fire('ERROR', err.error, 'warning');
+      })
   }
 
 }

@@ -3,6 +3,11 @@ import { Router } from "@angular/router";
 import { CrudService } from '../service/crud.service';
 import { MatTableDataSource } from '@angular/material/table';
 import swal from 'sweetalert2';
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-customer-list',
@@ -17,7 +22,7 @@ export class CustomerListComponent implements OnInit {
   customerList: any;
   selectedOption: number;
 
-  constructor(private crudService: CrudService, private ngZone: NgZone, private router: Router) { }
+  constructor(private crudService: CrudService, private ngZone: NgZone, private router: Router, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.crudService.getCustomers().subscribe(res => {
@@ -73,6 +78,17 @@ export class CustomerListComponent implements OnInit {
     this.crudService.updateCustomerDefaultFlag(addressId.value)
       .subscribe(() => {
         console.log("Update customer default flag successfully.", addressId.value);
+        this.openSnackBar();
       })
+  }
+
+  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+  verticalPosition: MatSnackBarVerticalPosition = 'bottom';
+  openSnackBar() {
+    this.snackBar.open('เปลี่ยนที่อยู่สำเร็จ', 'Done', {
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+      duration: 2 * 1000,
+    });
   }
 }

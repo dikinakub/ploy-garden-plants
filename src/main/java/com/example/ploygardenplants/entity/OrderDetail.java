@@ -51,6 +51,9 @@ public class OrderDetail implements Serializable {
 
     @Column(name = "od_discount_price")
     private Double odDiscountPrice;
+    
+    @Column(name = "od_amount")
+    private Double odAmount;
 
     @Basic(optional = false)
     @Column(name = "od_create_by")
