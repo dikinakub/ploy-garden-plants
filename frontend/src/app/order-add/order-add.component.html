@@ -163,7 +163,11 @@
     <mat-step label="ตรวจสอบข้อมูล">
         <mat-card class="example-card">
             <h2 class="text-left"><b>ข้อมูลลูกค้า</b></h2>
-            <table class="text-left">
+            <div class="text-left">
+                <p>Facebook : {{orderForm.value.customerName}}</p>
+                <p>ที่อยู่จัดส่ง : {{orderForm.value.address}}</p>
+            </div>
+            <!-- <table class="text-left">
                 <tr>
                     <th class="text-left">Facebook :</th>
                     <td class="text-left">{{orderForm.value.customerName}}</td>
@@ -172,7 +176,7 @@
                     <th class="text-left">ที่อยู่จัดส่ง :</th>
                     <td class="text-left">{{orderForm.value.address}}</td>
                 </tr>
-            </table>
+            </table> -->
             <br>
             <mat-divider></mat-divider>
             <br>
@@ -217,9 +221,9 @@
                 <span matTextPrefix>฿&nbsp;</span>
             </mat-form-field>
             <div class="text-left" *ngIf="depositInput">
-                <p>ยอดสั่งซื้อ  : {{this.totalAmount}} บาท</p>
-                <p>มัดจำ      : {{this.depositInput}} บาท</p>
-                <p>ยอดคงเหลือ : {{this.totalAmountDeposit}} บาท</p>
+                <p>ยอดสั่งซื้อ  : {{addComma(this.totalAmount)}} บาท</p>
+                <p>มัดจำ      : {{addComma(this.depositInput)}} บาท</p>
+                <p>ยอดคงเหลือ : {{addComma(this.totalAmountDeposit)}} บาท</p>
             </div>
             <button mat-fab extended type="submit" [disabled]="!orderForm.valid" (click)="onSubmit()">Save<mat-icon>save</mat-icon></button>
             <br>

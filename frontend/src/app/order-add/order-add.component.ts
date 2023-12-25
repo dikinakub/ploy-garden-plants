@@ -126,6 +126,10 @@ export class OrderAddComponent implements OnInit {
     this.orderDetail.removeAt(index);
   }
 
+  addComma(value: any) {
+    return value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+  }
+
   checkOrderData(): any {
     let sumAmount = 0;
     for (let order of this.orderDetail.controls) {

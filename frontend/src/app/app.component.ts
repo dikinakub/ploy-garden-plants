@@ -19,7 +19,7 @@ export class AppComponent {
     switch (event.index) {
       case 0: // index of the tab
         // this is our stub tab for link
-        this.router.navigate(['/order-add']);
+        this.router.navigate(['/order-list']);
         break;
       case 1:
         this.router.navigate(['/customer-list']);

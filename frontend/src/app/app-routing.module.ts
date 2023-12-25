@@ -11,7 +11,7 @@ import { StockEditComponent } from './stock-edit/stock-edit.component';
 import { OrderAddComponent } from './order-add/order-add.component';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'customer-list' },
+  { path: '', pathMatch: 'full', redirectTo: 'order-list' },
   { path: 'order-list', component: OrderListComponent },
   { path: 'order-add', component: OrderAddComponent },
   { path: 'customer-list', component: CustomerListComponent },

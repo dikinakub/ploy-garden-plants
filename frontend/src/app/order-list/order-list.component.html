@@ -1,31 +1,19 @@
-<a mat-button href="https://www.youtube.com/watch?v=rlBFqtQ-qaQ&t=554s" target="_blank">สอน Angular 11 สร้างระบบ CRUD ด้วย MEAN Stack</a>
-<div>
-<a mat-button href="https://stackblitz.com/edit/ngx-mat-select-search?file=src%2Fapp%2Fexamples%2F01-single-selection-example%2Fsingle-selection-example.component.ts,src%2Fapp%2Fexamples%2F01-single-selection-example%2Fsingle-selection-example.component.html,src%2Fapp%2Fapp.module.ts,src%2Fapp%2Fexamples%2F01-single-selection-example%2Fsingle-selection-example.component.scss,src%2Fapp%2Fexamples%2F04-option-groups-example%2Foption-groups-example.component.ts" target="_blank">
-    ngx-mat-select-search</a>
-</div>
-<!-- <mat-card class="example-card">
-    <h1><b><mat-icon>portrait</mat-icon>Customers List</b></h1>
-    <mat-card-header>
-        <mat-card-title-group>
-            <div class="example-container">
-                <mat-form-field>
-                    <mat-label>Facebook Name</mat-label>
-                    <input matInput type="text" [(ngModel)]="getName" value="" (keyup.enter)="onSearch(getName)">
-                </mat-form-field>&nbsp;
-                <button class="example-button-row button" mat-fab extended color="primary" (click)="onSearch(getName)">
-                    <mat-icon>search</mat-icon>
-                    Search
-                </button>&nbsp;
-                <button class="example-button-row button" mat-fab extended (click)="clearData()">
-                    <mat-icon>close</mat-icon>
-                    Clear
+<br>
+<mat-card class="example-card">
+    <h1><b><mat-icon>store_mall_directory</mat-icon>Order List</b>
+        <span class="spacer">
+            <div class="example-button-container">
+                <button mat-fab extended color="primary" routerLink="/order-add">
+                    <mat-icon>add_shopping_cart</mat-icon>
+                    New Order
                 </button>
             </div>
-            <button mat-raised-button color="accent" matBadge="+" class="demo-section" matBadgePosition="before"
-                routerLink="/customer-add">New
-                Customer</button>
-        </mat-card-title-group>
-    </mat-card-header>
-</mat-card> -->
-
-<mat-progress-bar value="100"></mat-progress-bar>
+        </span>
+    </h1>
+    <!-- <mat-form-field>
+        <mat-label>Facebook Name</mat-label>
+        <input matInput #search type="text" [(ngModel)]="getName" (keyup.enter)="onSearch(getName)">
+        <button mat-icon-button matSuffix (click)="onSearch(getName)"><mat-icon>search</mat-icon></button>
+        <button mat-icon-button matSuffix (click)="clearData()"><mat-icon>close</mat-icon></button>
+    </mat-form-field> -->
+</mat-card>

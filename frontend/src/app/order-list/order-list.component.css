@@ -1,0 +1,15 @@
+.example-card {
+    display: auto;
+    margin: 0;
+    flex-direction: column;
+}
+
+.example-card-detail {
+    display: auto;
+    /* margin: 0px 0px; */
+    /* flex-direction: column; */
+}
+
+.spacer {
+    float: right;
+}
