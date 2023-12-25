@@ -5,6 +5,7 @@ import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http'
 import swal from 'sweetalert2';
 import { ReplaySubject } from 'rxjs';
+import { MatTableDataSource } from '@angular/material/table';
 
 export interface IAddressList {
   id: string;
@@ -13,6 +14,10 @@ export interface IAddressList {
 export interface ITambonsList {
   tambonId: string;
   nameTh: string;
+}
+export interface AddressDTO {
+  id: number;
+  address: string;
 }
 
 @Component({
@@ -27,6 +32,10 @@ export class CustomerEditComponent implements OnInit {
   addressList: any;
   filteredaddressList: any[] = [];
   searchBoxTxt: any = "";
+
+  addressDataSource: any;
+  public addressFilterCtrl: FormControl = new FormControl();
+  public filteredAddress: ReplaySubject<AddressDTO[]> = new ReplaySubject<AddressDTO[]>();
 
   provincesList: any[] = [];
   public provincesFilterCtrl: FormControl = new FormControl();
@@ -85,6 +94,20 @@ export class CustomerEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.crudService.getAddressAll().subscribe(res => {
+      // console.log(res)
+      this.addressDataSource = new MatTableDataSource(res);
+      this.addressDataSource.filterPredicate = (data: AddressDTO, filter: string) => {
+        return data.address.includes(filter);
+      };
+      this.filteredAddress.next(res.slice());
+      this.addressFilterCtrl.valueChanges
+        .subscribe(() => {
+          this.searchAddress(this.addressFilterCtrl.value);
+        });
+    })
+
     // จังหวัด
     this.crudService.getProvincesAll().subscribe(res => {
       this.provincesList = res;
@@ -139,6 +162,11 @@ export class CustomerEditComponent implements OnInit {
     });
   }
 
+  searchAddress(key: String): any {
+    this.addressDataSource.filter = key;
+    this.filteredAddress.next(this.addressDataSource.filteredData);
+  }
+  
   searchProvinces(key: String): any {
     if (key == null || key == "") {
       this.filteredprovinces.next(this.provincesList.slice());

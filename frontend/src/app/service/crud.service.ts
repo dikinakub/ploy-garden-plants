@@ -121,6 +121,14 @@ export class CrudService {
         catchError(this.handleError)
       )
   }
+  getAddressAll(): Observable<any> {
+    let API_URL = `${this.REST_API}/customer/findAddressAll`;
+    return this.http.get(API_URL, { headers: this.httpHeaders })
+      .pipe(map((res: any) => {
+        return res || {}
+      }),
+        catchError(this.handleError))
+  }
 
   // ********* Stock *********
   getStockByType(type: any): Observable<any> {

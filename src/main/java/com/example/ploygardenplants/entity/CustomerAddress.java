@@ -43,14 +43,12 @@ public class CustomerAddress implements Serializable {
     @Column(name = "add_name")
     private String addName;
 
-    @Basic(optional = false)
     @Column(name = "add_address_detail")
     private String addAddressDetail;
 
     @Column(name = "add_tambons_id")
     private Long addTambonsId;
 
-    @Basic(optional = false)
     @Column(name = "add_phone_number1")
     private String addPhoneNumber1;
 

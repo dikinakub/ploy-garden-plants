@@ -1,11 +1,13 @@
 package com.example.ploygardenplants.controller;
 
+import com.example.ploygardenplants.dao.AddressDaoImpl;
 import com.example.ploygardenplants.entity.CustomerAddress;
 import com.example.ploygardenplants.entity.CustomerProfile;
 import com.example.ploygardenplants.entity.ThaiAmphures;
 import com.example.ploygardenplants.entity.ThaiProvinces;
 import com.example.ploygardenplants.entity.ThaiTambons;
 import com.example.ploygardenplants.model.AddressDetailModel;
+import com.example.ploygardenplants.model.AddressModel;
 import com.example.ploygardenplants.repository.CustomerAddressRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +56,9 @@ public class CustomerController {
     @Autowired
     private ThaiProvincesRepository thaiProvincesRepository;
 
+    @Autowired
+    private AddressDaoImpl addressDaoImpl;
+
     @PostMapping(value = "api/customer/add", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> saveCustomer(@RequestBody CustomerRequest customerRequest) {
         List<CustomerProfile> findByCusProfileName = customerRepository.findByCusProfileName(customerRequest.getFacebookName());
@@ -85,6 +90,7 @@ public class CustomerController {
         customerProfile.setCusCreateBy("SYSTEM");
         customerProfile.setCusCreateDatetime(new Date());
         CustomerProfile save = customerRepository.save(customerProfile);
+
         CustomerAddress customerAddress = new CustomerAddress();
         customerAddress.setAddCusId(save.getCusId());
         customerAddress.setAddName(customerRequest.getName());
@@ -172,21 +178,28 @@ public class CustomerController {
         if (!findById.isEmpty()) {
             CustomerAddress customerAddress = findById.get(0);
             Optional<CustomerProfile> customerProfile = customerRepository.findById(customerAddress.getAddCusId());
-            ThaiTambons thaiTambons = thaiTambonsRepository.findByTambonId(customerAddress.getAddTambonsId());
-            Optional<ThaiAmphures> thaiAmphures = thaiAmphuresRepository.findById(thaiTambons.getAmphureId());
+            if (customerAddress.getAddTambonsId() != null) {
+                ThaiTambons thaiTambons = thaiTambonsRepository.findByTambonId(customerAddress.getAddTambonsId());
+                Optional<ThaiAmphures> thaiAmphures = thaiAmphuresRepository.findById(thaiTambons.getAmphureId());
 
-            searchRes.setProfileID(customerAddress.getAddId());
-            searchRes.setProfileName(customerProfile.get().getCusProfileName());
-            searchRes.setProfileUrl(customerProfile.get().getCusProfileUrl());
-            searchRes.setAddressName(customerAddress.getAddName());
-            searchRes.setAddressDetail(customerAddress.getAddAddressDetail());
-            searchRes.setProvincesId(thaiAmphures.get().getProvinceId());
-            searchRes.setAmphuresId(thaiAmphures.get().getId());
-            searchRes.setTambonsId(thaiTambons.getTambonId());
-            searchRes.setZipCode(thaiTambons.getZipCode());
-            searchRes.setPhoneNumber1(customerAddress.getAddPhoneNumber1());
-            searchRes.setPhoneNumber2(customerAddress.getAddPhoneNumber2());
-            return searchRes;
+                searchRes.setProfileID(customerAddress.getAddId());
+                searchRes.setProfileName(customerProfile.get().getCusProfileName());
+                searchRes.setProfileUrl(customerProfile.get().getCusProfileUrl());
+                searchRes.setAddressName(customerAddress.getAddName());
+                searchRes.setAddressDetail(customerAddress.getAddAddressDetail());
+                searchRes.setProvincesId(thaiAmphures.get().getProvinceId());
+                searchRes.setAmphuresId(thaiAmphures.get().getId());
+                searchRes.setTambonsId(thaiTambons.getTambonId());
+                searchRes.setZipCode(thaiTambons.getZipCode());
+                searchRes.setPhoneNumber1(customerAddress.getAddPhoneNumber1());
+                searchRes.setPhoneNumber2(customerAddress.getAddPhoneNumber2());
+                return searchRes;
+            } else {
+                searchRes.setProfileID(customerAddress.getAddId());
+                searchRes.setProfileName(customerProfile.get().getCusProfileName());
+                searchRes.setProfileUrl(customerProfile.get().getCusProfileUrl());
+                return searchRes;
+            }
         }
         return null;
     }
@@ -205,40 +218,48 @@ public class CustomerController {
             List<CustomerAddress> customerAddressList = customerAddressRepository.findByAddCusIdAndAddIsActive(customerProfile.getCusId(), "Y");
             if (customerAddressList != null) {
                 for (CustomerAddress customerAddress : customerAddressList) {
-                    ThaiTambons thaiTambons = thaiTambonsRepository.findByTambonId(customerAddress.getAddTambonsId());
-                    Optional<ThaiAmphures> thaiAmphures = thaiAmphuresRepository.findById(thaiTambons.getAmphureId());
-                    Optional<ThaiProvinces> thaiProvinces = thaiProvincesRepository.findById(thaiAmphures.get().getProvinceId());
-                    String address = "";
-                    if (thaiProvinces.get().getId().equals(1L)) {
-                        address = customerAddress.getAddAddressDetail().trim()
-                                + " แขวง" + thaiTambons.getNameTh()
-                                + " " + thaiAmphures.get().getNameTh()
-                                + " จังหวัด" + thaiProvinces.get().getNameTh()
-                                + " " + thaiTambons.getZipCode();
-                    } else {
-                        address = customerAddress.getAddAddressDetail().trim()
-                                + " ตำบล" + thaiTambons.getNameTh()
-                                + " อำเภอ" + thaiAmphures.get().getNameTh()
-                                + " จังหวัด" + thaiProvinces.get().getNameTh()
-                                + " " + thaiTambons.getZipCode();
-                    }
+                    if (customerAddress.getAddTambonsId() != null) {
+                        ThaiTambons thaiTambons = thaiTambonsRepository.findByTambonId(customerAddress.getAddTambonsId());
+                        Optional<ThaiAmphures> thaiAmphures = thaiAmphuresRepository.findById(thaiTambons.getAmphureId());
+                        Optional<ThaiProvinces> thaiProvinces = thaiProvincesRepository.findById(thaiAmphures.get().getProvinceId());
+                        String address = "";
+                        if (thaiProvinces.get().getId().equals(1L)) {
+                            address = customerAddress.getAddAddressDetail().trim()
+                                    + " แขวง" + thaiTambons.getNameTh()
+                                    + " " + thaiAmphures.get().getNameTh()
+                                    + " จังหวัด" + thaiProvinces.get().getNameTh()
+                                    + " " + thaiTambons.getZipCode();
+                        } else {
+                            address = customerAddress.getAddAddressDetail().trim()
+                                    + " ตำบล" + thaiTambons.getNameTh()
+                                    + " อำเภอ" + thaiAmphures.get().getNameTh()
+                                    + " จังหวัด" + thaiProvinces.get().getNameTh()
+                                    + " " + thaiTambons.getZipCode();
+                        }
 
-                    AddressDetailModel addressDetail = new AddressDetailModel();
-                    addressDetail.setAddressId(customerAddress.getAddId());
-                    addressDetail.setAddressName(customerAddress.getAddName());
-                    addressDetail.setAddressDetail(address);
-                    String p1 = customerAddress.getAddPhoneNumber1().substring(0, 2);
-                    String p2 = customerAddress.getAddPhoneNumber1().substring(2, 6);
-                    String p3 = customerAddress.getAddPhoneNumber1().substring(6, 10);
-                    addressDetail.setPhoneNumber1(p1 + "-" + p2 + "-" + p3);
-                    if (customerAddress.getAddPhoneNumber2() != null && !customerAddress.getAddPhoneNumber1().isEmpty()) {
-                        String ph1 = customerAddress.getAddPhoneNumber2().substring(0, 2);
-                        String ph2 = customerAddress.getAddPhoneNumber2().substring(2, 6);
-                        String ph3 = customerAddress.getAddPhoneNumber2().substring(6, 10);
-                        addressDetail.setPhoneNumber2(ph1 + "-" + ph2 + "-" + ph3);
+                        AddressDetailModel addressDetail = new AddressDetailModel();
+                        addressDetail.setAddressId(customerAddress.getAddId());
+                        addressDetail.setAddressName(customerAddress.getAddName());
+                        addressDetail.setAddressDetail(address);
+                        String p1 = customerAddress.getAddPhoneNumber1().substring(0, 2);
+                        String p2 = customerAddress.getAddPhoneNumber1().substring(2, 6);
+                        String p3 = customerAddress.getAddPhoneNumber1().substring(6, 10);
+                        addressDetail.setPhoneNumber1(p1 + "-" + p2 + "-" + p3);
+                        if (customerAddress.getAddPhoneNumber2() != null && !customerAddress.getAddPhoneNumber1().isEmpty()) {
+                            String ph1 = customerAddress.getAddPhoneNumber2().substring(0, 2);
+                            String ph2 = customerAddress.getAddPhoneNumber2().substring(2, 6);
+                            String ph3 = customerAddress.getAddPhoneNumber2().substring(6, 10);
+                            addressDetail.setPhoneNumber2(ph1 + "-" + ph2 + "-" + ph3);
+                        }
+                        addressDetail.setDefaultFlag(customerAddress.getDefaultFlag());
+                        addDetailList.add(addressDetail);
+                    } else {
+                        AddressDetailModel addressDetail = new AddressDetailModel();
+                        addressDetail.setAddressId(customerAddress.getAddId());
+                        addressDetail.setAddressName(customerAddress.getAddName());
+                        addressDetail.setDefaultFlag(customerAddress.getDefaultFlag());
+                        addDetailList.add(addressDetail);
                     }
-                    addressDetail.setDefaultFlag(customerAddress.getDefaultFlag());
-                    addDetailList.add(addressDetail);
                 }
             }
             response.setAddressDetailList(addDetailList);
@@ -362,5 +383,10 @@ public class CustomerController {
             customerAddressRepository.saveAll(forSave);
         }
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("api/customer/findAddressAll")
+    public List<AddressModel> findAddressAll() {
+        return addressDaoImpl.findAddressAll();
     }
 }

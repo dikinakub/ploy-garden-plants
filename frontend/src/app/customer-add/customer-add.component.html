@@ -30,7 +30,20 @@
             <mat-icon matSuffix>home</mat-icon>
             <mat-hint align="end">{{input4.value.length}}/255</mat-hint>
         </mat-form-field>
+
         <mat-form-field appearance="outline">
+            <mat-label>ที่อยุ่</mat-label>
+            <mat-select id="tambonsId" formControlName="tambonsId" required>
+                <mat-option>
+                    <ngx-mat-select-search [formControl]="addressFilterCtrl"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let add of filteredAddress | async" [value]="add.id">
+                    {{add.address}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <!-- <mat-form-field appearance="outline">
             <mat-label>จังหวัด</mat-label>
             <mat-select id="provincesId" formControlName="provincesId" required>
                 <mat-option>
@@ -40,7 +53,7 @@
                     {{province.nameTh}}
                 </mat-option>
             </mat-select>
-        </mat-form-field>
+        </mat-form-field> 
         <mat-form-field appearance="outline">
             <mat-label>เขต/อำเภอ</mat-label>
             <mat-select id="amphuresId" formControlName="amphuresId" required>
@@ -69,7 +82,7 @@
                 formControlName="zipCode" required readonly>
             <mat-icon matSuffix>location_on</mat-icon>
             <mat-hint align="end">{{zipcode.value.length}}/5</mat-hint>
-        </mat-form-field>
+        </mat-form-field> -->
         <mat-form-field appearance="outline">
             <mat-label>เบอร์โทร 1</mat-label>
             <input matInput #input5 min="0" minlength="10" maxlength="10" placeholder="Ex.0623540001" id="phoneNumber1"

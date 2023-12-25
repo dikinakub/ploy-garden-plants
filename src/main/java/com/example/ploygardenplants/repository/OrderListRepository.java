@@ -25,7 +25,7 @@ public interface OrderListRepository extends JpaRepository<OrderList, Long> {
             nativeQuery = true)
     Long nextVal();
 
-    @Query(value = "SELECT setval('order_running_no_seq', 1)",
+    @Query(value = "SELECT setval('order_running_no_seq', 0)",
             nativeQuery = true)
     Long resetRunningNo();
 }

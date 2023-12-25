@@ -24,6 +24,7 @@ public class CommonConstant {
     public static final String EVENT_LOG = "[EVENT]";
     public static final String CACHE_LOG = "[CACHE]";
     public static final String BATCH_LOG = "[BATCH]";
+    public static final String META_LOG = "[META]";
 
     public static final String TIME_UNIT_MILLI_SEC = "millisecond(s)";
     public static final String TIME_UNIT_SEC = "second(s)";
