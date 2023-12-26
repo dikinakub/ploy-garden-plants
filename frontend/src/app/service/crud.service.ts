@@ -164,9 +164,9 @@ export class CrudService {
   }
 
   // ********* Orders *********
-  getOrderAll(): Observable<any> {
-    let API_URL = `${this.REST_API}/order/findAll`;
-    return this.http.get(API_URL, { headers: this.httpHeaders })
+  searchOrderList(searchFrom: any): Observable<any> {
+    let API_URL = `${this.REST_API}/order/searchOrderList`;
+    return this.http.post(API_URL, searchFrom)
       .pipe(map((res: any) => {
         return res || {}
       }),

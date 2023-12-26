@@ -1,13 +1,18 @@
 package com.example.ploygardenplants.controller;
 
+import com.example.ploygardenplants.dao.OrderListDaoImpl;
 import com.example.ploygardenplants.entity.CustomerAddress;
 import com.example.ploygardenplants.entity.CustomerProfile;
 import com.example.ploygardenplants.entity.OrderList;
+import com.example.ploygardenplants.model.SearchModel;
+import com.example.ploygardenplants.model.SortModel;
 import com.example.ploygardenplants.repository.CustomerAddressRepository;
 import com.example.ploygardenplants.repository.CustomerProfileRepository;
 import com.example.ploygardenplants.repository.OrderDetailRepository;
 import com.example.ploygardenplants.repository.OrderListRepository;
+import com.example.ploygardenplants.request.InquiryRequest;
 import com.example.ploygardenplants.request.OrderRequest;
+import com.example.ploygardenplants.response.DataTableResponse;
 import com.example.ploygardenplants.response.FindOrderResponse;
 import com.example.ploygardenplants.service.OrderListService;
 import java.util.ArrayList;
@@ -43,34 +48,20 @@ public class OrderController {
     @Autowired
     private OrderDetailRepository orderDetailRepository;
 
+    @Autowired
+    private OrderListDaoImpl orderListDaoImpl;
+
     @PostMapping(value = "api/order/add", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> insertOrder(@RequestBody OrderRequest orderRequest) {
         return orderListService.insertOrder(orderRequest);
     }
 
-    @GetMapping("api/order/findAll")
-    public List<FindOrderResponse> findAll() {
-        List<FindOrderResponse> response = new ArrayList<>();
-
-        List<OrderList> findAll = orderListRepository.findAll();
-        int i = 0;
-        for (OrderList orderList : findAll) {
-            Optional<CustomerProfile> customerOptional = customerRepository.findById(orderList.getOlCustomerId());
-            if (customerOptional.isPresent()) {
-                CustomerProfile customer = customerOptional.get();
-                List<CustomerAddress> findByAddCusId = customerAddressRepository.findByAddCusIdAndDefaultFlagAndAddIsActive(customer.getCusId(), true, "Y");
-
-                FindOrderResponse res = new FindOrderResponse();
-                res.setCustomerName(customer.getCusProfileName());
-                res.setNo(++i);
-                res.setOrder(orderList);
-                if (findByAddCusId != null && !findByAddCusId.isEmpty()) {
-                    res.setCustomerAddressId(findByAddCusId.get(0).getAddId());
-                }
-                response.add(res);
-            }
-        }
-
-        return response;
+    @PostMapping(value = "api/order/searchOrderList", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public DataTableResponse searchOrderList(@RequestBody InquiryRequest request) {
+        List<SearchModel> listSearch = new ArrayList<>();
+        List<SortModel> listSort = new ArrayList<>();
+        listSort.add(SortModel.builder().field(request.getField()).order(request.getOrder()).build());
+        DataTableResponse findDetailByCriteria = orderListDaoImpl.findDetailByCriteria(listSearch, listSort, 1, Integer.MAX_VALUE);
+        return findDetailByCriteria;
     }
 }
