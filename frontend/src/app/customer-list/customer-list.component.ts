@@ -91,4 +91,8 @@ export class CustomerListComponent implements OnInit {
       duration: 2 * 1000,
     });
   }
+
+  setSessionStorage() {
+    sessionStorage.setItem('BackToPage', '/customer-list');
+  }
 }

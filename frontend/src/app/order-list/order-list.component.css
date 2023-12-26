@@ -13,3 +13,13 @@
 .spacer {
     float: right;
 }
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    color: blue;
+    text-decoration: underline;
+}

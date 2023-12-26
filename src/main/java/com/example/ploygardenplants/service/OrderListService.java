@@ -132,6 +132,9 @@ public class OrderListService {
                         orderDetailSave.setOdCreateBy(user);
                         orderDetailSave.setOdCreateDatetime(date);
                         orderDetailSaves.add(orderDetailSave);
+
+                        stock.setStockRemaining(stock.getStockRemaining() - orderDetail.getCount());
+                        stockRepository.save(stock);
                     }
                 }
 

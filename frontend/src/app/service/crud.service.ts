@@ -18,7 +18,7 @@ export class CrudService {
 
   constructor(private http: HttpClient) { }
 
-  // ********* Customer *********
+  // ********* Customers *********
   getCustomers(): Observable<any> {
     let API_URL = `${this.REST_API}/customer/findAll`;
     return this.http.get(API_URL, { headers: this.httpHeaders })
@@ -130,7 +130,7 @@ export class CrudService {
         catchError(this.handleError))
   }
 
-  // ********* Stock *********
+  // ********* Stocks *********
   getStockByType(type: any): Observable<any> {
     let API_URL = `${this.REST_API}/stock/findByType/${type}`;
     return this.http.get(API_URL, { headers: this.httpHeaders })
@@ -163,7 +163,15 @@ export class CrudService {
       )
   }
 
-
+  // ********* Orders *********
+  getOrderAll(): Observable<any> {
+    let API_URL = `${this.REST_API}/order/findAll`;
+    return this.http.get(API_URL, { headers: this.httpHeaders })
+      .pipe(map((res: any) => {
+        return res || {}
+      }),
+        catchError(this.handleError))
+  }
 
   // Error
   handleError(error: HttpErrorResponse) {

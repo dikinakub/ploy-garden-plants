@@ -166,7 +166,7 @@ export class CustomerEditComponent implements OnInit {
     this.addressDataSource.filter = key;
     this.filteredAddress.next(this.addressDataSource.filteredData);
   }
-  
+
   searchProvinces(key: String): any {
     if (key == null || key == "") {
       this.filteredprovinces.next(this.provincesList.slice());
@@ -221,6 +221,10 @@ export class CustomerEditComponent implements OnInit {
       phoneNumber1: [''],
       phoneNumber2: [''],
     })
+  }
+
+  getSessionStorage() {
+    return sessionStorage.getItem('BackToPage');
   }
 
 }

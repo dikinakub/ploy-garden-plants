@@ -37,7 +37,7 @@
                         [checked]="add.defaultFlag" (change)="updateCustomerDefaultFlag($event)">
                         <mat-divider></mat-divider>
                         <a routerLink="/customer-edit/{{add.addressId}}" matTooltip="แก้ไขที่อยู่"
-                            matTooltipPosition="right">{{add.addressName}}</a> <br>
+                            matTooltipPosition="right" (click)="setSessionStorage()">{{add.addressName}}</a> <br>
                         {{add.addressDetail}} <br>
                         {{add.phoneNumber1}}
                         {{add.phoneNumber2}}

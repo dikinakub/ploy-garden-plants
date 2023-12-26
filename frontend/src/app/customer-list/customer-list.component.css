@@ -23,3 +23,13 @@
     background-image: url('https://sv1.picz.in.th/images/2023/11/02/ddVTPiP.png');
     background-size: cover;
 }
+
+a {
+    text-decoration: none;
+    color: blue;
+}
+
+a:hover {
+    color: blue;
+    text-decoration: underline;
+}
