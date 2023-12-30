@@ -10,6 +10,32 @@
             </div>
         </span>
     </h1>
+    <div class="example-container">
+        <mat-form-field appearance="outline">
+            <mat-label>Order Reference No.</mat-label>
+            <input matInput type="text" [(ngModel)]="orderRef">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Facebook Name</mat-label>
+            <input matInput type="text" [(ngModel)]="customerName">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Status</mat-label>
+            <mat-select [(ngModel)]="status">
+                <mat-option [value]="status.statusCode" *ngFor="let status of statusAll; let i = index">
+                    {{status.statusDescEn}} ({{status.statusDescTh}})
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <button class="example-button-row" mat-fab extended color="primary" (click)="searchOrderList()">
+            <mat-icon>search</mat-icon>
+            Search
+        </button>
+        <button class="example-button-row2" mat-fab extended color="primary" (click)="clearDateInput()">
+            <mat-icon>close</mat-icon>
+            Clear
+        </button>
+    </div>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
         <ng-container matColumnDef="no">
             <th mat-header-cell *matHeaderCellDef>#</th>
@@ -20,41 +46,41 @@
             <td mat-cell *matCellDef="let element"> {{element.reference_no}}</td>
         </ng-container>
         <ng-container matColumnDef="customer_name">
-            <th mat-header-cell *matHeaderCellDef  mat-sort-header>ลูกค้า</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Facebook Name</th>
             <td mat-cell *matCellDef="let element"> <a routerLink="/customer-edit/{{element.address_id}}"
                     (click)="setSessionStorage()">{{element.customer_name}}</a></td>
         </ng-container>
         <ng-container matColumnDef="purchase_price">
-            <th mat-header-cell *matHeaderCellDef  mat-sort-header>ราคาซื้อ</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>ราคาซื้อ</th>
             <td mat-cell *matCellDef="let element"> {{addComma(element.purchase_price)}} </td>
         </ng-container>
         <ng-container matColumnDef="selling_price">
-            <th mat-header-cell *matHeaderCellDef  mat-sort-header>ราคาขาย</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>ราคาขาย</th>
             <td mat-cell *matCellDef="let element"> {{addComma(element.selling_price)}} </td>
         </ng-container>
         <ng-container matColumnDef="shipping_price">
-            <th mat-header-cell *matHeaderCellDef  mat-sort-header>ค่าส่ง</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>ค่าส่ง</th>
             <td mat-cell *matCellDef="let element"> {{addComma(element.shipping_price)}} </td>
         </ng-container>
         <ng-container matColumnDef="discount_price">
-            <th mat-header-cell *matHeaderCellDef  mat-sort-header>ส่วนลด</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>ส่วนลด</th>
             <td mat-cell *matCellDef="let element"> {{addComma(element.discount_price)}} </td>
         </ng-container>
         <ng-container matColumnDef="deposit">
-            <th mat-header-cell *matHeaderCellDef  mat-sort-header>มัดจำ</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>มัดจำ</th>
             <td mat-cell *matCellDef="let element"> {{addComma(element.deposit)}} </td>
         </ng-container>
         <ng-container matColumnDef="amount">
-            <th mat-header-cell *matHeaderCellDef  mat-sort-header>ยอดเงินรวม</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>ยอดเงินรวม</th>
             <td mat-cell *matCellDef="let element"> {{addComma(element.amount-element.deposit)}}
             </td>
         </ng-container>
         <ng-container matColumnDef="status_desc">
-            <th mat-header-cell *matHeaderCellDef  mat-sort-header>สถานะ</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>สถานะ</th>
             <td mat-cell *matCellDef="let element"> {{element.status_desc}} </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let emprow; columns: displayedColumns"></tr>
     </table>
-    <mat-paginator #paginator [pageSizeOptions]="[5 ,10, 20, 50]" showFirstLastButtons></mat-paginator>
+    <mat-paginator #paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
 </mat-card>

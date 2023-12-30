@@ -4,6 +4,7 @@ import com.example.ploygardenplants.dao.OrderListDaoImpl;
 import com.example.ploygardenplants.entity.CustomerAddress;
 import com.example.ploygardenplants.entity.CustomerProfile;
 import com.example.ploygardenplants.entity.OrderList;
+import com.example.ploygardenplants.enums.StatusCode;
 import com.example.ploygardenplants.model.SearchModel;
 import com.example.ploygardenplants.model.SortModel;
 import com.example.ploygardenplants.repository.CustomerAddressRepository;
@@ -14,10 +15,13 @@ import com.example.ploygardenplants.request.InquiryRequest;
 import com.example.ploygardenplants.request.OrderRequest;
 import com.example.ploygardenplants.response.DataTableResponse;
 import com.example.ploygardenplants.response.FindOrderResponse;
+import com.example.ploygardenplants.response.StatusCodeResponse;
 import com.example.ploygardenplants.service.OrderListService;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -58,10 +62,23 @@ public class OrderController {
 
     @PostMapping(value = "api/order/searchOrderList", consumes = MediaType.APPLICATION_JSON_VALUE)
     public DataTableResponse searchOrderList(@RequestBody InquiryRequest request) {
-        List<SearchModel> listSearch = new ArrayList<>();
         List<SortModel> listSort = new ArrayList<>();
         listSort.add(SortModel.builder().field(request.getField()).order(request.getOrder()).build());
-        DataTableResponse findDetailByCriteria = orderListDaoImpl.findDetailByCriteria(listSearch, listSort, 1, Integer.MAX_VALUE);
+        DataTableResponse findDetailByCriteria = orderListDaoImpl.findDetailByCriteria(request.getSearchList(), listSort, 1, Integer.MAX_VALUE);
         return findDetailByCriteria;
+    }
+
+    @GetMapping(value = "api/status/statusAll")
+    public List<StatusCodeResponse> getStatusAll() {
+        List<StatusCodeResponse> res = new ArrayList<>();
+        StatusCode[] values = StatusCode.values();
+        for (StatusCode value : values) {
+            res.add(StatusCodeResponse.builder()
+                    .statusCode(value.getStatusCode())
+                    .statusDescEn(value.getStatusDescEn())
+                    .statusDescTh(value.getStatusDescTh())
+                    .build());
+        }
+        return res;
     }
 }

@@ -7,7 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar, } from '@angular/material/snack-bar';
 import { HttpClient } from '@angular/common/http'
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, FormArray, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-order-list',
@@ -18,12 +18,18 @@ export class OrderListComponent implements OnInit {
 
   displayedColumns: string[] = ['no', 'reference_no', 'customer_name', 'purchase_price', 'selling_price', 'shipping_price', 'discount_price', 'deposit', 'amount', 'status_desc'];
   dataSource: any;
+  statusAll: any;
+
+  orderRef: any;
+  customerName: any;
+  status: any;
 
   searchFrom = new FormGroup({
     page: new FormControl(''),
     pageSize: new FormControl(''),
     field: new FormControl(''),
     order: new FormControl(''),
+    searchList: this.formBuilder.array([]),
   })
 
   constructor(
@@ -36,8 +42,9 @@ export class OrderListComponent implements OnInit {
     this.searchFrom = this.formBuilder.group({
       page: ['1'],
       pageSize: ['10'],
-      field: [''],
-      order: [''],
+      field: new FormControl(''),
+      order: new FormControl(''),
+      searchList: this.formBuilder.array([]),
     })
   }
 
@@ -45,33 +52,70 @@ export class OrderListComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   ngOnInit(): void {
-    this.searchOrderList();
+    this.searchOrderByCriteria()
+    this.crudService.getStatusAll().subscribe(res => {
+      this.statusAll = res;
+      // console.log(res)
+    })
   }
 
-  searchOrderList() {
+  searchOrderByCriteria() {
     this.crudService.searchOrderList(this.searchFrom.value).subscribe(res => {
-      console.log(res)
+      // console.log(res)
       this.dataSource = new MatTableDataSource(res.items);
-
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     })
   }
 
-  sortChange() {
-    // console.log(this.paginator)
-    // console.log(this.paginator.pageIndex)
-    // console.log(this.paginator.pageSize)
-
-    console.log(this.sort.active)
-    console.log(this.sort.direction)
-
-    this.searchFrom.patchValue({
-      field: this.sort.active,
-      order: this.sort.direction
-    })
-    // this.searchOrderList();
+  searchOrderList() {
+    if (this.orderRef) {
+      this.searchList.push(this.formBuilder.group({
+        field: ['reference_no'],
+        value: [this.orderRef],
+      }));
+    }
+    if (this.customerName) {
+      this.searchList.push(this.formBuilder.group({
+        field: ['customer_name'],
+        value: [this.customerName],
+      }));
+    }
+    if (this.status) {
+      this.searchList.push(this.formBuilder.group({
+        field: ['status_code'],
+        value: [this.status],
+      }));
+    }
+    // console.log(this.searchFrom.value)
+    this.searchOrderByCriteria()
   }
+
+  clearDateInput() {
+    this.orderRef = ''
+    this.customerName = ''
+    this.status = ''
+    this.searchFrom = this.formBuilder.group({
+      page: ['1'],
+      pageSize: ['10'],
+      field: new FormControl(''),
+      order: new FormControl(''),
+      searchList: this.formBuilder.array([]),
+    })
+    this.searchOrderByCriteria()
+  }
+
+  newSearchList(): FormGroup {
+    return this.formBuilder.group({
+      field: [],
+      value: [],
+    })
+  }
+
+  get searchList() {
+    return this.searchFrom.controls["searchList"] as FormArray;
+  }
+
 
   addComma(value: any) {
     return value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")

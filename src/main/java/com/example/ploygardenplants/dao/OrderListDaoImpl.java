@@ -123,57 +123,18 @@ public class OrderListDaoImpl {
             sqlParameterSource.addValue(reference_no, criteria.get(reference_no));
         }
 
-//        if (criteria.containsKey(businessPlace)) {
-//            criteria.computeIfPresent(businessPlace, (key, val) -> "%" + val + "%");
-//            whereClause.append(AND + " upper(\"BC_SUPPLIER_CODE\") LIKE upper(:" + businessPlace + ") ");
-//        }
-//        if (criteria.containsKey(productCodeMul)) {
-//            criteria.computeIfPresent(productCodeMul, (key, val) -> ((String) val).toString());
-//            whereClause.append(AND + " (\"IVPD_PAYMENT_METHOD\") IN (:" + productCodeMul + ") ");
-//            addFieldValueToMapSqlParameterSource(productCodeMul, criteria.get(productCodeMul), sqlParameterSource);
-//        }
-//
-//        if (criteria.containsKey(beneficiaryBank)) {
-//            criteria.computeIfPresent(beneficiaryBank, (key, val) -> "%" + val + "%");
-//            whereClause.append(AND + " (\"THAB_BANK_SHORT_NAME\") LIKE (:" + beneficiaryBank + ") ");
-//            addFieldValueToMapSqlParameterSource(beneficiaryBank, criteria.get(beneficiaryBank), sqlParameterSource);
-//        }
-//
-//        if (criteria.containsKey(beneficiaryName)) {
-//            criteria.computeIfPresent(beneficiaryName, (key, val) -> "%" + val + "%");
-//            whereClause.append(AND + " upper(\"IVPD_RECEIVING_ACCOUNT_NAME\") LIKE upper(:" + beneficiaryName + ") ");
-//            addFieldValueToMapSqlParameterSource(beneficiaryName, criteria.get(beneficiaryName), sqlParameterSource);
-//        }
-//
-//        if (criteria.containsKey(beneficiaryAccountNo)) {
-//            criteria.computeIfPresent(beneficiaryAccountNo, (key, val) -> "%" + val + "%");
-//            whereClause.append(AND + " upper(\"IVPD_RECEIVING_ACCOUNT_NO\") LIKE upper(:" + beneficiaryAccountNo + ") ");
-//            addFieldValueToMapSqlParameterSource(beneficiaryAccountNo, criteria.get(beneficiaryAccountNo), sqlParameterSource);
-//        }
-//
-//        if (criteria.containsKey(status)) {
-//            criteria.computeIfPresent(status, (key, val) -> ((String) val).toUpperCase());
-//            whereClause.append(AND + " (\"IVPD_STATUS_CODE\") IN (:" + status + ") ");
-//            addFieldValueToMapSqlParameterSource(status, criteria.get(status), sqlParameterSource);
-//        }
-//
-//        if (criteria.containsKey(buyerCompCode)) {
-//            criteria.computeIfPresent(buyerCompCode, (key, val) -> ((String) val).toUpperCase());
-//            whereClause.append(AND + " (\"IVPT_BUYER_COMP_CODE\") IN (:" + buyerCompCode + ") ");
-//            addFieldValueToMapSqlParameterSource(buyerCompCode, criteria.get(buyerCompCode), sqlParameterSource);
-//        }
-//
-//        if (criteria.containsKey(buyerBusinessPlace)) {
-//            criteria.computeIfPresent(buyerBusinessPlace, (key, val) -> ((String) val).toUpperCase());
-//            whereClause.append(AND + " (\"IVPT_BC_BUYER_BRANCH_CODE\") IN (:" + buyerBusinessPlace + ") ");
-//            addFieldValueToMapSqlParameterSource(buyerBusinessPlace, criteria.get(buyerBusinessPlace), sqlParameterSource);
-//        }
-//
-//        if (criteria.containsKey(bcSupplierCode)) {
-//            criteria.computeIfPresent(bcSupplierCode, (key, val) -> ((String) val).toUpperCase());
-//            whereClause.append(AND + " upper(\"IVPT_BC_SUPPLIER_CODE\") IN (:" + bcSupplierCode + ") ");
-//            sqlParameterSource.addValue((bcSupplierCode, criteria.get(bcSupplierCode), sqlParameterSource);
-//        }
+        if (criteria.containsKey(customer_name)) {
+            criteria.computeIfPresent(customer_name, (key, val) -> "%" + val + "%");
+            whereClause.append(AND + " upper(customer_name) LIKE upper(:" + customer_name + ") ");
+            sqlParameterSource.addValue(customer_name, criteria.get(customer_name));
+        }
+
+        if (criteria.containsKey(status_code)) {
+            criteria.computeIfPresent(status_code, (key, val) -> ((String) val).toUpperCase());
+            whereClause.append(AND + " upper(status_code) IN (:" + status_code + ") ");
+            sqlParameterSource.addValue(status_code, criteria.get(status_code));
+        }
+
         return whereClause.toString();
     }
 

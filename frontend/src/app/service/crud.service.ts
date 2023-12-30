@@ -172,6 +172,14 @@ export class CrudService {
       }),
         catchError(this.handleError))
   }
+  getStatusAll(): Observable<any> {
+    let API_URL = `${this.REST_API}/status/statusAll`;
+    return this.http.get(API_URL, { headers: this.httpHeaders })
+      .pipe(map((res: any) => {
+        return res || {}
+      }),
+        catchError(this.handleError))
+  }
 
   // Error
   handleError(error: HttpErrorResponse) {

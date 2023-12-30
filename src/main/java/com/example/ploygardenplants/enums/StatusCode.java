@@ -8,8 +8,7 @@ public enum StatusCode {
     STATUS04("STATUS04", "Paid", "จ่ายแล้ว"),
     STATUS05("STATUS05", "Not paying", "ไม่จ่าย"),
     STATUS06("STATUS06", "Cancel", "ยกเลิก"),
-    STATUS07("STATUS07", "Complete", "สมบูรณ์"),
-    NULL(null, "", "");
+    STATUS07("STATUS07", "Complete", "สมบูรณ์");
 
     private final String statusCode;
     private final String statusDescEn;
@@ -41,7 +40,7 @@ public enum StatusCode {
                 }
             }
         }
-        return StatusCode.NULL;
+        return null;
     }
 
 }
