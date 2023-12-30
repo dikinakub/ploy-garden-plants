@@ -10,7 +10,7 @@
             </div>
         </span>
     </h1>
-    <div class="example-container">
+    <div class="example-container" (keyup.enter)="searchOrderList()">
         <mat-form-field appearance="outline">
             <mat-label>Order Reference No.</mat-label>
             <input matInput type="text" [(ngModel)]="orderRef">
