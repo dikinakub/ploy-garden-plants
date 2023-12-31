@@ -44,7 +44,7 @@ export class CrudService {
         catchError(this.handleError))
   }
   checkCustomerByName(name: any): Observable<any> {
-    let API_URL = `${this.REST_API}/customer/checkCustomer/${name}`;
+    let API_URL = `${this.REST_API}/customer/checkCustomerByName/${name}`;
     return this.http.get(API_URL, { headers: this.httpHeaders })
       .pipe(map((res: any) => {
         return res || {}
@@ -167,6 +167,14 @@ export class CrudService {
   searchOrderList(searchFrom: any): Observable<any> {
     let API_URL = `${this.REST_API}/order/searchOrderList`;
     return this.http.post(API_URL, searchFrom)
+      .pipe(map((res: any) => {
+        return res || {}
+      }),
+        catchError(this.handleError))
+  }
+  getOrderDetail(orderRef: any): Observable<any> {
+    let API_URL = `${this.REST_API}/order/detail/${orderRef}`;
+    return this.http.get(API_URL, { headers: this.httpHeaders })
       .pipe(map((res: any) => {
         return res || {}
       }),

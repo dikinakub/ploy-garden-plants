@@ -3,7 +3,6 @@ import { Router } from "@angular/router";
 import { CrudService } from '../service/crud.service';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
-import { catchError, retry } from 'rxjs/operators';
 
 @Component({
   selector: 'app-stock-list',

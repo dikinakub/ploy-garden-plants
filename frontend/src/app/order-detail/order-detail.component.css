@@ -1,0 +1,25 @@
+.example-card {
+    display: auto;
+    margin: auto;
+    /* max-width: 80%; */
+    flex-direction: column;
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+    background-color: #ffffff;
+}
+
+.text-right {
+    text-align: left;
+    background-color: #ffffff;
+    font-weight: bold;
+}
+
+.table-style {
+    border: 1px solid grey;
+    border-collapse: collapse;
+    padding: 5px;
+    text-align: center;
+}

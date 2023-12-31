@@ -268,12 +268,16 @@ public class CustomerController {
         return responseList;
     }
 
-    @GetMapping("api/customer/checkCustomer/{name}")
+    @GetMapping("api/customer/checkCustomerByName/{name}")
     public List<SearchCustomerProfileResponse> checkCustomer(@PathVariable String name) {
         List<CustomerProfile> findByCusProfileName = customerRepository.findByCusProfileNameLike(name.toUpperCase());
         if (findByCusProfileName == null || findByCusProfileName.isEmpty()) {
             return null;
         }
+        return mapCheckCustomer(findByCusProfileName);
+    }
+
+    public List<SearchCustomerProfileResponse> mapCheckCustomer(List<CustomerProfile> findByCusProfileName) {
         List<SearchCustomerProfileResponse> responseList = new ArrayList<>();
         int no = 0;
         for (CustomerProfile customerProfile : findByCusProfileName) {

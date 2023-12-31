@@ -1,0 +1,64 @@
+<br>
+<mat-card class="example-card">
+    <div class="text-right">
+        <h2>{{orderRef}}
+            <span>
+                <button mat-icon-button (click)="copyOrderRef()" matSuffix (click)="hide = !hide"
+                    matTooltip="{{copyTip}}" matTooltipPosition='above'>
+                    <mat-icon>{{hide ? 'file_copy' : 'done'}}</mat-icon>
+                </button>
+            </span>
+            <span style="color:blue">{{orderDetailRes.status_desc}}</span>
+        </h2>
+        <p>Order Date : {{orderDetailRes.order_date | date:'dd/MM/yyyy'}}</p>
+    </div>
+    <mat-divider></mat-divider>
+    <h2 class="text-left"><b>ข้อมูลลูกค้า</b></h2>
+    <div class="text-left">
+        <p>Facebook : {{orderDetailRes.customer_name}}</p>
+        <p>ที่อยู่จัดส่ง : {{orderDetailRes.address}}</p>
+    </div>
+    <mat-divider></mat-divider>
+    <br>
+    <h2 class="text-left"><b>รายการสินค้า</b></h2>
+    <table class="table-style">
+        <thead>
+            <tr class="table-style">
+                <th class="table-style">จำนวน</th>
+                <th class="table-style">รายการ</th>
+                <th class="table-style">หน่วยละ</th>
+                <th class="table-style">ค่าส่ง</th>
+                <th class="table-style">ส่วนลด</th>
+                <th class="table-style">จำนวนเงิน</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="table-style" *ngFor="let order of orderDetailRes.orderDetails; let i = index">
+                <td class="table-style">{{order.count}}</td>
+                <td class="table-style">{{order.stock_name}}</td>
+                <td class="table-style">{{order.selling_price}}</td>
+                <td class="table-style">{{order.shipping_price}}</td>
+                <td class="table-style">{{order.discount_price}}</td>
+                <td class="table-style">{{order.amount}}</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td class="table-style"></td>
+                <td class="table-style"></td>
+                <td class="table-style"></td>
+                <td class="table-style"></td>
+                <td class="table-style"><b>Total</b></td>
+                <td class="table-style"><b>{{orderDetailRes.total_amount}}</b></td>
+            </tr>
+        </tfoot>
+    </table>
+    <br>
+    <div class="text-left" *ngIf="orderDetailRes.deposit">
+        <p>ยอดสั่งซื้อ  : {{addComma(orderDetailRes.total_amount)}} บาท</p>
+        <p>มัดจำ      : {{addComma(orderDetailRes.deposit)}} บาท</p>
+        <p>ยอดคงเหลือ : {{addComma(orderDetailRes.total_amount-orderDetailRes.deposit)}} บาท</p>
+    </div>
+    <!-- <button mat-fab extended type="submit" [disabled]="!orderForm.valid" (click)="onSubmit()">Save<mat-icon>save</mat-icon></button>
+    <br> -->
+</mat-card>

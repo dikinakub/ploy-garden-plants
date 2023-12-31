@@ -23,6 +23,7 @@ import { StockEditComponent } from './stock-edit/stock-edit.component';
 import { OrderAddComponent } from './order-add/order-add.component';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatSelectModule } from '@angular/material/select';
+import { OrderDetailComponent } from './order-detail/order-detail.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { MatSelectModule } from '@angular/material/select';
     StockListComponent,
     StockAddComponent,
     StockEditComponent,
-    OrderAddComponent
+    OrderAddComponent,
+    OrderDetailComponent
   ],
   imports: [
     BrowserModule,

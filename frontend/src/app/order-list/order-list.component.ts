@@ -1,13 +1,9 @@
-import { Component, OnInit, NgZone, ViewChild } from '@angular/core';
-import { Router } from "@angular/router";
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CrudService } from '../service/crud.service';
-import Swal from 'sweetalert2';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatSnackBar, } from '@angular/material/snack-bar';
-import { HttpClient } from '@angular/common/http'
-import { FormGroup, FormBuilder, FormControl, FormArray, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-order-list',
@@ -34,11 +30,7 @@ export class OrderListComponent implements OnInit {
 
   constructor(
     private crudService: CrudService,
-    private ngZone: NgZone,
-    private router: Router,
-    private snackBar: MatSnackBar,
-    private formBuilder: FormBuilder,
-    private http: HttpClient) {
+    private formBuilder: FormBuilder) {
     this.searchFrom = this.formBuilder.group({
       page: ['1'],
       pageSize: ['10'],
