@@ -94,6 +94,7 @@ public class OrderController {
                 OrderDetailDaoModel orderList = mapCurr.getValue().get(0);
                 res.setOrder_id(orderList.getOrder_id());
                 res.setOrder_ref(orderList.getOrder_ref());
+                res.setStatus_code(orderList.getStatus_code());
                 StatusCode fromStatusCode = StatusCode.fromStatusCode(orderList.getStatus_code());
                 res.setStatus_desc(fromStatusCode.getStatusDescEn() + " (" + fromStatusCode.getStatusDescTh() + ")");
                 res.setOrder_date(orderList.getOrder_date());
@@ -131,6 +132,25 @@ public class OrderController {
         List<StatusCodeResponse> res = new ArrayList<>();
         StatusCode[] values = StatusCode.values();
         for (StatusCode value : values) {
+            res.add(StatusCodeResponse.builder()
+                    .statusCode(value.getStatusCode())
+                    .statusDescEn(value.getStatusDescEn())
+                    .statusDescTh(value.getStatusDescTh())
+                    .build());
+        }
+        return res;
+    }
+
+    @GetMapping(value = "api/status/statusUpdate")
+    public List<StatusCodeResponse> getStatusUpdate() {
+        List<StatusCodeResponse> res = new ArrayList<>();
+        List<StatusCode> status = List.of(
+                StatusCode.STATUS01, 
+                StatusCode.STATUS03, 
+                StatusCode.STATUS04, 
+                StatusCode.STATUS06, 
+                StatusCode.STATUS07);
+        for (StatusCode value : status) {
             res.add(StatusCodeResponse.builder()
                     .statusCode(value.getStatusCode())
                     .statusDescEn(value.getStatusDescEn())

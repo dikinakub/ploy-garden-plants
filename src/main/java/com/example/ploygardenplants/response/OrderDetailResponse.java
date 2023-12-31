@@ -18,6 +18,7 @@ public class OrderDetailResponse {
 
     private Long order_id;
     private String order_ref;
+    private String status_code;
     private String status_desc;
     private Date order_date;
     private String customer_name;
